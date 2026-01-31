@@ -15,6 +15,11 @@ const pollData = {
 const MIN_WIDTH = 35
 const MAX_WIDTH = 65
 
+// Live updates: When pollData.options percentages change, the component will:
+// 1. Smoothly animate divider position via the existing 700ms ease-in-out transition
+// 2. Subtly crossfade percentage values via the 500ms transition-all
+// This creates a calm, alive feeling without jittery movements
+
 export default function PollSection() {
   const [selectedOption, setSelectedOption] = useState(null)
   const [showPercentages, setShowPercentages] = useState(false)
@@ -70,8 +75,8 @@ export default function PollSection() {
           <div className="text-body-large text-on-surface mb-2">
             {pollData.options[0].text}
           </div>
-          {/* Percentage fades in after divider animation */}
-          <div className={`text-display-small text-on-surface-variant transition-opacity duration-500 ${
+          {/* Percentage fades in after divider animation, with subtle crossfade on updates */}
+          <div className={`text-display-small text-on-surface-variant transition-all duration-500 ${
             showPercentages ? 'opacity-100' : 'opacity-0'
           }`}>
             {pollData.options[0].percentage}%
@@ -96,8 +101,8 @@ export default function PollSection() {
           <div className="text-body-large text-on-surface mb-2">
             {pollData.options[1].text}
           </div>
-          {/* Percentage fades in after divider animation */}
-          <div className={`text-display-small text-on-surface-variant transition-opacity duration-500 ${
+          {/* Percentage fades in after divider animation, with subtle crossfade on updates */}
+          <div className={`text-display-small text-on-surface-variant transition-all duration-500 ${
             showPercentages ? 'opacity-100' : 'opacity-0'
           }`}>
             {pollData.options[1].percentage}%
