@@ -5,14 +5,10 @@ import { useState } from 'react'
 const pollData = {
   title: "How do you usually decide?",
   options: [
-    { id: 1, text: "Ads & search results", percentage: 60, color: 'bg-[#E89B8F]' },
-    { id: 2, text: "Word of mouth", percentage: 40, color: 'bg-[#6FA89E]' }
+    { id: 1, text: "Ads & search results", percentage: 20, color: 'bg-[#E89B8F]' },
+    { id: 2, text: "Word of mouth", percentage: 80, color: 'bg-[#6FA89E]' }
   ]
 }
-
-// Cap the distribution to avoid extreme edge alignment
-const MIN_WIDTH = 35
-const MAX_WIDTH = 65
 
 // Live updates: When pollData.options percentages change, the component will:
 // 1. Smoothly animate divider position via the existing 700ms ease-in-out transition
@@ -23,20 +19,9 @@ export default function PollSectionHorizontal() {
   const [selectedOption, setSelectedOption] = useState(null)
   const [showPercentages, setShowPercentages] = useState(false)
   
-  // Calculate capped widths based on actual percentages
-  const option1Percentage = pollData.options[0].percentage
-  const option2Percentage = pollData.options[1].percentage
-  
-  let option1Width = option1Percentage
-  let option2Width = option2Percentage
-  
-  if (option1Percentage > MAX_WIDTH) {
-    option1Width = MAX_WIDTH
-    option2Width = 100 - MAX_WIDTH
-  } else if (option1Percentage < MIN_WIDTH) {
-    option1Width = MIN_WIDTH
-    option2Width = 100 - MIN_WIDTH
-  }
+  // Use actual percentages without capping
+  const option1Width = pollData.options[0].percentage
+  const option2Width = pollData.options[1].percentage
   
   const handleOptionClick = (optionId) => {
     if (!selectedOption) {
@@ -57,12 +42,12 @@ export default function PollSectionHorizontal() {
       
       {/* Two-card layout with divider */}
       <div className="flex items-stretch gap-0 relative">
-        {/* Option 1 Card */}
+        {/* Option 1 Card - Ads option (always dimmed when selected) */}
         <button
           onClick={() => handleOptionClick(pollData.options[0].id)}
           disabled={selectedOption !== null}
           className={`${pollData.options[0].color} rounded-l-[16px] p-4 shadow-premium-sm relative overflow-hidden transition-all duration-700 ease-in-out ${
-            !selectedOption ? 'cursor-pointer hover:shadow-premium-md active:scale-[0.98]' : 'cursor-default'
+            !selectedOption ? 'cursor-pointer hover:shadow-premium-md active:scale-[0.98]' : 'cursor-default opacity-50'
           }`}
           style={{ 
             width: selectedOption ? `${option1Width}%` : '50%'
