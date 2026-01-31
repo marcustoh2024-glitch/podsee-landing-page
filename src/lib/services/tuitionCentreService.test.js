@@ -209,4 +209,79 @@ describe('TuitionCentreService - Property Tests', () => {
       { numRuns: 20 }
     );
   }, 30000); // 30 second timeout
+
+  // Feature: tuition-search-backend, Property 5: Combined filters use AND logic between types
+  // Validates: Requirements 5.1, 5.2
+  it('Property 5: Combined filters use AND logic between types', async () => {
+    await fc.assert(
+      fc.asyncProperty(
+        fc.array(
+          fc.record({
+            name: fc.stringMatching(/^[A-Za-z ]{5,20}$/),
+            location: fc.stringMatching(/^[A-Za-z ]{5,20}$/),
+            whatsappNumber: fc.stringMatching(/^\d{8,12}$/),
+            website: fc.option(fc.webUrl(), { nil: null }),
+            levels: fc.uniqueArray(fc.constantFrom('Primary', 'Secondary', 'Junior College'), { minLength: 1, maxLength: 2 }),
+            subjects: fc.uniqueArray(fc.constantFrom('Mathematics', 'Science', 'English'), { minLength: 1, maxLength: 2 })
+          }),
+          { minLength: 5, maxLength: 8 }
+        ),
+        fc.record({
+          search: fc.option(fc.stringMatching(/^[A-Za-z]{2,5}$/), { nil: null }),
+          levels: fc.option(fc.uniqueArray(fc.constantFrom('Primary', 'Secondary', 'Junior College'), { minLength: 1, maxLength: 2 }), { nil: null }),
+          subjects: fc.option(fc.uniqueArray(fc.constantFrom('Mathematics', 'Science', 'English'), { minLength: 1, maxLength: 2 }), { nil: null })
+        }),
+        async (centres, filters) => {
+          // Create test centres
+          await Promise.all(
+            centres.map(centre => createTestCentre(centre))
+          );
+
+          // Build filter object
+          const searchFilters = {};
+          if (filters.search) searchFilters.search = filters.search.toLowerCase();
+          if (filters.levels) searchFilters.levels = filters.levels;
+          if (filters.subjects) searchFilters.subjects = filters.subjects;
+
+          // Skip if no filters applied
+          if (Object.keys(searchFilters).length === 0) return true;
+
+          // Search with combined filters
+          const result = await service.searchTuitionCentres(searchFilters);
+
+          // Verify all results match ALL filter types (AND logic)
+          for (const centre of result.data) {
+            // Check search filter if applied
+            if (filters.search) {
+              const searchLower = filters.search.toLowerCase();
+              const nameMatch = centre.name.toLowerCase().includes(searchLower);
+              const locationMatch = centre.location.toLowerCase().includes(searchLower);
+              expect(nameMatch || locationMatch).toBe(true);
+            }
+
+            // Check level filter if applied
+            if (filters.levels) {
+              const centreLevelNames = centre.levels.map(l => l.name);
+              const hasMatchingLevel = filters.levels.some(filterLevel => 
+                centreLevelNames.includes(filterLevel)
+              );
+              expect(hasMatchingLevel).toBe(true);
+            }
+
+            // Check subject filter if applied
+            if (filters.subjects) {
+              const centreSubjectNames = centre.subjects.map(s => s.name);
+              const hasMatchingSubject = filters.subjects.some(filterSubject => 
+                centreSubjectNames.includes(filterSubject)
+              );
+              expect(hasMatchingSubject).toBe(true);
+            }
+          }
+
+          return true;
+        }
+      ),
+      { numRuns: 20 }
+    );
+  }, 30000); // 30 second timeout
 });

@@ -97,12 +97,12 @@ Output import report (inserted/updated/skipped)
     - **Validates: Requirements 3.1, 3.2**
     - Generate random level sets and verify all results have matching levels
 
-  - [-] 3.7 Write property test for subject filtering
+  - [x] 3.7 Write property test for subject filtering
     - **Property 4: Subject filter returns only matching centres**
     - **Validates: Requirements 4.1, 4.2**
     - Generate random subject sets and verify all results have matching subjects
 
-  - [ ] 3.8 Write property test for combined filters
+  - [-] 3.8 Write property test for combined filters
     - **Property 5: Combined filters use AND logic between types**
     - **Validates: Requirements 5.1, 5.2**
     - Generate random filter combinations and verify AND logic
