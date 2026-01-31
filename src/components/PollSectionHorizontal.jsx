@@ -34,32 +34,31 @@ export default function PollSectionHorizontal() {
   }
 
   return (
-    <section className="w-full">
+    <section className="w-full h-[80px]">
       {/* Title above poll - bigger and very close to top */}
       <h2 className="text-[16px] font-medium text-[#2C3E2F] text-center mb-3 tracking-tight">
         {pollData.title}
       </h2>
       
-      {/* Two-card layout with divider */}
-      <div className="flex items-stretch gap-0 relative">
+      {/* Two-card layout with divider - fixed height */}
+      <div className="flex items-stretch gap-0 relative h-[50px]">
         {/* Option 1 Card - Ads option (always dimmed when selected) */}
         <button
           onClick={() => handleOptionClick(pollData.options[0].id)}
           disabled={selectedOption !== null}
-          className={`${pollData.options[0].color} rounded-l-[16px] p-4 shadow-premium-sm relative overflow-hidden transition-all duration-700 ease-in-out ${
+          className={`${pollData.options[0].color} rounded-l-[16px] p-2 shadow-premium-sm relative overflow-hidden transition-all duration-700 ease-in-out ${
             !selectedOption ? 'cursor-pointer hover:shadow-premium-md active:scale-[0.98]' : 'cursor-default opacity-50'
           }`}
           style={{ 
             width: selectedOption ? `${option1Width}%` : '50%'
           }}
         >
-          <div className="relative z-10">
-            <h3 className="text-[15px] font-medium text-white mb-2 tracking-tight">
+          <div className="relative z-10 h-full flex flex-col justify-center">
+            <h3 className="text-[13px] font-medium text-white tracking-tight">
               {pollData.options[0].text}
             </h3>
-            <div className="h-[1px] bg-white/30 mb-2" />
             {/* Percentage fades in after divider animation, with subtle crossfade on updates */}
-            <div className={`text-[40px] font-bold text-white leading-none tracking-tight transition-all duration-500 ${
+            <div className={`text-[20px] font-bold text-white leading-none tracking-tight transition-all duration-500 ${
               showPercentages ? 'opacity-100' : 'opacity-0'
             }`}>
               {pollData.options[0].percentage}%
@@ -85,20 +84,19 @@ export default function PollSectionHorizontal() {
         <button
           onClick={() => handleOptionClick(pollData.options[1].id)}
           disabled={selectedOption !== null}
-          className={`${pollData.options[1].color} rounded-r-[16px] p-4 shadow-premium-sm relative overflow-hidden transition-all duration-700 ease-in-out ${
+          className={`${pollData.options[1].color} rounded-r-[16px] p-2 shadow-premium-sm relative overflow-hidden transition-all duration-700 ease-in-out ${
             !selectedOption ? 'cursor-pointer hover:shadow-premium-md active:scale-[0.98]' : 'cursor-default'
           }`}
           style={{ 
             width: selectedOption ? `${option2Width}%` : '50%'
           }}
         >
-          <div className="relative z-10">
-            <h3 className="text-[15px] font-medium text-white mb-2 tracking-tight">
+          <div className="relative z-10 h-full flex flex-col justify-center">
+            <h3 className="text-[13px] font-medium text-white tracking-tight">
               {pollData.options[1].text}
             </h3>
-            <div className="h-[1px] bg-white/30 mb-2" />
             {/* Percentage fades in after divider animation, with subtle crossfade on updates */}
-            <div className={`text-[40px] font-bold text-white leading-none tracking-tight transition-all duration-500 ${
+            <div className={`text-[20px] font-bold text-white leading-none tracking-tight transition-all duration-500 ${
               showPercentages ? 'opacity-100' : 'opacity-0'
             }`}>
               {pollData.options[1].percentage}%

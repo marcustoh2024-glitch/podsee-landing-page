@@ -43,25 +43,25 @@ export default function PollSection() {
         {pollData.title}
       </h3>
       
-      {/* Two-card layout with divider */}
-      <div className="flex flex-col items-stretch gap-0 relative">
+      {/* Two-card layout with divider - fixed height */}
+      <div className="flex flex-col items-stretch gap-0 relative h-[100px]">
         {/* Option 1 Card - Ads option (always dimmed when selected) */}
         <button
           onClick={() => handleOptionClick(pollData.options[0].id)}
           disabled={selectedOption !== null}
-          className={`bg-surface-container-high rounded-t-2xl p-6 shadow-elevation-1 transition-all ease-in-out text-left ${
+          className={`bg-surface-container-high rounded-t-2xl p-3 shadow-elevation-1 transition-all ease-in-out text-left ${
             !selectedOption ? 'cursor-pointer hover:shadow-elevation-2' : 'cursor-default opacity-50'
           }`}
           style={{ 
-            height: selectedOption ? `${option1Width}%` : '50%',
+            height: '50%',
             transitionDuration: prefersReducedMotion ? '0ms' : '700ms'
           }}
         >
-          <div className="text-body-large text-on-surface mb-2">
+          <div className="text-body-medium text-on-surface mb-1">
             {pollData.options[0].text}
           </div>
           {/* Percentage fades in after divider animation, with subtle crossfade on updates */}
-          <div className={`text-display-small text-on-surface-variant transition-all duration-500 ${
+          <div className={`text-headline-medium text-on-surface-variant transition-all duration-500 ${
             showPercentages ? 'opacity-100' : 'opacity-0'
           }`}>
             {pollData.options[0].percentage}%
@@ -75,19 +75,19 @@ export default function PollSection() {
         <button
           onClick={() => handleOptionClick(pollData.options[1].id)}
           disabled={selectedOption !== null}
-          className={`bg-surface-container-high rounded-b-2xl p-6 shadow-elevation-1 transition-all ease-in-out text-left ${
+          className={`bg-surface-container-high rounded-b-2xl p-3 shadow-elevation-1 transition-all ease-in-out text-left ${
             !selectedOption ? 'cursor-pointer hover:shadow-elevation-2' : 'cursor-default'
           }`}
           style={{ 
-            height: selectedOption ? `${option2Width}%` : '50%',
+            height: '50%',
             transitionDuration: prefersReducedMotion ? '0ms' : '700ms'
           }}
         >
-          <div className="text-body-large text-on-surface mb-2">
+          <div className="text-body-medium text-on-surface mb-1">
             {pollData.options[1].text}
           </div>
           {/* Percentage fades in after divider animation, with subtle crossfade on updates */}
-          <div className={`text-display-small text-on-surface-variant transition-all duration-500 ${
+          <div className={`text-headline-medium text-on-surface-variant transition-all duration-500 ${
             showPercentages ? 'opacity-100' : 'opacity-0'
           }`}>
             {pollData.options[1].percentage}%
