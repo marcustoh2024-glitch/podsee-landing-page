@@ -284,4 +284,59 @@ describe('TuitionCentreService - Property Tests', () => {
       { numRuns: 20 }
     );
   }, 30000); // 30 second timeout
+
+  // Feature: tuition-search-backend, Property 6: WhatsApp link format is valid
+  // Validates: Requirements 7.1, 7.2, 7.4
+  it('Property 6: WhatsApp link format is valid', async () => {
+    await fc.assert(
+      fc.asyncProperty(
+        fc.array(
+          fc.record({
+            name: fc.stringMatching(/^[A-Za-z ]{5,20}$/),
+            location: fc.stringMatching(/^[A-Za-z ]{5,20}$/),
+            // Generate phone numbers with various formats
+            whatsappNumber: fc.oneof(
+              fc.stringMatching(/^\+\d{10,12}$/), // +6591234567
+              fc.stringMatching(/^\d{8,12}$/), // 91234567
+              fc.stringMatching(/^\+\d{1,3} \d{8,10}$/), // +65 91234567
+              fc.stringMatching(/^\d{4}-\d{4}$/), // 9123-4567
+              fc.stringMatching(/^\(\+\d{2}\) \d{8}$/) // (+65) 91234567
+            ),
+            website: fc.option(fc.webUrl(), { nil: null }),
+            levels: fc.uniqueArray(fc.constantFrom('Primary', 'Secondary'), { minLength: 1, maxLength: 2 }),
+            subjects: fc.uniqueArray(fc.constantFrom('Mathematics', 'Science'), { minLength: 1, maxLength: 2 })
+          }),
+          { minLength: 3, maxLength: 5 }
+        ),
+        async (centres) => {
+          // Create test centres
+          await Promise.all(
+            centres.map(centre => createTestCentre(centre))
+          );
+
+          // Get all centres
+          const result = await service.searchTuitionCentres({});
+
+          // Verify all WhatsApp links follow the correct format
+          for (const centre of result.data) {
+            // WhatsApp link should start with https://wa.me/
+            expect(centre.whatsappLink).toMatch(/^https:\/\/wa\.me\/\d+$/);
+            
+            // Extract the number part
+            const numberPart = centre.whatsappLink.replace('https://wa.me/', '');
+            
+            // Should contain only digits
+            expect(numberPart).toMatch(/^\d+$/);
+            
+            // Should have reasonable length (8-15 digits)
+            expect(numberPart.length).toBeGreaterThanOrEqual(8);
+            expect(numberPart.length).toBeLessThanOrEqual(15);
+          }
+
+          return true;
+        }
+      ),
+      { numRuns: 20 }
+    );
+  }, 30000); // 30 second timeout
 });
