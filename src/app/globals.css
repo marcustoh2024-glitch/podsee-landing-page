@@ -20,13 +20,14 @@
     @apply bg-surface text-on-surface font-sans;
   }
   
-  /* Lock mobile viewport */
+  /* Allow scrolling on mobile */
   @media (max-width: 1023px) {
     html, body {
-      height: 100vh;
-      height: 100dvh; /* Dynamic viewport height for mobile browsers */
-      overflow: hidden;
-      position: fixed;
+      height: auto;
+      min-height: 100vh;
+      min-height: 100dvh; /* Dynamic viewport height for mobile browsers */
+      overflow-y: auto;
+      position: relative;
       width: 100%;
     }
   }
