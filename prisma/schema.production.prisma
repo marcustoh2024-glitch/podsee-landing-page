@@ -1,0 +1,59 @@
+// Production Prisma schema file for PostgreSQL
+// To use this for production, replace schema.prisma with this file
+// and update DATABASE_URL in .env to PostgreSQL connection string
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model TuitionCentre {
+  id              String                 @id @default(uuid())
+  name            String
+  location        String
+  whatsappNumber  String
+  website         String?
+  levels          TuitionCentreLevel[]
+  subjects        TuitionCentreSubject[]
+  createdAt       DateTime               @default(now())
+  updatedAt       DateTime               @updatedAt
+
+  @@index([name])
+  @@index([location])
+}
+
+model Level {
+  id              String               @id @default(uuid())
+  name            String               @unique
+  tuitionCentres  TuitionCentreLevel[]
+  createdAt       DateTime             @default(now())
+}
+
+model Subject {
+  id              String                 @id @default(uuid())
+  name            String                 @unique
+  tuitionCentres  TuitionCentreSubject[]
+  createdAt       DateTime               @default(now())
+}
+
+model TuitionCentreLevel {
+  tuitionCentreId String
+  levelId         String
+  tuitionCentre   TuitionCentre @relation(fields: [tuitionCentreId], references: [id], onDelete: Cascade)
+  level           Level         @relation(fields: [levelId], references: [id], onDelete: Cascade)
+
+  @@id([tuitionCentreId, levelId])
+}
+
+model TuitionCentreSubject {
+  tuitionCentreId String
+  subjectId       String
+  tuitionCentre   TuitionCentre @relation(fields: [tuitionCentreId], references: [id], onDelete: Cascade)
+  subject         Subject       @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+
+  @@id([tuitionCentreId, subjectId])
+}
