@@ -135,8 +135,8 @@ export default function FilterWizardMinimal() {
         ))}
       </div>
       
-      {/* Search button - fixed at bottom with margin */}
-      <div className="flex-shrink-0 mb-3">
+      {/* Search button - fixed at bottom */}
+      <div className="flex-shrink-0">
         <button
           onClick={handleSearch}
           disabled={!canSearch}
