@@ -167,4 +167,46 @@ describe('TuitionCentreService - Property Tests', () => {
       { numRuns: 20 }
     );
   }, 30000); // 30 second timeout
+
+  // Feature: tuition-search-backend, Property 4: Subject filter returns only matching centres
+  // Validates: Requirements 4.1, 4.2
+  it('Property 4: Subject filter returns only matching centres', async () => {
+    await fc.assert(
+      fc.asyncProperty(
+        fc.array(
+          fc.record({
+            name: fc.stringMatching(/^[A-Za-z ]{5,20}$/),
+            location: fc.stringMatching(/^[A-Za-z ]{5,20}$/),
+            whatsappNumber: fc.stringMatching(/^\d{8,12}$/),
+            website: fc.option(fc.webUrl(), { nil: null }),
+            levels: fc.uniqueArray(fc.constantFrom('Primary', 'Secondary', 'Junior College'), { minLength: 1, maxLength: 2 }),
+            subjects: fc.uniqueArray(fc.constantFrom('Mathematics', 'Science', 'English', 'Chinese', 'Physics', 'Chemistry'), { minLength: 1, maxLength: 3 })
+          }),
+          { minLength: 3, maxLength: 5 }
+        ),
+        fc.uniqueArray(fc.constantFrom('Mathematics', 'Science', 'English', 'Chinese', 'Physics', 'Chemistry'), { minLength: 1, maxLength: 2 }),
+        async (centres, filterSubjects) => {
+          // Create test centres
+          await Promise.all(
+            centres.map(centre => createTestCentre(centre))
+          );
+
+          // Search with subject filter
+          const result = await service.searchTuitionCentres({ subjects: filterSubjects });
+
+          // Verify all results have at least one of the specified subjects
+          for (const centre of result.data) {
+            const centreSubjectNames = centre.subjects.map(s => s.name);
+            const hasMatchingSubject = filterSubjects.some(filterSubject => 
+              centreSubjectNames.includes(filterSubject)
+            );
+            expect(hasMatchingSubject).toBe(true);
+          }
+
+          return true;
+        }
+      ),
+      { numRuns: 20 }
+    );
+  }, 30000); // 30 second timeout
 });
