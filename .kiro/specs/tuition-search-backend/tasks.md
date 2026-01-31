@@ -50,27 +50,27 @@ This plan implements a backend API and database system for searching and filteri
     - Throw not found error for invalid IDs
     - _Requirements: 6.1, 6.2, 6.3_
 
-  - [ ]* 3.5 Write property test for search matching
+  - [ ] 3.5 Write property test for search matching
     - **Property 1: Search returns matching centres**
     - **Validates: Requirements 2.1, 2.3**
     - Generate random search terms and verify all results contain term in name or location
 
-  - [ ]* 3.6 Write property test for level filtering
+  - [ ] 3.6 Write property test for level filtering
     - **Property 3: Level filter returns only matching centres**
     - **Validates: Requirements 3.1, 3.2**
     - Generate random level sets and verify all results have matching levels
 
-  - [ ]* 3.7 Write property test for subject filtering
+  - [ ] 3.7 Write property test for subject filtering
     - **Property 4: Subject filter returns only matching centres**
     - **Validates: Requirements 4.1, 4.2**
     - Generate random subject sets and verify all results have matching subjects
 
-  - [ ]* 3.8 Write property test for combined filters
+  - [ ] 3.8 Write property test for combined filters
     - **Property 5: Combined filters use AND logic between types**
     - **Validates: Requirements 5.1, 5.2**
     - Generate random filter combinations and verify AND logic
 
-  - [ ]* 3.9 Write property test for WhatsApp link format
+  - [ ] 3.9 Write property test for WhatsApp link format
     - **Property 6: WhatsApp link format is valid**
     - **Validates: Requirements 7.1, 7.2, 7.4**
     - Generate random phone numbers and verify link format
@@ -95,14 +95,14 @@ This plan implements a backend API and database system for searching and filteri
     - Log errors with context
     - _Requirements: 9.4, 10.4_
 
-  - [ ]* 5.3 Write unit tests for search endpoint
+  - [ ] 5.3 Write unit tests for search endpoint
     - Test query parameter parsing
     - Test validation error responses
     - Test successful search responses
     - Test pagination metadata
     - _Requirements: 2.1, 2.2, 5.1_
 
-  - [ ]* 5.4 Write property test for pagination consistency
+  - [ ] 5.4 Write property test for pagination consistency
     - **Property 8: Pagination consistency**
     - **Validates: Requirements 2.4**
     - Generate random page and limit values and verify result count and metadata
