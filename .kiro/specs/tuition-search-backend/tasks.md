@@ -59,8 +59,8 @@ Upsert using the dedup key
 Output import report (inserted/updated/skipped)
   - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6_
 
-- [ ] 3. Implement tuition centre service layer
-  - [ ] 3.1 Create service class structure
+- [-] 3. Implement tuition centre service layer
+  - [-] 3.1 Create service class structure
     - Create `src/lib/services/tuitionCentreService.js`
     - Implement TuitionCentreService class with Prisma client injection
     - _Requirements: 2.1, 4.1, 6.1_
