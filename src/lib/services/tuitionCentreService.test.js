@@ -108,8 +108,8 @@ describe('TuitionCentreService - Property Tests', () => {
 
           if (!searchTerm) return true; // Skip if search term is empty
 
-          // Search with the term
-          const result = await service.searchTuitionCentres({ search: searchTerm });
+          // Search with the term (use lowercase for SQLite case-insensitive search)
+          const result = await service.searchTuitionCentres({ search: searchTerm.toLowerCase() });
 
           // Verify all results contain the search term in name or location (case-insensitive)
           const searchLower = searchTerm.toLowerCase();

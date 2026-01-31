@@ -26,11 +26,12 @@ class TuitionCentreService {
     const whereConditions = [];
 
     // Build search filter (name OR location, case-insensitive)
+    // Note: SQLite doesn't support mode: 'insensitive', but contains is case-insensitive by default in SQLite
     if (search && search.trim()) {
       whereConditions.push({
         OR: [
-          { name: { contains: search.trim(), mode: 'insensitive' } },
-          { location: { contains: search.trim(), mode: 'insensitive' } }
+          { name: { contains: search.trim() } },
+          { location: { contains: search.trim() } }
         ]
       });
     }
@@ -44,7 +45,7 @@ class TuitionCentreService {
               OR: levels.map(level => ({
                 OR: [
                   { id: level },
-                  { name: { equals: level, mode: 'insensitive' } }
+                  { name: { equals: level } }
                 ]
               }))
             }
@@ -62,7 +63,7 @@ class TuitionCentreService {
               OR: subjects.map(subject => ({
                 OR: [
                   { id: subject },
-                  { name: { equals: subject, mode: 'insensitive' } }
+                  { name: { equals: subject } }
                 ]
               }))
             }
