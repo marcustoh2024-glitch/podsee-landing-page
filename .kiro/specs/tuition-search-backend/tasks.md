@@ -59,7 +59,7 @@ Upsert using the dedup key
 Output import report (inserted/updated/skipped)
   - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6_
 
-- [-] 3. Implement tuition centre service layer
+- [x] 3. Implement tuition centre service layer
   - [x] 3.1 Create service class structure
     - Create `src/lib/services/tuitionCentreService.js`
     - Implement TuitionCentreService class with Prisma client injection
@@ -107,7 +107,7 @@ Output import report (inserted/updated/skipped)
     - **Validates: Requirements 5.1, 5.2**
     - Generate random filter combinations and verify AND logic
 
-  - [-] 3.9 Write property test for WhatsApp link format
+  - [x] 3.9 Write property test for WhatsApp link format
     - **Property 6: WhatsApp link format is valid**
     - **Validates: Requirements 7.1, 7.2, 7.4**
     - Generate random phone numbers and verify link format
