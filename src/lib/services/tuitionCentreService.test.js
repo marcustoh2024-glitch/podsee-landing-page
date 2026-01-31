@@ -19,9 +19,13 @@ async function cleanupTestData() {
 async function createTestCentre(data) {
   const { name, location, whatsappNumber, website, levels = [], subjects = [] } = data;
   
+  // Remove duplicates from levels and subjects
+  const uniqueLevels = [...new Set(levels)];
+  const uniqueSubjects = [...new Set(subjects)];
+  
   // Create or get levels
   const levelRecords = await Promise.all(
-    levels.map(async (levelName) => {
+    uniqueLevels.map(async (levelName) => {
       return await prisma.level.upsert({
         where: { name: levelName },
         update: {},
@@ -32,7 +36,7 @@ async function createTestCentre(data) {
 
   // Create or get subjects
   const subjectRecords = await Promise.all(
-    subjects.map(async (subjectName) => {
+    uniqueSubjects.map(async (subjectName) => {
       return await prisma.subject.upsert({
         where: { name: subjectName },
         update: {},
