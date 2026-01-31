@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
 const pollData = {
   title: "How do you usually decide?",
@@ -15,7 +15,7 @@ const MIN_WIDTH = 35
 const MAX_WIDTH = 65
 
 export default function PollSectionHorizontal() {
-  const [hasAnimated, setHasAnimated] = useState(false)
+  const [selectedOption, setSelectedOption] = useState(null)
   
   // Calculate capped widths based on actual percentages
   const option1Percentage = pollData.options[0].percentage
@@ -32,14 +32,11 @@ export default function PollSectionHorizontal() {
     option2Width = 100 - MIN_WIDTH
   }
   
-  useEffect(() => {
-    // Trigger animation after 400ms delay
-    const timer = setTimeout(() => {
-      setHasAnimated(true)
-    }, 400)
-    
-    return () => clearTimeout(timer)
-  }, [])
+  const handleOptionClick = (optionId) => {
+    if (!selectedOption) {
+      setSelectedOption(optionId)
+    }
+  }
 
   return (
     <section className="w-full">
