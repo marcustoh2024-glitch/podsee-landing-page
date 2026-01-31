@@ -115,7 +115,7 @@ Output import report (inserted/updated/skipped)
 - [x] 4. Checkpoint - Ensure service layer tests pass
   - Ensure all tests pass, ask the user if questions arise.
 
-- [ ] 5. Implement API route for search and filter
+- [-] 5. Implement API route for search and filter
   - [ ] 5.1 Create search endpoint route handler
     - Create `src/app/api/tuition-centres/route.js`
     - Implement GET handler for search and filter
