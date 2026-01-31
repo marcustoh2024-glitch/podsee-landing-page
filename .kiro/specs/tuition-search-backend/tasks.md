@@ -115,7 +115,7 @@ Output import report (inserted/updated/skipped)
 - [x] 4. Checkpoint - Ensure service layer tests pass
   - Ensure all tests pass, ask the user if questions arise.
 
-- [-] 5. Implement API route for search and filter
+- [x] 5. Implement API route for search and filter
   - [x] 5.1 Create search endpoint route handler
     - Create `src/app/api/tuition-centres/route.js`
     - Implement GET handler for search and filter
@@ -139,7 +139,7 @@ Output import report (inserted/updated/skipped)
     - Test pagination metadata
     - _Requirements: 2.1, 2.2, 5.1_
 
-  - [-] 5.4 Write property test for pagination consistency
+  - [x] 5.4 Write property test for pagination consistency
     - **Property 8: Pagination consistency**
     - **Validates: Requirements 2.4**
     - Generate random page and limit values and verify result count and metadata
