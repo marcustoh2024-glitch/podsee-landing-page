@@ -60,12 +60,12 @@ Output import report (inserted/updated/skipped)
   - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6_
 
 - [-] 3. Implement tuition centre service layer
-  - [-] 3.1 Create service class structure
+  - [x] 3.1 Create service class structure
     - Create `src/lib/services/tuitionCentreService.js`
     - Implement TuitionCentreService class with Prisma client injection
     - _Requirements: 2.1, 4.1, 6.1_
 
-  - [ ] 3.2 Implement search and filter logic
+  - [-] 3.2 Implement search and filter logic
     - Implement `searchTuitionCentres` method with search, level, and subject filters
     - Build Prisma where clauses for search (name OR location, case-insensitive)
     - Build level filter with OR logic within levels
