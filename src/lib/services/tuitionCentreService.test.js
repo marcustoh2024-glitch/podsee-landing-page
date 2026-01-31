@@ -125,4 +125,46 @@ describe('TuitionCentreService - Property Tests', () => {
       { numRuns: 20 }
     );
   }, 30000); // 30 second timeout
+
+  // Feature: tuition-search-backend, Property 3: Level filter returns only matching centres
+  // Validates: Requirements 3.1, 3.2
+  it('Property 3: Level filter returns only matching centres', async () => {
+    await fc.assert(
+      fc.asyncProperty(
+        fc.array(
+          fc.record({
+            name: fc.stringMatching(/^[A-Za-z ]{5,20}$/),
+            location: fc.stringMatching(/^[A-Za-z ]{5,20}$/),
+            whatsappNumber: fc.stringMatching(/^\d{8,12}$/),
+            website: fc.option(fc.webUrl(), { nil: null }),
+            levels: fc.uniqueArray(fc.constantFrom('Primary', 'Secondary', 'Junior College', 'IB', 'IGCSE'), { minLength: 1, maxLength: 3 }),
+            subjects: fc.uniqueArray(fc.constantFrom('Mathematics', 'Science', 'English'), { minLength: 1, maxLength: 2 })
+          }),
+          { minLength: 3, maxLength: 5 }
+        ),
+        fc.uniqueArray(fc.constantFrom('Primary', 'Secondary', 'Junior College', 'IB', 'IGCSE'), { minLength: 1, maxLength: 2 }),
+        async (centres, filterLevels) => {
+          // Create test centres
+          await Promise.all(
+            centres.map(centre => createTestCentre(centre))
+          );
+
+          // Search with level filter
+          const result = await service.searchTuitionCentres({ levels: filterLevels });
+
+          // Verify all results have at least one of the specified levels
+          for (const centre of result.data) {
+            const centreLevelNames = centre.levels.map(l => l.name);
+            const hasMatchingLevel = filterLevels.some(filterLevel => 
+              centreLevelNames.includes(filterLevel)
+            );
+            expect(hasMatchingLevel).toBe(true);
+          }
+
+          return true;
+        }
+      ),
+      { numRuns: 20 }
+    );
+  }, 30000); // 30 second timeout
 });

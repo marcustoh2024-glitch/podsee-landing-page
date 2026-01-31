@@ -92,7 +92,7 @@ Output import report (inserted/updated/skipped)
     - **Validates: Requirements 2.1, 2.3**
     - Generate random search terms and verify all results contain term in name or location
 
-  - [-] 3.6 Write property test for level filtering
+  - [x] 3.6 Write property test for level filtering
     - **Property 3: Level filter returns only matching centres**
     - **Validates: Requirements 3.1, 3.2**
     - Generate random level sets and verify all results have matching levels
