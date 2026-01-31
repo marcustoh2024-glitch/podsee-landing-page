@@ -3,7 +3,7 @@
 import { useState } from 'react'
 
 const pollData = {
-  title: "How do you usually decide?",
+  title: "How do you usually decide your tuition?",
   options: [
     { id: 1, text: "Ads & search results", percentage: 20, color: 'bg-[#E89B8F]' },
     { id: 2, text: "Word of mouth", percentage: 80, color: 'bg-[#6FA89E]' }

@@ -4,7 +4,7 @@ import { useState } from 'react'
 import useReducedMotion from '@/hooks/useReducedMotion'
 
 const pollData = {
-  title: "How do you usually decide?",
+  title: "How do you usually decide your tuition?",
   options: [
     { id: 1, text: "Ads & search results", percentage: 20 },
     { id: 2, text: "Word of mouth", percentage: 80 }
