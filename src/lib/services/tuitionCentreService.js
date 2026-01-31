@@ -142,8 +142,51 @@ class TuitionCentreService {
    * @returns {Promise<Object>} Tuition centre details
    */
   async getTuitionCentreById(id) {
-    // Implementation will be added in sub-task 3.4
-    throw new Error('Not implemented');
+    if (!id) {
+      throw new Error('Tuition centre ID is required');
+    }
+
+    const centre = await this.prisma.tuitionCentre.findUnique({
+      where: { id },
+      include: {
+        levels: {
+          include: {
+            level: true
+          }
+        },
+        subjects: {
+          include: {
+            subject: true
+          }
+        }
+      }
+    });
+
+    if (!centre) {
+      const error = new Error('Tuition centre not found');
+      error.statusCode = 404;
+      throw error;
+    }
+
+    // Format response with WhatsApp link and flatten relationships
+    return {
+      id: centre.id,
+      name: centre.name,
+      location: centre.location,
+      whatsappNumber: centre.whatsappNumber,
+      whatsappLink: this.formatWhatsAppLink(centre.whatsappNumber),
+      website: centre.website,
+      levels: centre.levels.map(l => ({
+        id: l.level.id,
+        name: l.level.name
+      })),
+      subjects: centre.subjects.map(s => ({
+        id: s.subject.id,
+        name: s.subject.name
+      })),
+      createdAt: centre.createdAt,
+      updatedAt: centre.updatedAt
+    };
   }
 
   /**

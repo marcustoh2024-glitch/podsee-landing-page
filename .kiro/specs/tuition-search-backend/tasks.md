@@ -80,7 +80,7 @@ Output import report (inserted/updated/skipped)
     - Generate `https://wa.me/{number}` format
     - _Requirements: 7.1, 7.2, 7.4_
 
-  - [ ] 3.4 Implement get by ID method
+  - [x] 3.4 Implement get by ID method
     - Implement `getTuitionCentreById` method
     - Include related levels and subjects
     - Format WhatsApp link in response
