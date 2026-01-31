@@ -38,8 +38,8 @@ export default function PollSection() {
 
   return (
     <section className="w-full max-w-[360px] mx-auto lg:mx-0 slide-in-bottom" style={{ animationDelay: '0.3s' }}>
-      {/* Poll Title */}
-      <h3 className="text-title-medium text-on-surface text-center mb-6">
+      {/* Poll Title - bigger */}
+      <h3 className="text-title-large text-on-surface text-center mb-4">
         {pollData.title}
       </h3>
       
