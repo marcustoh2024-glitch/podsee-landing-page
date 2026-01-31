@@ -154,7 +154,7 @@ This specification defines the redesign of the Podsee landing page to create a p
 5. THE system SHALL optimize animation complexity for mobile devices
 6. WHEN reduced motion is preferred THEN the system SHALL disable decorative animations while maintaining functionality
 
-### Requirement 10: Design System Consistency
+### Requirement 11: Design System Consistency
 
 **User Story:** As a user, I want the redesigned landing page to feel cohesive with the existing M3 design system, so that the experience is consistent.
 
