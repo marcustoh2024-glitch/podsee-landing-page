@@ -1,22 +1,21 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { GET } from './route';
-import TuitionCentreService from '@/lib/services/tuitionCentreService';
 
-// Mock the service
-vi.mock('@/lib/services/tuitionCentreService');
+// Mock the service module
+const mockSearchTuitionCentres = vi.fn();
+
+vi.mock('@/lib/services/tuitionCentreService', () => {
+  return {
+    default: class MockTuitionCentreService {
+      searchTuitionCentres = mockSearchTuitionCentres;
+    }
+  };
+});
 
 describe('GET /api/tuition-centres', () => {
-  let mockSearchTuitionCentres;
-
   beforeEach(() => {
     // Reset mocks before each test
     vi.clearAllMocks();
-    
-    // Create mock implementation
-    mockSearchTuitionCentres = vi.fn();
-    TuitionCentreService.mockImplementation(() => ({
-      searchTuitionCentres: mockSearchTuitionCentres
-    }));
   });
 
   describe('Query Parameter Parsing', () => {
