@@ -6,8 +6,8 @@ import useReducedMotion from '@/hooks/useReducedMotion'
 const pollData = {
   title: "How do you usually decide?",
   options: [
-    { id: 1, text: "Ads & search results", percentage: 60 },
-    { id: 2, text: "Word of mouth", percentage: 40 }
+    { id: 1, text: "Ads & search results", percentage: 20 },
+    { id: 2, text: "Word of mouth", percentage: 80 }
   ]
 }
 
