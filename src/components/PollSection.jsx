@@ -11,10 +11,6 @@ const pollData = {
   ]
 }
 
-// Cap the distribution to avoid extreme edge alignment
-const MIN_WIDTH = 35
-const MAX_WIDTH = 65
-
 // Live updates: When pollData.options percentages change, the component will:
 // 1. Smoothly animate divider position via the existing 700ms ease-in-out transition
 // 2. Subtly crossfade percentage values via the 500ms transition-all
@@ -25,20 +21,9 @@ export default function PollSection() {
   const [showPercentages, setShowPercentages] = useState(false)
   const prefersReducedMotion = useReducedMotion()
   
-  // Calculate capped widths based on actual percentages
-  const option1Percentage = pollData.options[0].percentage
-  const option2Percentage = pollData.options[1].percentage
-  
-  let option1Width = option1Percentage
-  let option2Width = option2Percentage
-  
-  if (option1Percentage > MAX_WIDTH) {
-    option1Width = MAX_WIDTH
-    option2Width = 100 - MAX_WIDTH
-  } else if (option1Percentage < MIN_WIDTH) {
-    option1Width = MIN_WIDTH
-    option2Width = 100 - MIN_WIDTH
-  }
+  // Use actual percentages without capping
+  const option1Width = pollData.options[0].percentage
+  const option2Width = pollData.options[1].percentage
   
   const handleOptionClick = (optionId) => {
     if (!selectedOption) {
