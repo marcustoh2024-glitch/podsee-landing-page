@@ -194,7 +194,7 @@ This plan implements a backend API and database system for searching and filteri
 
 ## Notes
 
-- Tasks marked with `*` are optional and can be skipped for faster MVP
+- All tasks including tests are required for comprehensive implementation
 - Each task references specific requirements for traceability
 - Property-based tests use fast-check library with minimum 100 iterations
 - Service layer is tested independently before API routes
