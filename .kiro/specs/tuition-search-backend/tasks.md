@@ -6,7 +6,7 @@ This plan implements a backend API and database system for searching and filteri
 
 ## Tasks
 
-- [ ] 1. Set up Prisma and database schema
+- [-] 1. Set up Prisma and database schema
   - Install Prisma dependencies (`prisma`, `@prisma/client`)
   - Initialize Prisma with `npx prisma init`
   - Create database schema in `prisma/schema.prisma` with TuitionCentre, Level, Subject models and join tables
