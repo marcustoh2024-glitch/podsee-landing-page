@@ -1,39 +1,84 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import useReducedMotion from '@/hooks/useReducedMotion'
 
-const pollData = {
-  title: "How do you usually decide your tuition?",
-  options: [
-    { id: 1, text: "Ads & search results", percentage: 20 },
-    { id: 2, text: "Word of mouth", percentage: 80 }
-  ]
+const POLL_STORAGE_KEY = 'podsee_poll_votes'
+
+// Initialize poll data with vote counts
+const getInitialPollData = () => {
+  if (typeof window === 'undefined') return { option1: 20, option2: 80 }
+  
+  const stored = localStorage.getItem(POLL_STORAGE_KEY)
+  if (stored) {
+    return JSON.parse(stored)
+  }
+  // Default starting votes
+  return { option1: 20, option2: 80 }
 }
 
-// Live updates: When pollData.options percentages change, the component will:
-// 1. Smoothly animate divider position via the existing 700ms ease-in-out transition
-// 2. Subtly crossfade percentage values via the 500ms transition-all
-// This creates a calm, alive feeling without jittery movements
+const savePollData = (data) => {
+  if (typeof window !== 'undefined') {
+    localStorage.setItem(POLL_STORAGE_KEY, JSON.stringify(data))
+  }
+}
 
 export default function PollSection() {
   const [selectedOption, setSelectedOption] = useState(null)
   const [showPercentages, setShowPercentages] = useState(false)
   const prefersReducedMotion = useReducedMotion()
+  const [votes, setVotes] = useState({ option1: 20, option2: 80 })
+  const [hasVoted, setHasVoted] = useState(false)
   
-  // Use actual percentages without capping
-  const option1Width = pollData.options[0].percentage
-  const option2Width = pollData.options[1].percentage
+  // Load votes on mount
+  useEffect(() => {
+    const data = getInitialPollData()
+    setVotes(data)
+    
+    // Check if user has already voted
+    const voted = localStorage.getItem('podsee_user_voted')
+    if (voted) {
+      setHasVoted(true)
+      setSelectedOption(parseInt(voted))
+      setShowPercentages(true)
+    }
+  }, [])
+  
+  // Calculate percentages
+  const totalVotes = votes.option1 + votes.option2
+  const option1Percentage = Math.round((votes.option1 / totalVotes) * 100)
+  const option2Percentage = Math.round((votes.option2 / totalVotes) * 100)
   
   const handleOptionClick = (optionId) => {
-    if (!selectedOption) {
+    if (!selectedOption && !hasVoted) {
       setSelectedOption(optionId)
-      // Wait for divider animation to complete (700ms or instant if reduced motion) before showing percentages
-      const delay = prefersReducedMotion ? 0 : 700
+      setHasVoted(true)
+      
+      // Update vote counts
+      const newVotes = {
+        option1: optionId === 1 ? votes.option1 + 1 : votes.option1,
+        option2: optionId === 2 ? votes.option2 + 1 : votes.option2
+      }
+      setVotes(newVotes)
+      savePollData(newVotes)
+      
+      // Save user's vote
+      localStorage.setItem('podsee_user_voted', optionId.toString())
+      
+      // Wait for animation before showing percentages
+      const delay = prefersReducedMotion ? 0 : 400
       setTimeout(() => {
         setShowPercentages(true)
       }, delay)
     }
+  }
+
+  const pollData = {
+    title: "How do you usually decide your tuition?",
+    options: [
+      { id: 1, text: "Ads & search results", percentage: option1Percentage },
+      { id: 2, text: "Word of mouth", percentage: option2Percentage }
+    ]
   }
 
   return (
@@ -48,9 +93,9 @@ export default function PollSection() {
         {/* Option 1 Card - Ads option (always dimmed when selected) */}
         <button
           onClick={() => handleOptionClick(pollData.options[0].id)}
-          disabled={selectedOption !== null}
+          disabled={selectedOption !== null || hasVoted}
           className={`bg-surface-container-high rounded-t-2xl p-3 shadow-elevation-1 transition-all ease-in-out text-left ${
-            !selectedOption ? 'cursor-pointer hover:shadow-elevation-2' : 'cursor-default opacity-50'
+            !selectedOption && !hasVoted ? 'cursor-pointer hover:shadow-elevation-2' : 'cursor-default opacity-50'
           }`}
           style={{ 
             height: '50%',
@@ -74,9 +119,9 @@ export default function PollSection() {
         {/* Option 2 Card */}
         <button
           onClick={() => handleOptionClick(pollData.options[1].id)}
-          disabled={selectedOption !== null}
+          disabled={selectedOption !== null || hasVoted}
           className={`bg-surface-container-high rounded-b-2xl p-3 shadow-elevation-1 transition-all ease-in-out text-left ${
-            !selectedOption ? 'cursor-pointer hover:shadow-elevation-2' : 'cursor-default'
+            !selectedOption && !hasVoted ? 'cursor-pointer hover:shadow-elevation-2' : 'cursor-default'
           }`}
           style={{ 
             height: '50%',
