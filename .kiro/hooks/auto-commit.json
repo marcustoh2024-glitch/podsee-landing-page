@@ -1,0 +1,13 @@
+{
+  "name": "Auto-commit on save",
+  "description": "Automatically commits changes when you save a file",
+  "trigger": {
+    "type": "onFileSave",
+    "filePattern": "**/*.{js,jsx,css,json,md}"
+  },
+  "action": {
+    "type": "command",
+    "command": "./git-save.sh"
+  },
+  "enabled": false
+}
