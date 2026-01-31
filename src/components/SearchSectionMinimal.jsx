@@ -8,7 +8,7 @@ export default function SearchSectionMinimal() {
       {/* Header - Bold title and supporting text */}
       <div className="text-center space-y-1 flex-shrink-0">
         <h2 className="text-[18px] font-semibold text-[#2C3E2F] leading-tight tracking-tight">
-          Every tuition centre in Singapore — in one place
+          Every tuition centre in Singapore Here
         </h2>
         <p className="text-[12px] text-[#6B7566] font-light">
           Filter and Search!
