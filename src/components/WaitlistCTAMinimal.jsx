@@ -28,32 +28,32 @@ export default function WaitlistCTAMinimal() {
   }
 
   return (
-    <div className="space-y-4 text-center max-w-md mx-auto">
+    <div className="space-y-2 text-center max-w-md mx-auto">
       {/* Main title - centered, classy */}
-      <h2 className="text-[18px] md:text-[20px] font-light text-[#2C3E2F] leading-snug tracking-tight">
+      <h2 className="text-[16px] md:text-[18px] font-light text-[#2C3E2F] leading-tight tracking-tight">
         Get access to parent recommendations, in your own community
       </h2>
       
       {/* Subtitle - centered, minimal */}
-      <p className="text-[12px] md:text-[13px] text-[#6B7566] leading-relaxed font-light">
+      <p className="text-[11px] md:text-[12px] text-[#6B7566] leading-relaxed font-light">
         We're building a quiet parent community where tuition centres are shared through real experiences — not ads or rankings.
       </p>
       
       {/* Email input - minimal, centered */}
-      <form onSubmit={handleSubmit} className="space-y-2.5 pt-1">
+      <form onSubmit={handleSubmit} className="space-y-2 pt-1">
         <input
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Enter your email"
           required
-          className="w-full px-4 py-3 rounded-full border border-[#2C3E2F]/20 text-[#2C3E2F] text-[13px] text-center placeholder:text-[#6B7566]/60 focus:outline-none focus:border-[#2C3E2F]/40 transition-all duration-300 bg-white/40 font-light"
+          className="w-full px-4 py-2.5 rounded-full border border-[#2C3E2F]/20 text-[#2C3E2F] text-[12px] text-center placeholder:text-[#6B7566]/60 focus:outline-none focus:border-[#2C3E2F]/40 transition-all duration-300 bg-white/40 font-light"
         />
         
         {/* Submit button - minimal, elegant */}
         <button
           type="submit"
-          className="w-full py-3 rounded-full bg-[#2C3E2F] text-white text-[14px] font-light tracking-wide transition-all duration-300 ease-emphasized hover:bg-[#3D5240] active:scale-[0.98] shadow-sm hover:shadow-md"
+          className="w-full py-2.5 rounded-full bg-[#2C3E2F] text-white text-[13px] font-light tracking-wide transition-all duration-300 ease-emphasized hover:bg-[#3D5240] active:scale-[0.98] shadow-sm hover:shadow-md"
         >
           Join the Waitlist
         </button>
