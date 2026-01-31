@@ -122,12 +122,12 @@ This plan implements a backend API and database system for searching and filteri
     - Return 500 for database errors
     - _Requirements: 6.3, 9.4_
 
-  - [ ]* 6.3 Write property test for ID lookup
+  - [ ] 6.3 Write property test for ID lookup
     - **Property 9: ID lookup returns single or none**
     - **Validates: Requirements 6.1, 6.3**
     - Verify ID lookups return exactly one or 404 error
 
-  - [ ]* 6.4 Write property test for required fields
+  - [ ] 6.4 Write property test for required fields
     - **Property 10: Required fields are always present**
     - **Validates: Requirements 1.1, 1.2, 1.3, 10.1**
     - Verify name, location, whatsappNumber are always non-null and non-empty
@@ -145,31 +145,31 @@ This plan implements a backend API and database system for searching and filteri
     - Return validation errors for invalid formats
     - _Requirements: 8.2, 10.3_
 
-  - [ ]* 7.3 Write property test for phone number sanitization
+  - [ ] 7.3 Write property test for phone number sanitization
     - **Property 12: Phone number sanitization**
     - **Validates: Requirements 7.4, 10.2**
     - Generate random phone numbers with formatting and verify sanitization
 
-  - [ ]* 7.4 Write property test for URL validation
+  - [ ] 7.4 Write property test for URL validation
     - **Property 7: Website URL validation**
     - **Validates: Requirements 8.2**
     - Generate random URLs and verify validation
 
 - [ ] 8. Add edge case handling and tests
-  - [ ]* 8.1 Write unit test for empty search
+  - [ ] 8.1 Write unit test for empty search
     - Test that empty search returns all centres
     - **Validates: Requirements 2.2**
 
-  - [ ]* 8.2 Write unit test for no matches
+  - [ ] 8.2 Write unit test for no matches
     - Test that non-matching filters return empty array with total 0
     - **Property 11: Filter with no matches returns empty array**
     - **Validates: Requirements 2.5, 5.4**
 
-  - [ ]* 8.3 Write unit test for missing website
+  - [ ] 8.3 Write unit test for missing website
     - Test that centres without websites return null for website field
     - **Validates: Requirements 8.3**
 
-  - [ ]* 8.4 Write unit test for no filters applied
+  - [ ] 8.4 Write unit test for no filters applied
     - Test that no level/subject filters return all centres
     - **Validates: Requirements 3.4, 4.4**
 
@@ -180,7 +180,7 @@ This plan implements a backend API and database system for searching and filteri
     - Verify all 12 properties pass
     - _Requirements: All_
 
-  - [ ]* 9.2 Write integration tests
+  - [ ] 9.2 Write integration tests
     - Test full API flow from HTTP request to database
     - Test with real test database
     - Test error scenarios end-to-end
