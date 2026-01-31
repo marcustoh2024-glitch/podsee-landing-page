@@ -5,8 +5,8 @@ import { useState } from 'react'
 const pollData = {
   title: "How do you usually decide?",
   options: [
-    { id: 1, text: "Ads & search results", votes: 60, color: 'bg-[#E89B8F]' },
-    { id: 2, text: "Word of mouth", votes: 40, color: 'bg-[#6FA89E]' }
+    { id: 1, text: "Ads & search results", percentage: 60, color: 'bg-[#E89B8F]' },
+    { id: 2, text: "Word of mouth", percentage: 40, color: 'bg-[#6FA89E]' }
   ]
 }
 
