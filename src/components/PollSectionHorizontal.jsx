@@ -36,7 +36,7 @@ export default function PollSectionHorizontal() {
   return (
     <section className="w-full h-[80px]">
       {/* Title above poll - bigger and very close to top */}
-      <h2 className="text-[16px] font-medium text-[#2C3E2F] text-center mb-3 tracking-tight">
+      <h2 className="text-[16px] font-medium text-[#2C3E2F] text-center mb-2 tracking-tight">
         {pollData.title}
       </h2>
       
