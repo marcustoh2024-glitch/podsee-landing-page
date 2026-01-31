@@ -16,6 +16,7 @@ const MAX_WIDTH = 65
 
 export default function PollSectionHorizontal() {
   const [selectedOption, setSelectedOption] = useState(null)
+  const [showPercentages, setShowPercentages] = useState(false)
   
   // Calculate capped widths based on actual percentages
   const option1Percentage = pollData.options[0].percentage
@@ -35,6 +36,10 @@ export default function PollSectionHorizontal() {
   const handleOptionClick = (optionId) => {
     if (!selectedOption) {
       setSelectedOption(optionId)
+      // Wait for divider animation to complete (700ms) before showing percentages
+      setTimeout(() => {
+        setShowPercentages(true)
+      }, 700)
     }
   }
 
@@ -63,8 +68,10 @@ export default function PollSectionHorizontal() {
               {pollData.options[0].text}
             </h3>
             <div className="h-[1px] bg-white/30 mb-2" />
-            {/* Percentage hidden for now */}
-            <div className="text-[40px] font-bold text-white leading-none tracking-tight opacity-0">
+            {/* Percentage fades in after divider animation */}
+            <div className={`text-[40px] font-bold text-white leading-none tracking-tight transition-opacity duration-500 ${
+              showPercentages ? 'opacity-100' : 'opacity-0'
+            }`}>
               {pollData.options[0].percentage}%
             </div>
           </div>
@@ -100,8 +107,10 @@ export default function PollSectionHorizontal() {
               {pollData.options[1].text}
             </h3>
             <div className="h-[1px] bg-white/30 mb-2" />
-            {/* Percentage hidden for now */}
-            <div className="text-[40px] font-bold text-white leading-none tracking-tight opacity-0">
+            {/* Percentage fades in after divider animation */}
+            <div className={`text-[40px] font-bold text-white leading-none tracking-tight transition-opacity duration-500 ${
+              showPercentages ? 'opacity-100' : 'opacity-0'
+            }`}>
               {pollData.options[1].percentage}%
             </div>
           </div>

@@ -17,6 +17,7 @@ const MAX_WIDTH = 65
 
 export default function PollSection() {
   const [selectedOption, setSelectedOption] = useState(null)
+  const [showPercentages, setShowPercentages] = useState(false)
   const prefersReducedMotion = useReducedMotion()
   
   // Calculate capped widths based on actual percentages
@@ -37,6 +38,11 @@ export default function PollSection() {
   const handleOptionClick = (optionId) => {
     if (!selectedOption) {
       setSelectedOption(optionId)
+      // Wait for divider animation to complete (700ms or instant if reduced motion) before showing percentages
+      const delay = prefersReducedMotion ? 0 : 700
+      setTimeout(() => {
+        setShowPercentages(true)
+      }, delay)
     }
   }
 
@@ -64,8 +70,10 @@ export default function PollSection() {
           <div className="text-body-large text-on-surface mb-2">
             {pollData.options[0].text}
           </div>
-          {/* Percentage hidden for now */}
-          <div className="text-display-small text-on-surface-variant opacity-0">
+          {/* Percentage fades in after divider animation */}
+          <div className={`text-display-small text-on-surface-variant transition-opacity duration-500 ${
+            showPercentages ? 'opacity-100' : 'opacity-0'
+          }`}>
             {pollData.options[0].percentage}%
           </div>
         </button>
@@ -88,8 +96,10 @@ export default function PollSection() {
           <div className="text-body-large text-on-surface mb-2">
             {pollData.options[1].text}
           </div>
-          {/* Percentage hidden for now */}
-          <div className="text-display-small text-on-surface-variant opacity-0">
+          {/* Percentage fades in after divider animation */}
+          <div className={`text-display-small text-on-surface-variant transition-opacity duration-500 ${
+            showPercentages ? 'opacity-100' : 'opacity-0'
+          }`}>
             {pollData.options[1].percentage}%
           </div>
         </button>
