@@ -88,12 +88,12 @@ export default function Home() {
 
       {/* Mobile: Single viewport layout with scroll */}
       <div className="lg:hidden min-h-screen flex flex-col bg-[#F5F1E8]">
-        {/* Mobile header - compact */}
-        <div className="pt-4 pb-3">
+        {/* Mobile header - compact, less padding */}
+        <div className="pt-2 pb-2">
           <Header />
         </div>
         
-        {/* Poll - Horizontal cards - smaller */}
+        {/* Poll - Horizontal cards - closer to top */}
         <div className="px-4 pb-4">
           <PollSectionHorizontal />
         </div>
