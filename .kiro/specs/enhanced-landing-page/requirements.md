@@ -58,7 +58,22 @@ This specification defines the redesign of the Podsee landing page to create a p
 6. THE section SHALL use contrasting visual treatments (e.g., muted colors for traditional, vibrant for Podsee)
 7. ON mobile devices THEN the comparison SHALL stack vertically or use a toggle/tab interface
 
-### Requirement 4: Enhanced Filter Wizard Section
+### Requirement 4: Poll Interaction
+
+**User Story:** As a parent, I want to participate in a poll that feels observational and trustworthy, so that I can see how others make decisions without feeling manipulated.
+
+#### Acceptance Criteria
+
+1. WHEN the poll is displayed THEN the system SHALL show both options with equal visual weight and size
+2. WHEN a user selects an option THEN the system SHALL dim the non-selected option to reduce visual emphasis
+3. WHEN a user selects an option THEN the system SHALL move only the divider between options to reflect the percentage distribution
+4. THROUGHOUT all poll states THEN both options SHALL retain their original size without shrinking or growing
+5. THROUGHOUT all poll states THEN both options SHALL maintain constant colors regardless of vote distribution
+6. WHEN the divider moves THEN the system SHALL animate the movement smoothly over 700ms with ease-in-out timing
+7. WHEN percentages are revealed THEN the system SHALL fade them in after the divider animation completes
+8. THE poll SHALL feel observational and neutral, not competitive or persuasive
+
+### Requirement 5: Enhanced Filter Wizard Section
 
 **User Story:** As a parent, I want an engaging and intuitive filter experience, so that finding the right tuition centre feels effortless.
 
