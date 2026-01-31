@@ -152,8 +152,18 @@ class TuitionCentreService {
    * @returns {string} WhatsApp link
    */
   formatWhatsAppLink(phoneNumber) {
-    // Implementation will be added in sub-task 3.3
-    throw new Error('Not implemented');
+    if (!phoneNumber) {
+      return '';
+    }
+
+    // Strip all non-digit characters except leading '+'
+    const cleaned = phoneNumber.replace(/[^\d+]/g, '');
+    
+    // Remove the leading '+' to get only digits
+    const digits = cleaned.replace(/^\+/, '');
+    
+    // Generate WhatsApp link
+    return `https://wa.me/${digits}`;
   }
 }
 

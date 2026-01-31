@@ -65,7 +65,7 @@ Output import report (inserted/updated/skipped)
     - Implement TuitionCentreService class with Prisma client injection
     - _Requirements: 2.1, 4.1, 6.1_
 
-  - [-] 3.2 Implement search and filter logic
+  - [x] 3.2 Implement search and filter logic
     - Implement `searchTuitionCentres` method with search, level, and subject filters
     - Build Prisma where clauses for search (name OR location, case-insensitive)
     - Build level filter with OR logic within levels
@@ -74,7 +74,7 @@ Output import report (inserted/updated/skipped)
     - Implement pagination logic
     - _Requirements: 2.1, 2.2, 2.3, 3.1, 4.1, 5.1, 5.2_
 
-  - [ ] 3.3 Implement WhatsApp link formatting
+  - [x] 3.3 Implement WhatsApp link formatting
     - Create `formatWhatsAppLink` helper method
     - Strip non-digit characters except leading '+'
     - Generate `https://wa.me/{number}` format
