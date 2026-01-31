@@ -14,12 +14,49 @@ This plan implements a backend API and database system for searching and filteri
   - Add indexes on name and location fields for search optimization
   - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7_
 
-- [-] 2. Create Prisma client singleton and seed data
+- [ ] 2. Create Prisma client singleton and seed data
   - Create `src/lib/prisma.js` with singleton pattern to avoid multiple instances
   - Create `prisma/seed.js` with sample tuition centre data
   - Add seed script to package.json
   - Run initial migration with `npx prisma migrate dev`
   - Seed database with sample data
+  x “Real dataset import pipeline”
+
+Read tuition_centres_final_dataset.csv
+
+Normalize:
+
+trim whitespace
+
+standardize casing (title case optional)
+
+sanitize phone numbers (digits only, keep leading + if any)
+
+validate URLs (must start with http/https else null)
+
+Map:
+
+Centre Name → centre_name
+
+Branch Name → branch_name
+
+Address → address
+
+Postal Code → postal_code
+
+Area → area
+
+Whatsapp Number → whatsapp_number
+
+Landline → landline_number
+
+Source Link → source_url
+
+Verification Status → verification_status
+
+Upsert using the dedup key
+
+Output import report (inserted/updated/skipped)
   - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6_
 
 - [ ] 3. Implement tuition centre service layer
