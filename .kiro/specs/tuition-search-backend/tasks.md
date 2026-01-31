@@ -132,14 +132,14 @@ Output import report (inserted/updated/skipped)
     - Log errors with context
     - _Requirements: 9.4, 10.4_
 
-  - [-] 5.3 Write unit tests for search endpoint
+  - [x] 5.3 Write unit tests for search endpoint
     - Test query parameter parsing
     - Test validation error responses
     - Test successful search responses
     - Test pagination metadata
     - _Requirements: 2.1, 2.2, 5.1_
 
-  - [ ] 5.4 Write property test for pagination consistency
+  - [-] 5.4 Write property test for pagination consistency
     - **Property 8: Pagination consistency**
     - **Validates: Requirements 2.4**
     - Generate random page and limit values and verify result count and metadata
