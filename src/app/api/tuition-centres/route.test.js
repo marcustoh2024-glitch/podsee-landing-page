@@ -1,41 +1,27 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-
-// Mock the service module
-vi.mock('@/lib/services/tuitionCentreService', () => {
-  const mockFn = vi.fn();
-  
-  return {
-    default: class MockTuitionCentreService {
-      searchTuitionCentres = mockFn;
-    },
-    __mockSearchFn: mockFn  // Export the mock for test access
-  };
-});
-
-// Import after mocking
 import { GET } from './route';
-import TuitionCentreService from '@/lib/services/tuitionCentreService';
-
-// Get the mock function
-const mockSearchTuitionCentres = (TuitionCentreService as any).__mockSearchFn;
 
 describe('GET /api/tuition-centres', () => {
+  let mockService;
+
   beforeEach(() => {
-    // Reset mocks before each test
-    mockSearchTuitionCentres.mockClear();
+    // Create a fresh mock service for each test
+    mockService = {
+      searchTuitionCentres: vi.fn()
+    };
   });
 
   describe('Query Parameter Parsing', () => {
     it('should parse search parameter correctly', async () => {
-      mockSearchTuitionCentres.mockResolvedValue({
+      mockService.searchTuitionCentres.mockResolvedValue({
         data: [],
         pagination: { page: 1, limit: 20, total: 0, totalPages: 0 }
       });
 
       const request = new Request('http://localhost/api/tuition-centres?search=tampines');
-      await GET(request);
+      await GET(request, { tuitionCentreService: mockService });
 
-      expect(mockSearchTuitionCentres).toHaveBeenCalledWith({
+      expect(mockService.searchTuitionCentres).toHaveBeenCalledWith({
         search: 'tampines',
         levels: undefined,
         subjects: undefined,
@@ -45,15 +31,15 @@ describe('GET /api/tuition-centres', () => {
     });
 
     it('should parse levels parameter as comma-separated array', async () => {
-      mockSearchTuitionCentres.mockResolvedValue({
+      mockService.searchTuitionCentres.mockResolvedValue({
         data: [],
         pagination: { page: 1, limit: 20, total: 0, totalPages: 0 }
       });
 
       const request = new Request('http://localhost/api/tuition-centres?levels=Primary,Secondary');
-      await GET(request);
+      await GET(request, { tuitionCentreService: mockService });
 
-      expect(mockSearchTuitionCentres).toHaveBeenCalledWith({
+      expect(mockService.searchTuitionCentres).toHaveBeenCalledWith({
         search: undefined,
         levels: ['Primary', 'Secondary'],
         subjects: undefined,
@@ -63,15 +49,15 @@ describe('GET /api/tuition-centres', () => {
     });
 
     it('should parse subjects parameter as comma-separated array', async () => {
-      mockSearchTuitionCentres.mockResolvedValue({
+      mockService.searchTuitionCentres.mockResolvedValue({
         data: [],
         pagination: { page: 1, limit: 20, total: 0, totalPages: 0 }
       });
 
       const request = new Request('http://localhost/api/tuition-centres?subjects=Mathematics,Science');
-      await GET(request);
+      await GET(request, { tuitionCentreService: mockService });
 
-      expect(mockSearchTuitionCentres).toHaveBeenCalledWith({
+      expect(mockService.searchTuitionCentres).toHaveBeenCalledWith({
         search: undefined,
         levels: undefined,
         subjects: ['Mathematics', 'Science'],
@@ -81,15 +67,15 @@ describe('GET /api/tuition-centres', () => {
     });
 
     it('should parse page and limit parameters as integers', async () => {
-      mockSearchTuitionCentres.mockResolvedValue({
+      mockService.searchTuitionCentres.mockResolvedValue({
         data: [],
         pagination: { page: 2, limit: 50, total: 0, totalPages: 0 }
       });
 
       const request = new Request('http://localhost/api/tuition-centres?page=2&limit=50');
-      await GET(request);
+      await GET(request, { tuitionCentreService: mockService });
 
-      expect(mockSearchTuitionCentres).toHaveBeenCalledWith({
+      expect(mockService.searchTuitionCentres).toHaveBeenCalledWith({
         search: undefined,
         levels: undefined,
         subjects: undefined,
@@ -99,15 +85,15 @@ describe('GET /api/tuition-centres', () => {
     });
 
     it('should use default values when page and limit are not provided', async () => {
-      mockSearchTuitionCentres.mockResolvedValue({
+      mockService.searchTuitionCentres.mockResolvedValue({
         data: [],
         pagination: { page: 1, limit: 20, total: 0, totalPages: 0 }
       });
 
       const request = new Request('http://localhost/api/tuition-centres');
-      await GET(request);
+      await GET(request, { tuitionCentreService: mockService });
 
-      expect(mockSearchTuitionCentres).toHaveBeenCalledWith({
+      expect(mockService.searchTuitionCentres).toHaveBeenCalledWith({
         search: undefined,
         levels: undefined,
         subjects: undefined,

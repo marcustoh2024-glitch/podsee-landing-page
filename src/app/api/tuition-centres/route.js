@@ -1,8 +1,6 @@
 import { NextResponse } from 'next/server';
 import TuitionCentreService from '@/lib/services/tuitionCentreService';
 
-const tuitionCentreService = new TuitionCentreService();
-
 /**
  * GET /api/tuition-centres
  * Search and filter tuition centres
@@ -14,7 +12,7 @@ const tuitionCentreService = new TuitionCentreService();
  * - page: Page number (default: 1, min: 1)
  * - limit: Results per page (default: 20, max: 100)
  */
-export async function GET(request) {
+export async function GET(request, { tuitionCentreService = new TuitionCentreService() } = {}) {
   try {
     // Parse query parameters from URL
     const { searchParams } = new URL(request.url);
