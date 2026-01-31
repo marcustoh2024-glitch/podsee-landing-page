@@ -60,12 +60,12 @@ export default function PollSection() {
       
       {/* Two-card layout with divider */}
       <div className="flex flex-col items-stretch gap-0 relative">
-        {/* Option 1 Card */}
+        {/* Option 1 Card - Ads option (always dimmed when selected) */}
         <button
           onClick={() => handleOptionClick(pollData.options[0].id)}
           disabled={selectedOption !== null}
           className={`bg-surface-container-high rounded-t-2xl p-6 shadow-elevation-1 transition-all ease-in-out text-left ${
-            !selectedOption ? 'cursor-pointer hover:shadow-elevation-2' : 'cursor-default'
+            !selectedOption ? 'cursor-pointer hover:shadow-elevation-2' : 'cursor-default opacity-50'
           }`}
           style={{ 
             height: selectedOption ? `${option1Width}%` : '50%',
