@@ -1,76 +1,117 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 const pollData = {
+  title: "How do you usually decide?",
   options: [
-    { id: 1, text: "Ads & search results", votes: 60, color: 'bg-[#E89B8F]' },
-    { id: 2, text: "Word of mouth", votes: 40, color: 'bg-[#6FA89E]' }
+    { id: 1, text: "Ads & search results", percentage: 60, color: 'bg-[#E89B8F]' },
+    { id: 2, text: "Word of mouth", percentage: 40, color: 'bg-[#6FA89E]' }
   ]
 }
 
+// Cap the distribution to avoid extreme edge alignment
+const MIN_WIDTH = 35
+const MAX_WIDTH = 65
+
 export default function PollSectionHorizontal() {
-  const [selectedOption, setSelectedOption] = useState(null)
+  const [hasAnimated, setHasAnimated] = useState(false)
   
-  const totalVotes = pollData.options.reduce((sum, opt) => sum + opt.votes, 0)
+  // Calculate capped widths based on actual percentages
+  const option1Percentage = pollData.options[0].percentage
+  const option2Percentage = pollData.options[1].percentage
   
-  const handleOptionClick = (optionId) => {
-    if (!selectedOption) {
-      setSelectedOption(optionId)
-    }
+  let option1Width = option1Percentage
+  let option2Width = option2Percentage
+  
+  if (option1Percentage > MAX_WIDTH) {
+    option1Width = MAX_WIDTH
+    option2Width = 100 - MAX_WIDTH
+  } else if (option1Percentage < MIN_WIDTH) {
+    option1Width = MIN_WIDTH
+    option2Width = 100 - MIN_WIDTH
   }
+  
+  useEffect(() => {
+    // Trigger animation after 400ms delay
+    const timer = setTimeout(() => {
+      setHasAnimated(true)
+    }, 400)
+    
+    return () => clearTimeout(timer)
+  }, [])
 
   return (
     <section className="w-full">
       {/* Title above poll */}
       <h2 className="text-[13px] font-light text-[#6B7566] text-center mb-3 tracking-wide">
-        What do you tend to go with when looking for tuition?
+        {pollData.title}
       </h2>
       
-      {/* Horizontal poll cards - smaller height */}
-      <div className="grid grid-cols-2 gap-2">
-        {pollData.options.map((option, index) => {
-          const percentage = Math.round((option.votes / totalVotes) * 100)
-          const isSelected = selectedOption === option.id
+      {/* Two-card layout with divider */}
+      <div className="flex items-stretch gap-0 relative">
+        {/* Option 1 Card */}
+        <div 
+          className={`${pollData.options[0].color} rounded-l-[16px] p-4 shadow-premium-sm relative overflow-hidden transition-all duration-700 ease-in-out`}
+          style={{ 
+            width: hasAnimated ? `${option1Width}%` : '50%'
+          }}
+        >
+          <div className="relative z-10">
+            <h3 className="text-[15px] font-medium text-white mb-2 tracking-tight">
+              {pollData.options[0].text}
+            </h3>
+            <div className="h-[1px] bg-white/30 mb-2" />
+            {/* Percentage hidden for now */}
+            <div className="text-[40px] font-bold text-white leading-none tracking-tight opacity-0">
+              {pollData.options[0].percentage}%
+            </div>
+          </div>
           
-          return (
-            <button
-              key={option.id}
-              onClick={() => handleOptionClick(option.id)}
-              disabled={selectedOption !== null}
-              className={`relative overflow-hidden rounded-[16px] p-4 text-left transition-all duration-300 ease-emphasized scale-in-center shadow-premium-sm hover:shadow-premium-md ${
-                option.color
-              } ${
-                selectedOption && !isSelected ? 'opacity-60' : 'opacity-100'
-              } hover:scale-[1.02] active:scale-[0.98]`}
-              style={{ animationDelay: `${0.2 + index * 0.1}s` }}
-            >
-              {/* Content - more compact */}
-              <div className="relative z-10">
-                <h3 className="text-[15px] font-medium text-white mb-2 tracking-tight">
-                  {option.text}
-                </h3>
-                <div className="h-[1px] bg-white/30 mb-2" />
-                <div className={`text-[40px] font-bold text-white leading-none tracking-tight transition-all duration-500 ${
-                  selectedOption ? 'scale-100 opacity-100' : 'scale-90 opacity-0'
-                }`}>
-                  {selectedOption ? `${percentage}%` : '—'}
-                </div>
-              </div>
-              
-              {/* Subtle gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
-              
-              {/* Subtle pattern overlay */}
-              <div className="absolute inset-0 opacity-[0.03]">
-                <div className="absolute inset-0" style={{
-                  backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)',
-                  backgroundSize: '32px 32px'
-                }} />
-              </div>
-            </button>
-          )
-        })}
+          {/* Subtle gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
+          
+          {/* Subtle pattern overlay */}
+          <div className="absolute inset-0 opacity-[0.03]">
+            <div className="absolute inset-0" style={{
+              backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)',
+              backgroundSize: '32px 32px'
+            }} />
+          </div>
+        </div>
+        
+        {/* Vertical Divider */}
+        <div className="w-[2px] bg-[#6B7566]/20" />
+        
+        {/* Option 2 Card */}
+        <div 
+          className={`${pollData.options[1].color} rounded-r-[16px] p-4 shadow-premium-sm relative overflow-hidden transition-all duration-700 ease-in-out`}
+          style={{ 
+            width: hasAnimated ? `${option2Width}%` : '50%'
+          }}
+        >
+          <div className="relative z-10">
+            <h3 className="text-[15px] font-medium text-white mb-2 tracking-tight">
+              {pollData.options[1].text}
+            </h3>
+            <div className="h-[1px] bg-white/30 mb-2" />
+            {/* Percentage hidden for now */}
+            <div className="text-[40px] font-bold text-white leading-none tracking-tight opacity-0">
+              {pollData.options[1].percentage}%
+            </div>
+          </div>
+          
+          {/* Subtle gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
+          
+          {/* Subtle pattern overlay */}
+          <div className="absolute inset-0 opacity-[0.03]">
+            <div className="absolute inset-0" style={{
+              backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)',
+              backgroundSize: '32px 32px'
+            }} />
+          </div>
+        </div>
       </div>
     </section>
   )
