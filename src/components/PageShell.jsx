@@ -1,0 +1,25 @@
+import AnimatedBackground from './AnimatedBackground'
+import Header from './Header'
+import ScrollProgress from './ScrollProgress'
+
+export default function PageShell({ children }) {
+  return (
+    <div className="h-screen overflow-hidden relative bg-[#F5F1E8] lg:bg-surface lg:min-h-screen lg:h-auto lg:overflow-auto">
+      {/* Background layer (z-0) - Only on desktop */}
+      <div className="hidden lg:block">
+        <AnimatedBackground />
+      </div>
+      
+      {/* Scroll progress indicator (desktop only) */}
+      <ScrollProgress />
+      
+      {/* Content layer (z-10) */}
+      <div className="relative z-10 h-full flex flex-col lg:h-auto lg:max-w-none lg:px-0">
+        {/* Main content area */}
+        <main className="flex-1 min-h-0 overflow-hidden lg:py-0 lg:overflow-visible lg:min-h-fit">
+          {children}
+        </main>
+      </div>
+    </div>
+  )
+}
