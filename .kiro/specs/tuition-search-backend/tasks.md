@@ -14,7 +14,7 @@ This plan implements a backend API and database system for searching and filteri
   - Add indexes on name and location fields for search optimization
   - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7_
 
-- [-] 2. Create Prisma client singleton and seed data
+- [x] 2. Create Prisma client singleton and seed data
   - Create `src/lib/prisma.js` with singleton pattern to avoid multiple instances
   - Create `prisma/seed.js` with sample tuition centre data
   - Add seed script to package.json
