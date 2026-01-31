@@ -87,7 +87,7 @@ This specification defines the redesign of the Podsee landing page to create a p
 6. THE filter section SHALL include the informational header from current design
 7. ON mobile devices THEN the filter wizard SHALL remain scrollable within its container while page stays locked
 
-### Requirement 5: Social Proof / Trust Section
+### Requirement 6: Social Proof / Trust Section
 
 **User Story:** As a parent, I want to see evidence that others trust this platform, so that I feel confident using it.
 
@@ -100,7 +100,7 @@ This specification defines the redesign of the Podsee landing page to create a p
 5. THE section SHALL use subtle animations to draw attention without being distracting
 6. ON mobile devices THEN statistics SHALL stack vertically with appropriate spacing
 
-### Requirement 6: Waitlist CTA Section
+### Requirement 7: Waitlist CTA Section
 
 **User Story:** As a parent interested in the platform, I want a clear way to join the waitlist, so that I can be notified when the service launches.
 
@@ -113,7 +113,7 @@ This specification defines the redesign of the Podsee landing page to create a p
 5. ON mobile devices THEN the floating FAB SHALL remain for quick access
 6. THE section SHALL include a brief value statement about early access or benefits
 
-### Requirement 7: Scroll Behavior and Navigation (Desktop Only)
+### Requirement 8: Scroll Behavior and Navigation (Desktop Only)
 
 **User Story:** As a desktop user, I want smooth scrolling between sections and clear navigation, so that I can easily explore the page.
 
@@ -127,7 +127,7 @@ This specification defines the redesign of the Podsee landing page to create a p
 6. ON desktop THE scroll experience SHALL feel fluid with appropriate easing functions
 7. ON mobile devices THEN scrolling SHALL be disabled and the page SHALL remain locked to one viewport
 
-### Requirement 8: Mobile One-Viewport Constraint
+### Requirement 9: Mobile One-Viewport Constraint
 
 **User Story:** As a mobile user, I want the landing page to fit in one viewport without scrolling, so that the experience feels focused and app-like.
 
@@ -141,7 +141,7 @@ This specification defines the redesign of the Podsee landing page to create a p
 6. ADDITIONAL sections (How It Works, Comparison, Trust) SHALL be desktop-only or accessible via modals/sheets on mobile
 7. THE mobile experience SHALL maintain all animations in a performance-optimized manner within the viewport constraint
 
-### Requirement 9: Performance and Loading
+### Requirement 10: Performance and Loading
 
 **User Story:** As a user, I want the page to load quickly and animations to run smoothly, so that the experience feels premium and responsive.
 
