@@ -99,12 +99,12 @@ export default function Home() {
         </div>
         
         {/* Filter section with title */}
-        <div className="px-4 pb-8">
+        <div className="px-4 pb-6">
           <SearchSectionMinimal />
         </div>
         
-        {/* Waitlist section - compact */}
-        <div className="px-4 py-6 border-t border-[#2C3E2F]/10">
+        {/* Waitlist section - prominent */}
+        <div className="px-4 py-8 bg-[#F5F1E8]">
           <WaitlistCTAMinimal />
         </div>
         
