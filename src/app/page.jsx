@@ -86,38 +86,33 @@ export default function Home() {
         </section>
       </div>
 
-      {/* Mobile: Single viewport layout with scroll and sticky waitlist */}
-      <div className="lg:hidden h-screen flex flex-col bg-[#F5F1E8] relative">
-        {/* Scrollable content */}
-        <div className="flex-1 overflow-y-auto pb-32">
-          {/* Mobile header - compact */}
-          <div className="pt-4 pb-3">
-            <Header />
-          </div>
-          
-          {/* Poll - Horizontal cards - smaller */}
-          <div className="px-4 pb-4">
-            <PollSectionHorizontal />
-          </div>
-          
-          {/* Filter section with title */}
-          <div className="px-4">
-            <SearchSectionMinimal />
-          </div>
+      {/* Mobile: Single viewport layout with scroll */}
+      <div className="lg:hidden min-h-screen flex flex-col bg-[#F5F1E8]">
+        {/* Mobile header - compact */}
+        <div className="pt-4 pb-3">
+          <Header />
         </div>
         
-        {/* Sticky Waitlist section at bottom */}
-        <div className="fixed bottom-0 left-0 right-0 bg-[#F5F1E8] border-t border-[#2C3E2F]/10 shadow-lg">
-          <div className="px-4 py-4">
-            <WaitlistCTAMinimal />
-          </div>
-          
-          {/* Footer credit - SMU logo - compact */}
-          <div className="py-2 border-t border-[#2C3E2F]/10">
-            <div className="flex items-center justify-center gap-2">
-              <SMULogo />
-              <span className="text-[10px] font-light text-[#6B7566]">by SMU students</span>
-            </div>
+        {/* Poll - Horizontal cards - smaller */}
+        <div className="px-4 pb-4">
+          <PollSectionHorizontal />
+        </div>
+        
+        {/* Filter section with title */}
+        <div className="px-4">
+          <SearchSectionMinimal />
+        </div>
+        
+        {/* Waitlist section - compact */}
+        <div className="px-4 py-4 border-t border-[#2C3E2F]/10 mt-6">
+          <WaitlistCTAMinimal />
+        </div>
+        
+        {/* Footer credit - SMU logo - compact */}
+        <div className="py-2 border-t border-[#2C3E2F]/10">
+          <div className="flex items-center justify-center gap-2">
+            <SMULogo />
+            <span className="text-[10px] font-light text-[#6B7566]">by SMU students</span>
           </div>
         </div>
       </div>
