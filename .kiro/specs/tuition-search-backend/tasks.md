@@ -102,12 +102,12 @@ Output import report (inserted/updated/skipped)
     - **Validates: Requirements 4.1, 4.2**
     - Generate random subject sets and verify all results have matching subjects
 
-  - [-] 3.8 Write property test for combined filters
+  - [x] 3.8 Write property test for combined filters
     - **Property 5: Combined filters use AND logic between types**
     - **Validates: Requirements 5.1, 5.2**
     - Generate random filter combinations and verify AND logic
 
-  - [ ] 3.9 Write property test for WhatsApp link format
+  - [-] 3.9 Write property test for WhatsApp link format
     - **Property 6: WhatsApp link format is valid**
     - **Validates: Requirements 7.1, 7.2, 7.4**
     - Generate random phone numbers and verify link format
