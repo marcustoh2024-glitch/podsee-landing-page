@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { fc } from 'fast-check';
+import * as fc from 'fast-check';
 import TuitionCentreService from './tuitionCentreService.js';
 import { PrismaClient } from '@prisma/client';
 
