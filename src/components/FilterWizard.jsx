@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 
 const filterOptions = {
   location: ['Bishan', 'Ang Mo Kio', 'Toa Payoh', 'Jurong East', 'Tampines', 'Woodlands', 'Bedok'],
-  level: ['Primary 1-2', 'Primary 3-4', 'Primary 5-6', 'Secondary 1-2', 'Secondary 3-4', 'JC 1-2'],
+  level: ['Primary', 'Secondary', 'Junior College'],
   subject: ['Mathematics', 'English', 'Science', 'Chinese', 'Physics', 'Chemistry', 'Biology']
 }
 
