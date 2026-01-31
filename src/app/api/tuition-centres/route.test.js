@@ -1,23 +1,23 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
-// Create a shared mock function that will be accessible
-let mockSearchTuitionCentres;
-
+// Mock the service module
 vi.mock('@/lib/services/tuitionCentreService', () => {
-  // Create the mock inside the factory
-  mockSearchTuitionCentres = vi.fn();
+  const mockFn = vi.fn();
   
   return {
     default: class MockTuitionCentreService {
-      constructor() {
-        this.searchTuitionCentres = mockSearchTuitionCentres;
-      }
-    }
+      searchTuitionCentres = mockFn;
+    },
+    __mockSearchFn: mockFn  // Export the mock for test access
   };
 });
 
 // Import after mocking
 import { GET } from './route';
+import TuitionCentreService from '@/lib/services/tuitionCentreService';
+
+// Get the mock function
+const mockSearchTuitionCentres = (TuitionCentreService as any).__mockSearchFn;
 
 describe('GET /api/tuition-centres', () => {
   beforeEach(() => {
