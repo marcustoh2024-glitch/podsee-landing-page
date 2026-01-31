@@ -1,3 +1,7 @@
 {
-    "javascript.autoClosingTags": false
+    "javascript.autoClosingTags": false,
+    "files.autoSave": "afterDelay",
+    "files.autoSaveDelay": 1000,
+    "git.enableSmartCommit": true,
+    "git.postCommitCommand": "push"
 }
