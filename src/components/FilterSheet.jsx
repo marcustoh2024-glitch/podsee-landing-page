@@ -3,7 +3,7 @@
 import { useEffect } from 'react'
 
 const filterOptions = {
-  location: ['Bishan', 'Ang Mo Kio', 'Toa Payoh', 'Jurong East', 'Tampines'],
+  location: ['Ang Mo Kio', 'Bedok', 'Bishan', 'Bukit Batok', 'Bukit Panjang', 'Bukit Timah', 'Clementi', 'Hougang', 'Jurong East', 'Jurong Point', 'Jurong West', 'Katong', 'Marine Parade', 'Pasir Ris', 'Punggol', 'Sengkang', 'Serangoon', 'Tampines', 'Tiong Bahru', 'Toa Payoh', 'Woodlands', 'Yishun'],
   level: ['Primary', 'Secondary', 'Junior College'],
   subject: ['Mathematics', 'English', 'Science', 'Chinese', 'Physics', 'Chemistry']
 }
