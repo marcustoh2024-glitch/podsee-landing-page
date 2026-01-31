@@ -176,13 +176,13 @@ describe('GET /api/tuition-centres', () => {
         }
       ];
 
-      mockSearchTuitionCentres.mockResolvedValue({
+      mockService.searchTuitionCentres.mockResolvedValue({
         data: mockData,
         pagination: { page: 1, limit: 20, total: 1, totalPages: 1 }
       });
 
       const request = new Request('http://localhost/api/tuition-centres?search=tampines');
-      const response = await GET(request);
+      const response = await GET(request, { tuitionCentreService: mockService });
       const data = await response.json();
 
       expect(response.status).toBe(200);
@@ -196,13 +196,13 @@ describe('GET /api/tuition-centres', () => {
     });
 
     it('should return empty array when no results match', async () => {
-      mockSearchTuitionCentres.mockResolvedValue({
+      mockService.searchTuitionCentres.mockResolvedValue({
         data: [],
         pagination: { page: 1, limit: 20, total: 0, totalPages: 0 }
       });
 
       const request = new Request('http://localhost/api/tuition-centres?search=nonexistent');
-      const response = await GET(request);
+      const response = await GET(request, { tuitionCentreService: mockService });
       const data = await response.json();
 
       expect(response.status).toBe(200);
@@ -213,13 +213,13 @@ describe('GET /api/tuition-centres', () => {
 
   describe('Pagination Metadata', () => {
     it('should return correct pagination metadata for first page', async () => {
-      mockSearchTuitionCentres.mockResolvedValue({
+      mockService.searchTuitionCentres.mockResolvedValue({
         data: new Array(20).fill({}),
         pagination: { page: 1, limit: 20, total: 45, totalPages: 3 }
       });
 
       const request = new Request('http://localhost/api/tuition-centres?page=1&limit=20');
-      const response = await GET(request);
+      const response = await GET(request, { tuitionCentreService: mockService });
       const data = await response.json();
 
       expect(data.pagination).toEqual({
@@ -231,13 +231,13 @@ describe('GET /api/tuition-centres', () => {
     });
 
     it('should return correct pagination metadata for middle page', async () => {
-      mockSearchTuitionCentres.mockResolvedValue({
+      mockService.searchTuitionCentres.mockResolvedValue({
         data: new Array(20).fill({}),
         pagination: { page: 2, limit: 20, total: 45, totalPages: 3 }
       });
 
       const request = new Request('http://localhost/api/tuition-centres?page=2&limit=20');
-      const response = await GET(request);
+      const response = await GET(request, { tuitionCentreService: mockService });
       const data = await response.json();
 
       expect(data.pagination.page).toBe(2);
@@ -245,13 +245,13 @@ describe('GET /api/tuition-centres', () => {
     });
 
     it('should return correct pagination metadata for last page with partial results', async () => {
-      mockSearchTuitionCentres.mockResolvedValue({
+      mockService.searchTuitionCentres.mockResolvedValue({
         data: new Array(5).fill({}),
         pagination: { page: 3, limit: 20, total: 45, totalPages: 3 }
       });
 
       const request = new Request('http://localhost/api/tuition-centres?page=3&limit=20');
-      const response = await GET(request);
+      const response = await GET(request, { tuitionCentreService: mockService });
       const data = await response.json();
 
       expect(data.pagination).toEqual({
@@ -268,10 +268,10 @@ describe('GET /api/tuition-centres', () => {
     it('should return 500 for database errors', async () => {
       const dbError = new Error('Database connection failed');
       dbError.code = 'P1001'; // Prisma error code
-      mockSearchTuitionCentres.mockRejectedValue(dbError);
+      mockService.searchTuitionCentres.mockRejectedValue(dbError);
 
       const request = new Request('http://localhost/api/tuition-centres');
-      const response = await GET(request);
+      const response = await GET(request, { tuitionCentreService: mockService });
       const data = await response.json();
 
       expect(response.status).toBe(500);
@@ -279,10 +279,10 @@ describe('GET /api/tuition-centres', () => {
     });
 
     it('should return 500 for unexpected errors', async () => {
-      mockSearchTuitionCentres.mockRejectedValue(new Error('Unexpected error'));
+      mockService.searchTuitionCentres.mockRejectedValue(new Error('Unexpected error'));
 
       const request = new Request('http://localhost/api/tuition-centres');
-      const response = await GET(request);
+      const response = await GET(request, { tuitionCentreService: mockService });
       const data = await response.json();
 
       expect(response.status).toBe(500);
