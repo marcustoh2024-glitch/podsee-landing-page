@@ -99,17 +99,17 @@ export default function Home() {
         </div>
         
         {/* Filter section with title */}
-        <div className="px-4">
+        <div className="px-4 pb-8">
           <SearchSectionMinimal />
         </div>
         
         {/* Waitlist section - compact */}
-        <div className="px-4 py-4 border-t border-[#2C3E2F]/10 mt-6">
+        <div className="px-4 py-6 border-t border-[#2C3E2F]/10">
           <WaitlistCTAMinimal />
         </div>
         
         {/* Footer credit - SMU logo - compact */}
-        <div className="py-2 border-t border-[#2C3E2F]/10">
+        <div className="py-4 border-t border-[#2C3E2F]/10 mb-4">
           <div className="flex items-center justify-center gap-2">
             <SMULogo />
             <span className="text-[10px] font-light text-[#6B7566]">by SMU students</span>
