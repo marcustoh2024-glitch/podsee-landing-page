@@ -69,44 +69,44 @@ function ResultsContent() {
   }
 
   return (
-    <div className="min-h-screen bg-cream pb-24 lg:pb-8">
+    <div className="min-h-screen bg-[#F5F1E8] pb-24 lg:pb-8">
       <div className="max-w-4xl mx-auto px-4 md:px-10 py-8">
         {/* Header with back button */}
         <div className="mb-6">
           <Link 
             href="/"
-            className="inline-flex items-center gap-2 text-sm text-secondary hover:text-primary mb-4"
+            className="inline-flex items-center gap-2 text-label-large text-[#6B7566] hover:text-[#2C3E2F] mb-4 transition-colors"
           >
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
             </svg>
             Back to filters
           </Link>
           
-          <h1 className="text-2xl md:text-3xl font-bold text-primary mb-2">
+          <h1 className="text-headline-large md:text-display-small font-semibold text-[#2C3E2F] mb-3">
             Tuition Centres
           </h1>
           
           {/* Applied filters */}
           <div className="flex flex-wrap gap-2 mb-4">
             {location && (
-              <span className="px-3 py-1 bg-white border border-light rounded-lg text-sm text-secondary">
+              <span className="px-3 py-1.5 bg-[#F4D4D0] text-[#8B5A54] rounded-full text-label-medium font-medium">
                 {location}
               </span>
             )}
             {level && (
-              <span className="px-3 py-1 bg-white border border-light rounded-lg text-sm text-secondary">
+              <span className="px-3 py-1.5 bg-[#D4E8E4] text-[#4A6B64] rounded-full text-label-medium font-medium">
                 {level}
               </span>
             )}
             {subject && (
-              <span className="px-3 py-1 bg-white border border-light rounded-lg text-sm text-secondary">
+              <span className="px-3 py-1.5 bg-[#E8E4D4] text-[#6B6454] rounded-full text-label-medium font-medium">
                 {subject}
               </span>
             )}
           </div>
           
-          <p className="text-base text-secondary">
+          <p className="text-body-large text-[#6B7566]">
             {mockResults.length} centres found
           </p>
         </div>
@@ -117,19 +117,19 @@ function ResultsContent() {
             <button
               key={result.id}
               onClick={() => handleCentreClick(result)}
-              className="w-full text-left bg-white rounded-2xl p-5 border border-light shadow-sm hover:shadow-md transition-all"
+              className="w-full text-left bg-white/90 backdrop-blur-sm rounded-[18px] p-5 shadow-premium-sm hover:shadow-premium-md transition-all duration-300 ease-emphasized hover:scale-[1.01] active:scale-[0.99]"
             >
-              <h3 className="text-base font-semibold text-primary mb-3">
+              <h3 className="text-title-medium font-semibold text-[#2C3E2F] mb-3">
                 {result.name}
               </h3>
               <div className="flex flex-wrap gap-2">
-                <span className="px-3 py-1 bg-cream rounded-lg text-xs text-secondary">
+                <span className="px-3 py-1 bg-[#F5F1E8] rounded-full text-label-small text-[#6B7566]">
                   {result.location}
                 </span>
-                <span className="px-3 py-1 bg-cream rounded-lg text-xs text-secondary">
+                <span className="px-3 py-1 bg-[#F5F1E8] rounded-full text-label-small text-[#6B7566]">
                   {result.level}
                 </span>
-                <span className="px-3 py-1 bg-cream rounded-lg text-xs text-secondary">
+                <span className="px-3 py-1 bg-[#F5F1E8] rounded-full text-label-small text-[#6B7566]">
                   {result.subject}
                 </span>
               </div>
