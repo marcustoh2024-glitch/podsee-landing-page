@@ -1,11 +1,5 @@
 const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient({
-  datasources: {
-    db: {
-      url: process.env.DATABASE_URL || 'file:./dev.db'
-    }
-  }
-});
+const prisma = new PrismaClient();
 
 async function main() {
   console.log('Starting seed...');
