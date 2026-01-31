@@ -94,7 +94,7 @@ export default function Home() {
         </div>
         
         {/* Poll - Horizontal cards - smaller */}
-        <div className="flex-shrink-0 px-4 pb-4">
+        <div className="flex-shrink-0 px-4 pb-6">
           <PollSectionHorizontal />
         </div>
         
