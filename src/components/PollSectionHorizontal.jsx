@@ -26,10 +26,10 @@ export default function PollSectionHorizontal() {
   const handleOptionClick = (optionId) => {
     if (!selectedOption) {
       setSelectedOption(optionId)
-      // Wait for divider animation to complete (700ms) before showing percentages
+      // Show percentages immediately with the width transition
       setTimeout(() => {
         setShowPercentages(true)
-      }, 700)
+      }, 400)
     }
   }
 
@@ -46,8 +46,8 @@ export default function PollSectionHorizontal() {
         <button
           onClick={() => handleOptionClick(pollData.options[0].id)}
           disabled={selectedOption !== null}
-          className={`${pollData.options[0].color} rounded-l-[16px] p-2 shadow-premium-sm relative overflow-hidden transition-all duration-700 ease-in-out ${
-            !selectedOption ? 'cursor-pointer hover:shadow-premium-md active:scale-[0.98]' : 'cursor-default opacity-50'
+          className={`${pollData.options[0].color} rounded-l-[16px] p-2 shadow-premium-sm relative overflow-hidden transition-all duration-500 ease-out ${
+            !selectedOption ? 'cursor-pointer hover:shadow-premium-md' : 'cursor-default opacity-50'
           }`}
           style={{ 
             width: selectedOption ? `${option1Width}%` : '50%'
@@ -57,8 +57,8 @@ export default function PollSectionHorizontal() {
             <h3 className="text-[13px] font-medium text-white tracking-tight">
               {pollData.options[0].text}
             </h3>
-            {/* Percentage fades in after divider animation, with subtle crossfade on updates */}
-            <div className={`text-[20px] font-bold text-white leading-none tracking-tight transition-all duration-500 ${
+            {/* Percentage fades in smoothly */}
+            <div className={`text-[20px] font-bold text-white leading-none tracking-tight transition-opacity duration-300 ${
               showPercentages ? 'opacity-100' : 'opacity-0'
             }`}>
               {pollData.options[0].percentage}%
@@ -67,14 +67,6 @@ export default function PollSectionHorizontal() {
           
           {/* Subtle gradient overlay */}
           <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
-          
-          {/* Subtle pattern overlay */}
-          <div className="absolute inset-0 opacity-[0.03]">
-            <div className="absolute inset-0" style={{
-              backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)',
-              backgroundSize: '32px 32px'
-            }} />
-          </div>
         </button>
         
         {/* Vertical Divider */}
@@ -84,8 +76,8 @@ export default function PollSectionHorizontal() {
         <button
           onClick={() => handleOptionClick(pollData.options[1].id)}
           disabled={selectedOption !== null}
-          className={`${pollData.options[1].color} rounded-r-[16px] p-2 shadow-premium-sm relative overflow-hidden transition-all duration-700 ease-in-out ${
-            !selectedOption ? 'cursor-pointer hover:shadow-premium-md active:scale-[0.98]' : 'cursor-default'
+          className={`${pollData.options[1].color} rounded-r-[16px] p-2 shadow-premium-sm relative overflow-hidden transition-all duration-500 ease-out ${
+            !selectedOption ? 'cursor-pointer hover:shadow-premium-md' : 'cursor-default'
           }`}
           style={{ 
             width: selectedOption ? `${option2Width}%` : '50%'
@@ -95,8 +87,8 @@ export default function PollSectionHorizontal() {
             <h3 className="text-[13px] font-medium text-white tracking-tight">
               {pollData.options[1].text}
             </h3>
-            {/* Percentage fades in after divider animation, with subtle crossfade on updates */}
-            <div className={`text-[20px] font-bold text-white leading-none tracking-tight transition-all duration-500 ${
+            {/* Percentage fades in smoothly */}
+            <div className={`text-[20px] font-bold text-white leading-none tracking-tight transition-opacity duration-300 ${
               showPercentages ? 'opacity-100' : 'opacity-0'
             }`}>
               {pollData.options[1].percentage}%
@@ -105,14 +97,6 @@ export default function PollSectionHorizontal() {
           
           {/* Subtle gradient overlay */}
           <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
-          
-          {/* Subtle pattern overlay */}
-          <div className="absolute inset-0 opacity-[0.03]">
-            <div className="absolute inset-0" style={{
-              backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)',
-              backgroundSize: '32px 32px'
-            }} />
-          </div>
         </button>
       </div>
     </section>
