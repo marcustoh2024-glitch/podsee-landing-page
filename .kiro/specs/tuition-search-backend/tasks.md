@@ -116,7 +116,7 @@ Output import report (inserted/updated/skipped)
   - Ensure all tests pass, ask the user if questions arise.
 
 - [-] 5. Implement API route for search and filter
-  - [ ] 5.1 Create search endpoint route handler
+  - [-] 5.1 Create search endpoint route handler
     - Create `src/app/api/tuition-centres/route.js`
     - Implement GET handler for search and filter
     - Parse query parameters (search, levels, subjects, page, limit)
