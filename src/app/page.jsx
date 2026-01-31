@@ -87,19 +87,19 @@ export default function Home() {
       </div>
 
       {/* Mobile: Single viewport layout (no scroll) - Premium minimal design */}
-      <div className="lg:hidden h-full flex flex-col bg-[#F5F1E8] overflow-hidden">
+      <div className="lg:hidden h-screen flex flex-col bg-[#F5F1E8]">
         {/* Mobile header - compact */}
         <div className="flex-shrink-0 pt-4 pb-3">
           <Header />
         </div>
         
         {/* Poll - Horizontal cards - smaller */}
-        <div className="flex-shrink-0 px-4 pb-6">
+        <div className="flex-shrink-0 px-4 pb-4">
           <PollSectionHorizontal />
         </div>
         
-        {/* Filter section with title - NO SCROLL */}
-        <div className="flex-1 min-h-0 px-4 flex flex-col overflow-hidden">
+        {/* Filter section with title - scrollable content */}
+        <div className="flex-1 min-h-0 px-4 flex flex-col overflow-y-auto">
           <SearchSectionMinimal />
         </div>
         

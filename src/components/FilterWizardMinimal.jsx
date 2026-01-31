@@ -83,9 +83,9 @@ export default function FilterWizardMinimal() {
   }
 
   return (
-    <div className="w-full h-full flex flex-col space-y-2 pb-2">
+    <div className="w-full flex flex-col space-y-2">
       {/* Filter buttons - no scrolling, all visible */}
-      <div className="flex-1 flex flex-col space-y-2">
+      <div className="flex flex-col space-y-2">
         {filterConfig.map((filter, index) => (
           <div key={filter.id} className="slide-in-bottom" style={{ animationDelay: `${0.3 + index * 0.1}s` }}>
             <button
