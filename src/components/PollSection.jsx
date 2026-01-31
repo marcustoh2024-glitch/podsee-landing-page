@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import useReducedMotion from '@/hooks/useReducedMotion'
 
 const pollData = {
@@ -16,7 +16,7 @@ const MIN_WIDTH = 35
 const MAX_WIDTH = 65
 
 export default function PollSection() {
-  const [hasAnimated, setHasAnimated] = useState(false)
+  const [selectedOption, setSelectedOption] = useState(null)
   const prefersReducedMotion = useReducedMotion()
   
   // Calculate capped widths based on actual percentages
@@ -34,19 +34,11 @@ export default function PollSection() {
     option2Width = 100 - MIN_WIDTH
   }
   
-  useEffect(() => {
-    if (prefersReducedMotion) {
-      setHasAnimated(true)
-      return
+  const handleOptionClick = (optionId) => {
+    if (!selectedOption) {
+      setSelectedOption(optionId)
     }
-    
-    // Trigger animation after 400ms delay
-    const timer = setTimeout(() => {
-      setHasAnimated(true)
-    }, 400)
-    
-    return () => clearTimeout(timer)
-  }, [prefersReducedMotion])
+  }
 
   return (
     <section className="w-full max-w-[360px] mx-auto lg:mx-0 slide-in-bottom" style={{ animationDelay: '0.3s' }}>
@@ -58,10 +50,14 @@ export default function PollSection() {
       {/* Two-card layout with divider */}
       <div className="flex flex-col items-stretch gap-0 relative">
         {/* Option 1 Card */}
-        <div 
-          className="bg-surface-container-high rounded-t-2xl p-6 shadow-elevation-1 transition-all ease-in-out"
+        <button
+          onClick={() => handleOptionClick(pollData.options[0].id)}
+          disabled={selectedOption !== null}
+          className={`bg-surface-container-high rounded-t-2xl p-6 shadow-elevation-1 transition-all ease-in-out text-left ${
+            !selectedOption ? 'cursor-pointer hover:shadow-elevation-2' : 'cursor-default'
+          }`}
           style={{ 
-            height: hasAnimated ? `${option1Width}%` : '50%',
+            height: selectedOption ? `${option1Width}%` : '50%',
             transitionDuration: prefersReducedMotion ? '0ms' : '700ms'
           }}
         >
@@ -72,16 +68,20 @@ export default function PollSection() {
           <div className="text-display-small text-on-surface-variant opacity-0">
             {pollData.options[0].percentage}%
           </div>
-        </div>
+        </button>
         
         {/* Horizontal Divider */}
         <div className="h-px bg-outline-variant" />
         
         {/* Option 2 Card */}
-        <div 
-          className="bg-surface-container-high rounded-b-2xl p-6 shadow-elevation-1 transition-all ease-in-out"
+        <button
+          onClick={() => handleOptionClick(pollData.options[1].id)}
+          disabled={selectedOption !== null}
+          className={`bg-surface-container-high rounded-b-2xl p-6 shadow-elevation-1 transition-all ease-in-out text-left ${
+            !selectedOption ? 'cursor-pointer hover:shadow-elevation-2' : 'cursor-default'
+          }`}
           style={{ 
-            height: hasAnimated ? `${option2Width}%` : '50%',
+            height: selectedOption ? `${option2Width}%` : '50%',
             transitionDuration: prefersReducedMotion ? '0ms' : '700ms'
           }}
         >
@@ -92,7 +92,7 @@ export default function PollSection() {
           <div className="text-display-small text-on-surface-variant opacity-0">
             {pollData.options[1].percentage}%
           </div>
-        </div>
+        </button>
       </div>
     </section>
   )

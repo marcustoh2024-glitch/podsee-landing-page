@@ -48,10 +48,14 @@ export default function PollSectionHorizontal() {
       {/* Two-card layout with divider */}
       <div className="flex items-stretch gap-0 relative">
         {/* Option 1 Card */}
-        <div 
-          className={`${pollData.options[0].color} rounded-l-[16px] p-4 shadow-premium-sm relative overflow-hidden transition-all duration-700 ease-in-out`}
+        <button
+          onClick={() => handleOptionClick(pollData.options[0].id)}
+          disabled={selectedOption !== null}
+          className={`${pollData.options[0].color} rounded-l-[16px] p-4 shadow-premium-sm relative overflow-hidden transition-all duration-700 ease-in-out ${
+            !selectedOption ? 'cursor-pointer hover:shadow-premium-md active:scale-[0.98]' : 'cursor-default'
+          }`}
           style={{ 
-            width: hasAnimated ? `${option1Width}%` : '50%'
+            width: selectedOption ? `${option1Width}%` : '50%'
           }}
         >
           <div className="relative z-10">
@@ -75,16 +79,20 @@ export default function PollSectionHorizontal() {
               backgroundSize: '32px 32px'
             }} />
           </div>
-        </div>
+        </button>
         
         {/* Vertical Divider */}
         <div className="w-[2px] bg-[#6B7566]/20" />
         
         {/* Option 2 Card */}
-        <div 
-          className={`${pollData.options[1].color} rounded-r-[16px] p-4 shadow-premium-sm relative overflow-hidden transition-all duration-700 ease-in-out`}
+        <button
+          onClick={() => handleOptionClick(pollData.options[1].id)}
+          disabled={selectedOption !== null}
+          className={`${pollData.options[1].color} rounded-r-[16px] p-4 shadow-premium-sm relative overflow-hidden transition-all duration-700 ease-in-out ${
+            !selectedOption ? 'cursor-pointer hover:shadow-premium-md active:scale-[0.98]' : 'cursor-default'
+          }`}
           style={{ 
-            width: hasAnimated ? `${option2Width}%` : '50%'
+            width: selectedOption ? `${option2Width}%` : '50%'
           }}
         >
           <div className="relative z-10">
@@ -108,7 +116,7 @@ export default function PollSectionHorizontal() {
               backgroundSize: '32px 32px'
             }} />
           </div>
-        </div>
+        </button>
       </div>
     </section>
   )
