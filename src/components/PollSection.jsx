@@ -1,98 +1,97 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import useReducedMotion from '@/hooks/useReducedMotion'
 
 const pollData = {
-  title: "Quick question",
-  question: "How does finding tuition feel right now?",
+  title: "How do you usually decide?",
   options: [
-    { id: 1, text: "Overwhelming", votes: 45 },
-    { id: 2, text: "Confusing", votes: 32 },
-    { id: 3, text: "Time-consuming", votes: 38 },
-    { id: 4, text: "Uncertain", votes: 28 }
+    { id: 1, text: "Ads & search results", percentage: 60 },
+    { id: 2, text: "Word of mouth", percentage: 40 }
   ]
 }
 
+// Cap the distribution to avoid extreme edge alignment
+const MIN_WIDTH = 35
+const MAX_WIDTH = 65
+
 export default function PollSection() {
-  const [selectedOption, setSelectedOption] = useState(null)
+  const [hasAnimated, setHasAnimated] = useState(false)
   const prefersReducedMotion = useReducedMotion()
   
-  const totalVotes = pollData.options.reduce((sum, opt) => sum + opt.votes, 0)
+  // Calculate capped widths based on actual percentages
+  const option1Percentage = pollData.options[0].percentage
+  const option2Percentage = pollData.options[1].percentage
   
-  const handleOptionClick = (optionId) => {
-    if (!selectedOption) {
-      setSelectedOption(optionId)
-    }
+  let option1Width = option1Percentage
+  let option2Width = option2Percentage
+  
+  if (option1Percentage > MAX_WIDTH) {
+    option1Width = MAX_WIDTH
+    option2Width = 100 - MAX_WIDTH
+  } else if (option1Percentage < MIN_WIDTH) {
+    option1Width = MIN_WIDTH
+    option2Width = 100 - MIN_WIDTH
   }
+  
+  useEffect(() => {
+    if (prefersReducedMotion) {
+      setHasAnimated(true)
+      return
+    }
+    
+    // Trigger animation after 400ms delay
+    const timer = setTimeout(() => {
+      setHasAnimated(true)
+    }, 400)
+    
+    return () => clearTimeout(timer)
+  }, [prefersReducedMotion])
 
   return (
     <section className="w-full max-w-[360px] mx-auto lg:mx-0 slide-in-bottom" style={{ animationDelay: '0.3s' }}>
-      {/* M3 Filled Card - More compact on mobile */}
-      <div className="bg-surface-container-high rounded-lg lg:rounded-2xl p-2 lg:p-6 shadow-elevation-1 relative overflow-hidden hover:shadow-elevation-2 transition-shadow duration-300 ease-emphasized">
-        {/* M3 Accent indicator */}
-        <div className="absolute left-0 top-0 bottom-0 w-1 bg-primary" />
+      {/* Poll Title */}
+      <h3 className="text-title-medium text-on-surface text-center mb-6">
+        {pollData.title}
+      </h3>
+      
+      {/* Two-card layout with divider */}
+      <div className="flex flex-col items-stretch gap-0 relative">
+        {/* Option 1 Card */}
+        <div 
+          className="bg-surface-container-high rounded-t-2xl p-6 shadow-elevation-1 transition-all ease-in-out"
+          style={{ 
+            height: hasAnimated ? `${option1Width}%` : '50%',
+            transitionDuration: prefersReducedMotion ? '0ms' : '700ms'
+          }}
+        >
+          <div className="text-body-large text-on-surface mb-2">
+            {pollData.options[0].text}
+          </div>
+          {/* Percentage hidden for now */}
+          <div className="text-display-small text-on-surface-variant opacity-0">
+            {pollData.options[0].percentage}%
+          </div>
+        </div>
         
-        <h3 className="text-label-large lg:text-title-large text-on-surface mb-0.5 lg:mb-1 pl-1.5 lg:pl-0">{pollData.title}</h3>
-        <p className="text-label-small lg:text-body-large text-on-surface-variant mb-1.5 lg:mb-5 pl-1.5 lg:pl-0">{pollData.question}</p>
+        {/* Horizontal Divider */}
+        <div className="h-px bg-outline-variant" />
         
-        <div className="space-y-0.5 lg:space-y-2">
-          {pollData.options.map((option, index) => {
-            const percentage = Math.round((option.votes / totalVotes) * 100)
-            const isSelected = selectedOption === option.id
-            
-            return (
-              <button
-                key={option.id}
-                onClick={() => handleOptionClick(option.id)}
-                disabled={selectedOption !== null}
-                className="w-full text-left relative group state-layer rounded-md lg:rounded-lg slide-in-bottom"
-                style={{ animationDelay: `${0.4 + index * 0.1}s` }}
-              >
-                {/* Background bar (only after voting) - M3 style */}
-                {selectedOption && (
-                  <div 
-                    className={`absolute inset-0 rounded-md lg:rounded-lg ${
-                      isSelected ? 'bg-primary-container' : 'bg-surface-container-highest'
-                    } ${prefersReducedMotion ? '' : 'transition-all duration-300 ease-standard'}`}
-                    style={{ 
-                      width: selectedOption ? `${percentage}%` : '0%',
-                      transitionProperty: prefersReducedMotion ? 'none' : 'width'
-                    }}
-                  />
-                )}
-                
-                {/* Content - More compact on mobile */}
-                <div className="relative flex items-center gap-1.5 lg:gap-4 px-1.5 lg:px-4 py-1 lg:py-3">
-                  {/* M3 Radio button - Smaller on mobile */}
-                  <div className="flex-shrink-0">
-                    {selectedOption ? (
-                      isSelected ? (
-                        // Selected state
-                        <div className="w-3.5 h-3.5 lg:w-5 lg:h-5 rounded-full bg-primary flex items-center justify-center scale-in-center">
-                          <div className="w-1.5 h-1.5 lg:w-2.5 lg:h-2.5 rounded-full bg-primary-on" />
-                        </div>
-                      ) : (
-                        // Unselected state (after voting)
-                        <div className="w-3.5 h-3.5 lg:w-5 lg:h-5 rounded-full border-2 border-outline" />
-                      )
-                    ) : (
-                      // Before voting
-                      <div className="w-3.5 h-3.5 lg:w-5 lg:h-5 rounded-full border-2 border-outline group-hover:border-on-surface transition-colors duration-200 ease-standard" />
-                    )}
-                  </div>
-                  
-                  {/* Option text and percentage */}
-                  <div className="flex-1 flex items-center justify-between">
-                    <span className="text-label-medium lg:text-body-large text-on-surface font-medium">{option.text}</span>
-                    {selectedOption && (
-                      <span className="text-label-small lg:text-label-large text-primary ml-1.5 font-medium scale-in-center">{percentage}%</span>
-                    )}
-                  </div>
-                </div>
-              </button>
-            )
-          })}
+        {/* Option 2 Card */}
+        <div 
+          className="bg-surface-container-high rounded-b-2xl p-6 shadow-elevation-1 transition-all ease-in-out"
+          style={{ 
+            height: hasAnimated ? `${option2Width}%` : '50%',
+            transitionDuration: prefersReducedMotion ? '0ms' : '700ms'
+          }}
+        >
+          <div className="text-body-large text-on-surface mb-2">
+            {pollData.options[1].text}
+          </div>
+          {/* Percentage hidden for now */}
+          <div className="text-display-small text-on-surface-variant opacity-0">
+            {pollData.options[1].percentage}%
+          </div>
         </div>
       </div>
     </section>
