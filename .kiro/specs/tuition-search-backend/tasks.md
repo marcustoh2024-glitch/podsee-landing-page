@@ -116,7 +116,7 @@ Output import report (inserted/updated/skipped)
   - Ensure all tests pass, ask the user if questions arise.
 
 - [-] 5. Implement API route for search and filter
-  - [-] 5.1 Create search endpoint route handler
+  - [x] 5.1 Create search endpoint route handler
     - Create `src/app/api/tuition-centres/route.js`
     - Implement GET handler for search and filter
     - Parse query parameters (search, levels, subjects, page, limit)
@@ -125,14 +125,14 @@ Output import report (inserted/updated/skipped)
     - Format response with data and pagination metadata
     - _Requirements: 2.1, 2.2, 3.1, 4.1, 5.1_
 
-  - [ ] 5.2 Implement error handling for search endpoint
+  - [x] 5.2 Implement error handling for search endpoint
     - Wrap handler in try-catch block
     - Return 400 for validation errors with descriptive messages
     - Return 500 for database errors
     - Log errors with context
     - _Requirements: 9.4, 10.4_
 
-  - [ ] 5.3 Write unit tests for search endpoint
+  - [-] 5.3 Write unit tests for search endpoint
     - Test query parameter parsing
     - Test validation error responses
     - Test successful search responses
