@@ -153,13 +153,13 @@ Output import report (inserted/updated/skipped)
     - Format response with all centre details
     - _Requirements: 6.1, 6.2_
 
-  - [ ] 6.2 Implement error handling for get by ID endpoint
+  - [x] 6.2 Implement error handling for get by ID endpoint
     - Return 404 for not found centres
     - Return 400 for invalid ID format
     - Return 500 for database errors
     - _Requirements: 6.3, 9.4_
 
-  - [ ] 6.3 Write property test for ID lookup
+  - [-] 6.3 Write property test for ID lookup
     - **Property 9: ID lookup returns single or none**
     - **Validates: Requirements 6.1, 6.3**
     - Verify ID lookups return exactly one or 404 error
