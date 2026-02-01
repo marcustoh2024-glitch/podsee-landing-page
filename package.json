@@ -8,7 +8,11 @@
     "start": "next start",
     "lint": "next lint",
     "test": "vitest --run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "seed": "npx prisma db seed",
+    "db:migrate": "npx prisma migrate dev",
+    "db:reset": "npx prisma migrate reset",
+    "db:studio": "npx prisma studio"
   },
   "prisma": {
     "seed": "node prisma/seed.js"
