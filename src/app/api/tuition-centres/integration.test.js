@@ -283,7 +283,7 @@ describe('Integration Tests - Full API Flow', () => {
 
       expect(response.status).toBe(400);
       expect(data.error).toBeDefined();
-      expect(data.error.code).toBe('INVALID_ID');
+      expect(data.error.code).toBe('INVALID_ID_FORMAT');
     });
 
     it('should handle centres without websites', async () => {
@@ -327,19 +327,23 @@ describe('Integration Tests - Full API Flow', () => {
 
     it('should handle database errors gracefully', async () => {
       const { GET } = await import('./route.js');
+      const TuitionCentreService = (await import('@/lib/services/tuitionCentreService')).default;
       
-      // Disconnect database to simulate error
-      await prisma.$disconnect();
+      // Create a mock service that throws a Prisma error
+      const mockService = new TuitionCentreService();
+      mockService.searchTuitionCentres = async () => {
+        const error = new Error('Database connection failed');
+        error.code = 'P1001'; // Prisma connection error code
+        throw error;
+      };
       
       const request = new Request('http://localhost/api/tuition-centres');
-      const response = await GET(request);
+      const response = await GET(request, { tuitionCentreService: mockService });
       const data = await response.json();
 
       expect(response.status).toBe(500);
       expect(data.error).toBeDefined();
-      
-      // Reconnect for cleanup
-      await prisma.$connect();
+      expect(data.error.code).toBe('DATABASE_ERROR');
     });
   });
 
