@@ -217,13 +217,13 @@ Output import report (inserted/updated/skipped)
     - Verify all 12 properties pass
     - _Requirements: All_
 
-  - [-] 9.2 Write integration tests
+  - [x] 9.2 Write integration tests
     - Test full API flow from HTTP request to database
     - Test with real test database
     - Test error scenarios end-to-end
     - _Requirements: 2.1, 6.1, 9.4_
 
-  - [ ] 9.3 Update documentation
+  - [-] 9.3 Update documentation
     - Add API endpoint documentation to README
     - Document environment variables needed
     - Document how to run migrations and seed data
