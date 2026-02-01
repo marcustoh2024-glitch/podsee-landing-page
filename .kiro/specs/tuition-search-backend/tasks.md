@@ -164,7 +164,7 @@ Output import report (inserted/updated/skipped)
     - **Validates: Requirements 6.1, 6.3**
     - Verify ID lookups return exactly one or 404 error
 
-  - [-] 6.4 Write property test for required fields
+  - [ ] 6.4 Write property test for required fields
     - **Property 10: Required fields are always present**
     - **Validates: Requirements 1.1, 1.2, 1.3, 10.1**
     - Verify name, location, whatsappNumber are always non-null and non-empty
