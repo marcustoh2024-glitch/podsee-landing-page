@@ -174,8 +174,8 @@ describe('Validation - Property Tests', () => {
           expect(validation.isValid).toBe(true);
           expect(validation.error).toBe(null);
 
-          // URL should start with https:// (fast-check generates https URLs)
-          expect(url.startsWith('https://')).toBe(true);
+          // URL should start with http:// or https://
+          expect(url.startsWith('http://') || url.startsWith('https://')).toBe(true);
 
           return true;
         }

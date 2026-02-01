@@ -187,7 +187,7 @@ Output import report (inserted/updated/skipped)
     - **Validates: Requirements 7.4, 10.2**
     - Generate random phone numbers with formatting and verify sanitization
 
-  - [-] 7.4 Write property test for URL validation
+  - [x] 7.4 Write property test for URL validation
     - **Property 7: Website URL validation**
     - **Validates: Requirements 8.2**
     - Generate random URLs and verify validation
