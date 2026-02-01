@@ -97,4 +97,112 @@ describe('Validation - Property Tests', () => {
       { numRuns: 100 }
     );
   });
+
+  // Feature: tuition-search-backend, Property 7: Website URL validation
+  // Validates: Requirements 8.2
+  it('Property 7: Website URL validation', async () => {
+    await fc.assert(
+      fc.asyncProperty(
+        fc.oneof(
+          // Valid URLs with http://
+          fc.webUrl().map(url => url.replace('https://', 'http://')),
+          // Valid URLs with https://
+          fc.webUrl(),
+          // Invalid URLs without protocol
+          fc.domain().map(domain => domain),
+          // Invalid URLs with wrong protocol
+          fc.domain().map(domain => `ftp://${domain}`),
+          fc.domain().map(domain => `file://${domain}`),
+          // Null and undefined (valid for optional field)
+          fc.constant(null),
+          fc.constant(undefined),
+          // Empty string (valid for optional field)
+          fc.constant(''),
+          // URLs with spaces (invalid)
+          fc.webUrl().map(url => `${url} extra`),
+          // Just protocol (invalid)
+          fc.constant('http://'),
+          fc.constant('https://')
+        ),
+        async (url) => {
+          const validation = validateUrl(url);
+
+          // Property 1: Null, undefined, and empty string should be valid (optional field)
+          if (url === null || url === undefined || url === '') {
+            expect(validation.isValid).toBe(true);
+            expect(validation.error).toBe(null);
+            return true;
+          }
+
+          // Property 2: URLs starting with http:// or https:// should be valid
+          if (typeof url === 'string' && (url.startsWith('http://') || url.startsWith('https://'))) {
+            // Additional check: must be a valid URL format
+            try {
+              new URL(url);
+              expect(validation.isValid).toBe(true);
+              expect(validation.error).toBe(null);
+            } catch (e) {
+              // If URL constructor fails, validation should also fail
+              expect(validation.isValid).toBe(false);
+              expect(validation.error).toBeTruthy();
+            }
+            return true;
+          }
+
+          // Property 3: URLs not starting with http:// or https:// should be invalid
+          if (typeof url === 'string' && url.trim() !== '') {
+            expect(validation.isValid).toBe(false);
+            expect(validation.error).toBeTruthy();
+            expect(validation.error).toContain('http://');
+          }
+
+          return true;
+        }
+      ),
+      { numRuns: 100 }
+    );
+  });
+
+  // Additional test: Valid URLs must start with http:// or https://
+  it('Property 7 (protocol check): Valid URLs must have correct protocol', async () => {
+    await fc.assert(
+      fc.asyncProperty(
+        fc.webUrl(),
+        async (url) => {
+          // All web URLs should be valid
+          const validation = validateUrl(url);
+          expect(validation.isValid).toBe(true);
+          expect(validation.error).toBe(null);
+
+          // URL should start with https:// (fast-check generates https URLs)
+          expect(url.startsWith('https://')).toBe(true);
+
+          return true;
+        }
+      ),
+      { numRuns: 100 }
+    );
+  });
+
+  // Test invalid protocols are rejected
+  it('Property 7 (invalid protocols): URLs with invalid protocols are rejected', async () => {
+    await fc.assert(
+      fc.asyncProperty(
+        fc.domain(),
+        fc.constantFrom('ftp://', 'file://', 'ws://', 'wss://', 'mailto:', 'tel:'),
+        async (domain, protocol) => {
+          const url = `${protocol}${domain}`;
+          
+          const validation = validateUrl(url);
+          
+          // Should be invalid
+          expect(validation.isValid).toBe(false);
+          expect(validation.error).toBeTruthy();
+
+          return true;
+        }
+      ),
+      { numRuns: 100 }
+    );
+  });
 });
