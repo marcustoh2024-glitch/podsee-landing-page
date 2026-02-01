@@ -211,13 +211,13 @@ Output import report (inserted/updated/skipped)
     - **Validates: Requirements 3.4, 4.4**
 
 - [-] 9. Final checkpoint and integration testing
-  - [-] 9.1 Run all tests and verify passing
+  - [x] 9.1 Run all tests and verify passing
     - Run unit tests
     - Run property-based tests
     - Verify all 12 properties pass
     - _Requirements: All_
 
-  - [ ] 9.2 Write integration tests
+  - [-] 9.2 Write integration tests
     - Test full API flow from HTTP request to database
     - Test with real test database
     - Test error scenarios end-to-end
