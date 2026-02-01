@@ -192,8 +192,8 @@ Output import report (inserted/updated/skipped)
     - **Validates: Requirements 8.2**
     - Generate random URLs and verify validation
 
-- [ ] 8. Add edge case handling and tests
-  - [ ] 8.1 Write unit test for empty search
+- [-] 8. Add edge case handling and tests
+  - [-] 8.1 Write unit test for empty search
     - Test that empty search returns all centres
     - **Validates: Requirements 2.2**
 
