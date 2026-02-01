@@ -210,8 +210,8 @@ Output import report (inserted/updated/skipped)
     - Test that no level/subject filters return all centres
     - **Validates: Requirements 3.4, 4.4**
 
-- [ ] 9. Final checkpoint and integration testing
-  - [ ] 9.1 Run all tests and verify passing
+- [-] 9. Final checkpoint and integration testing
+  - [-] 9.1 Run all tests and verify passing
     - Run unit tests
     - Run property-based tests
     - Verify all 12 properties pass
