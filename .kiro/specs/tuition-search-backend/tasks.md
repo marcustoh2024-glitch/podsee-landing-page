@@ -182,7 +182,7 @@ Output import report (inserted/updated/skipped)
     - Return validation errors for invalid formats
     - _Requirements: 8.2, 10.3_
 
-  - [ ] 7.3 Write property test for phone number sanitization
+  - [-] 7.3 Write property test for phone number sanitization
     - **Property 12: Phone number sanitization**
     - **Validates: Requirements 7.4, 10.2**
     - Generate random phone numbers with formatting and verify sanitization
