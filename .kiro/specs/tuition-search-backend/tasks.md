@@ -223,7 +223,7 @@ Output import report (inserted/updated/skipped)
     - Test error scenarios end-to-end
     - _Requirements: 2.1, 6.1, 9.4_
 
-  - [-] 9.3 Update documentation
+  - [x] 9.3 Update documentation
     - Add API endpoint documentation to README
     - Document environment variables needed
     - Document how to run migrations and seed data
