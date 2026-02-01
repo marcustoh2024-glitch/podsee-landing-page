@@ -197,12 +197,12 @@ Output import report (inserted/updated/skipped)
     - Test that empty search returns all centres
     - **Validates: Requirements 2.2**
 
-  - [-] 8.2 Write unit test for no matches
+  - [x] 8.2 Write unit test for no matches
     - Test that non-matching filters return empty array with total 0
     - **Property 11: Filter with no matches returns empty array**
     - **Validates: Requirements 2.5, 5.4**
 
-  - [ ] 8.3 Write unit test for missing website
+  - [-] 8.3 Write unit test for missing website
     - Test that centres without websites return null for website field
     - **Validates: Requirements 8.3**
 
