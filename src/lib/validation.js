@@ -65,3 +65,59 @@ export function sanitizePhoneNumber(phoneNumber) {
   
   return cleaned;
 }
+
+/**
+ * Validate website URL format
+ * URLs must start with http:// or https://
+ * 
+ * @param {string} url - URL to validate
+ * @returns {Object} Validation result with isValid boolean and error message
+ */
+export function validateUrl(url) {
+  // Null or undefined URLs are valid (optional field)
+  if (url === null || url === undefined) {
+    return {
+      isValid: true,
+      error: null
+    };
+  }
+
+  if (typeof url !== 'string') {
+    return {
+      isValid: false,
+      error: 'URL must be a string'
+    };
+  }
+
+  const trimmed = url.trim();
+  
+  // Empty string is treated as null (valid for optional field)
+  if (trimmed === '') {
+    return {
+      isValid: true,
+      error: null
+    };
+  }
+
+  // URL must start with http:// or https://
+  if (!trimmed.startsWith('http://') && !trimmed.startsWith('https://')) {
+    return {
+      isValid: false,
+      error: 'URL must start with http:// or https://'
+    };
+  }
+
+  // Basic URL format validation
+  try {
+    new URL(trimmed);
+    return {
+      isValid: true,
+      error: null
+    };
+  } catch (e) {
+    return {
+      isValid: false,
+      error: 'URL format is invalid'
+    };
+  }
+}

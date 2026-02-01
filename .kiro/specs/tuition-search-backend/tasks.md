@@ -170,13 +170,13 @@ Output import report (inserted/updated/skipped)
     - Verify name, location, whatsappNumber are always non-null and non-empty
 
 - [ ] 7. Implement input validation and sanitization
-  - [-] 7.1 Add phone number validation
+  - [x] 7.1 Add phone number validation
     - Create validation helper for phone numbers
     - Validate format contains only digits and optional leading '+'
     - Sanitize by stripping formatting characters
     - _Requirements: 7.3, 7.4, 10.2_
 
-  - [ ] 7.2 Add URL validation
+  - [x] 7.2 Add URL validation
     - Create validation helper for website URLs
     - Validate URLs start with http:// or https://
     - Return validation errors for invalid formats
