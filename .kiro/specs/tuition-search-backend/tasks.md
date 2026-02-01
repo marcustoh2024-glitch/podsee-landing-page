@@ -193,11 +193,11 @@ Output import report (inserted/updated/skipped)
     - Generate random URLs and verify validation
 
 - [-] 8. Add edge case handling and tests
-  - [-] 8.1 Write unit test for empty search
+  - [x] 8.1 Write unit test for empty search
     - Test that empty search returns all centres
     - **Validates: Requirements 2.2**
 
-  - [ ] 8.2 Write unit test for no matches
+  - [-] 8.2 Write unit test for no matches
     - Test that non-matching filters return empty array with total 0
     - **Property 11: Filter with no matches returns empty array**
     - **Validates: Requirements 2.5, 5.4**

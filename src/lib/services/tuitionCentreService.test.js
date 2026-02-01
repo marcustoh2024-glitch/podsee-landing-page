@@ -399,4 +399,54 @@ describe('TuitionCentreService - Edge Case Tests', () => {
     expect(resultWhitespace.data.length).toBe(3);
     expect(resultWhitespace.pagination.total).toBe(3);
   });
+
+  // Feature: tuition-search-backend, Property 11: Filter with no matches returns empty array
+  // Validates: Requirements 2.5, 5.4
+  it('should return empty array with total 0 when no centres match filters', async () => {
+    // Create test centres with specific characteristics
+    const testCentres = [
+      {
+        name: 'Alpha Learning',
+        location: 'Tampines',
+        whatsappNumber: '91234567',
+        website: 'https://alpha.com',
+        levels: ['Primary'],
+        subjects: ['Mathematics']
+      },
+      {
+        name: 'Beta Education',
+        location: 'Jurong',
+        whatsappNumber: '92345678',
+        website: 'https://beta.com',
+        levels: ['Secondary'],
+        subjects: ['Science']
+      }
+    ];
+
+    await Promise.all(testCentres.map(centre => createTestCentre(centre)));
+
+    // Search with non-matching search term
+    const resultSearch = await service.searchTuitionCentres({ search: 'NonExistentCentre' });
+    expect(resultSearch.data).toEqual([]);
+    expect(resultSearch.pagination.total).toBe(0);
+    expect(resultSearch.pagination.totalPages).toBe(0);
+
+    // Filter with non-matching level
+    const resultLevel = await service.searchTuitionCentres({ levels: ['Junior College'] });
+    expect(resultLevel.data).toEqual([]);
+    expect(resultLevel.pagination.total).toBe(0);
+
+    // Filter with non-matching subject
+    const resultSubject = await service.searchTuitionCentres({ subjects: ['Physics'] });
+    expect(resultSubject.data).toEqual([]);
+    expect(resultSubject.pagination.total).toBe(0);
+
+    // Combined filters with no matches
+    const resultCombined = await service.searchTuitionCentres({ 
+      search: 'Alpha',
+      levels: ['Secondary'] // Alpha only has Primary
+    });
+    expect(resultCombined.data).toEqual([]);
+    expect(resultCombined.pagination.total).toBe(0);
+  });
 });
