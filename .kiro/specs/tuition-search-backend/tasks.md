@@ -217,7 +217,7 @@ Output import report (inserted/updated/skipped)
     - Verify all 12 properties pass
     - _Requirements: All_
 
-  - [-] 9.2 Write integration tests
+  - [ ] 9.2 Write integration tests
     - Test full API flow from HTTP request to database
     - Test with real test database
     - Test error scenarios end-to-end
