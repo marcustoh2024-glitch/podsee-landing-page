@@ -497,4 +497,60 @@ describe('TuitionCentreService - Edge Case Tests', () => {
     // Verify centre with website has the correct value
     expect(alphaCentre.website).toBe('https://alpha.com');
   });
+
+  // Validates: Requirements 3.4, 4.4
+  it('should return all centres when no level or subject filters are applied', async () => {
+    // Create centres with different levels and subjects
+    const testCentres = [
+      {
+        name: 'Alpha Learning',
+        location: 'Tampines',
+        whatsappNumber: '91234567',
+        website: 'https://alpha.com',
+        levels: ['Primary'],
+        subjects: ['Mathematics']
+      },
+      {
+        name: 'Beta Education',
+        location: 'Jurong',
+        whatsappNumber: '92345678',
+        website: 'https://beta.com',
+        levels: ['Secondary', 'Junior College'],
+        subjects: ['Science', 'Physics']
+      },
+      {
+        name: 'Gamma Academy',
+        location: 'Bedok',
+        whatsappNumber: '93456789',
+        website: null,
+        levels: ['IB', 'IGCSE'],
+        subjects: ['English', 'Chemistry']
+      }
+    ];
+
+    await Promise.all(testCentres.map(centre => createTestCentre(centre)));
+
+    // Search with no level filter (only subject filter)
+    const resultNoLevel = await service.searchTuitionCentres({ subjects: ['Mathematics'] });
+    expect(resultNoLevel.data.length).toBeGreaterThan(0);
+    // Should return Alpha which has Mathematics
+    const alphaInResult = resultNoLevel.data.some(c => c.name === 'Alpha Learning');
+    expect(alphaInResult).toBe(true);
+
+    // Search with no subject filter (only level filter)
+    const resultNoSubject = await service.searchTuitionCentres({ levels: ['Primary'] });
+    expect(resultNoSubject.data.length).toBeGreaterThan(0);
+    // Should return Alpha which has Primary
+    const alphaInResult2 = resultNoSubject.data.some(c => c.name === 'Alpha Learning');
+    expect(alphaInResult2).toBe(true);
+
+    // Search with no filters at all
+    const resultNoFilters = await service.searchTuitionCentres({});
+    expect(resultNoFilters.data.length).toBe(3);
+    expect(resultNoFilters.pagination.total).toBe(3);
+
+    // Verify all centres are returned
+    const centreNames = resultNoFilters.data.map(c => c.name).sort();
+    expect(centreNames).toEqual(['Alpha Learning', 'Beta Education', 'Gamma Academy']);
+  });
 });
