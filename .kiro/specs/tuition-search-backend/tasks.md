@@ -145,7 +145,7 @@ Output import report (inserted/updated/skipped)
     - Generate random page and limit values and verify result count and metadata
 
 - [-] 6. Implement API route for get by ID
-  - [ ] 6.1 Create get by ID endpoint route handler
+  - [x] 6.1 Create get by ID endpoint route handler
     - Create `src/app/api/tuition-centres/[id]/route.js`
     - Implement GET handler for ID lookup
     - Validate ID parameter format
