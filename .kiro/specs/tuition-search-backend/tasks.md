@@ -159,7 +159,7 @@ Output import report (inserted/updated/skipped)
     - Return 500 for database errors
     - _Requirements: 6.3, 9.4_
 
-  - [-] 6.3 Write property test for ID lookup
+  - [x] 6.3 Write property test for ID lookup
     - **Property 9: ID lookup returns single or none**
     - **Validates: Requirements 6.1, 6.3**
     - Verify ID lookups return exactly one or 404 error
