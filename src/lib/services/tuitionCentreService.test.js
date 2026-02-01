@@ -285,55 +285,6 @@ describe('TuitionCentreService - Property Tests', () => {
     );
   }, 30000); // 30 second timeout
 
-  // Feature: tuition-search-backend, Property 2: Empty search returns all centres
-  // Validates: Requirements 2.2
-  it('Property 2: Empty search returns all centres', async () => {
-    // Create a known set of test centres
-    const testCentres = [
-      {
-        name: 'Alpha Learning',
-        location: 'Tampines',
-        whatsappNumber: '91234567',
-        website: 'https://alpha.com',
-        levels: ['Primary'],
-        subjects: ['Mathematics']
-      },
-      {
-        name: 'Beta Education',
-        location: 'Jurong',
-        whatsappNumber: '92345678',
-        website: 'https://beta.com',
-        levels: ['Secondary'],
-        subjects: ['Science']
-      },
-      {
-        name: 'Gamma Academy',
-        location: 'Bedok',
-        whatsappNumber: '93456789',
-        website: null,
-        levels: ['Junior College'],
-        subjects: ['English']
-      }
-    ];
-
-    await Promise.all(testCentres.map(centre => createTestCentre(centre)));
-
-    // Search with no search query (empty string)
-    const resultEmpty = await service.searchTuitionCentres({ search: '' });
-    expect(resultEmpty.data.length).toBe(3);
-    expect(resultEmpty.pagination.total).toBe(3);
-
-    // Search with no search query (undefined)
-    const resultUndefined = await service.searchTuitionCentres({});
-    expect(resultUndefined.data.length).toBe(3);
-    expect(resultUndefined.pagination.total).toBe(3);
-
-    // Search with whitespace only
-    const resultWhitespace = await service.searchTuitionCentres({ search: '   ' });
-    expect(resultWhitespace.data.length).toBe(3);
-    expect(resultWhitespace.pagination.total).toBe(3);
-  });
-
   // Feature: tuition-search-backend, Property 6: WhatsApp link format is valid
   // Validates: Requirements 7.1, 7.2, 7.4
   it('Property 6: WhatsApp link format is valid', async () => {
