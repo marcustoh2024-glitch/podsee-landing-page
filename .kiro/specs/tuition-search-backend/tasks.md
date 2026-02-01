@@ -202,11 +202,11 @@ Output import report (inserted/updated/skipped)
     - **Property 11: Filter with no matches returns empty array**
     - **Validates: Requirements 2.5, 5.4**
 
-  - [-] 8.3 Write unit test for missing website
+  - [x] 8.3 Write unit test for missing website
     - Test that centres without websites return null for website field
     - **Validates: Requirements 8.3**
 
-  - [ ] 8.4 Write unit test for no filters applied
+  - [-] 8.4 Write unit test for no filters applied
     - Test that no level/subject filters return all centres
     - **Validates: Requirements 3.4, 4.4**
 

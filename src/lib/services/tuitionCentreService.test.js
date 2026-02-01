@@ -449,4 +449,52 @@ describe('TuitionCentreService - Edge Case Tests', () => {
     expect(resultCombined.data).toEqual([]);
     expect(resultCombined.pagination.total).toBe(0);
   });
+
+  // Validates: Requirements 8.3
+  it('should return null for website field when centre has no website', async () => {
+    // Create centres with and without websites
+    const testCentres = [
+      {
+        name: 'Alpha Learning',
+        location: 'Tampines',
+        whatsappNumber: '91234567',
+        website: 'https://alpha.com',
+        levels: ['Primary'],
+        subjects: ['Mathematics']
+      },
+      {
+        name: 'Beta Education',
+        location: 'Jurong',
+        whatsappNumber: '92345678',
+        website: null, // No website
+        levels: ['Secondary'],
+        subjects: ['Science']
+      },
+      {
+        name: 'Gamma Academy',
+        location: 'Bedok',
+        whatsappNumber: '93456789',
+        // website field not provided (undefined)
+        levels: ['Junior College'],
+        subjects: ['English']
+      }
+    ];
+
+    const createdCentres = await Promise.all(testCentres.map(centre => createTestCentre(centre)));
+
+    // Get all centres
+    const result = await service.searchTuitionCentres({});
+
+    // Find centres without websites
+    const betaCentre = result.data.find(c => c.name === 'Beta Education');
+    const gammaCentre = result.data.find(c => c.name === 'Gamma Academy');
+    const alphaCentre = result.data.find(c => c.name === 'Alpha Learning');
+
+    // Verify centres without websites have null website field
+    expect(betaCentre.website).toBeNull();
+    expect(gammaCentre.website).toBeNull();
+
+    // Verify centre with website has the correct value
+    expect(alphaCentre.website).toBe('https://alpha.com');
+  });
 });
