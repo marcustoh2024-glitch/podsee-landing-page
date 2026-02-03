@@ -224,42 +224,155 @@ export default function ContactModal({ isOpen, onClose, centre }) {
               ) : (
                 <div className="space-y-4">
                   {comments.map((comment) => (
-                    <div key={comment.id} className="flex gap-3">
-                      {/* Avatar */}
-                      <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center flex-shrink-0">
-                        <svg className="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                        </svg>
-                      </div>
-                      
-                      {/* Comment Content */}
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-baseline gap-2">
-                          <span className="font-semibold text-sm text-gray-900">
-                            {comment.isAnonymous || !comment.author ? 'Anonymous Parent' : comment.author.email}
-                          </span>
-                          <span className="text-xs text-gray-400">
-                            {formatTimestamp(comment.createdAt)}
-                          </span>
+                    <div key={comment.id}>
+                      {/* Main Comment */}
+                      <div className="flex gap-3">
+                        {/* Avatar */}
+                        <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
+                          comment.author?.role === 'CENTRE' 
+                            ? 'bg-blue-500' 
+                            : 'bg-gray-200'
+                        }`}>
+                          {comment.author?.role === 'CENTRE' ? (
+                            <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                            </svg>
+                          ) : (
+                            <svg className="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                          )}
                         </div>
-                        <p className="text-sm text-gray-900 mt-0.5 break-words">
-                          {comment.body}
-                        </p>
                         
-                        {/* Like/Reply actions */}
-                        <div className="flex items-center gap-4 mt-2">
-                          <button className="text-xs text-gray-500 hover:text-gray-700 font-medium">
-                            Reply
-                          </button>
+                        {/* Comment Content */}
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-baseline gap-2 flex-wrap">
+                            <span className="font-semibold text-sm text-gray-900">
+                              {comment.isAnonymous || !comment.author ? 'Anonymous Parent' : comment.author.email}
+                            </span>
+                            {comment.author?.role === 'CENTRE' && (
+                              <span className="px-2 py-0.5 bg-blue-500 text-white rounded text-xs font-medium">
+                                Centre
+                              </span>
+                            )}
+                            <span className="text-xs text-gray-400">
+                              {formatTimestamp(comment.createdAt)}
+                            </span>
+                          </div>
+                          <p className="text-sm text-gray-900 mt-0.5 break-words">
+                            {comment.body}
+                          </p>
+                          
+                          {/* Like/Reply actions */}
+                          <div className="flex items-center gap-4 mt-2">
+                            <button 
+                              onClick={() => setReplyingTo(comment.id)}
+                              className="text-xs text-gray-500 hover:text-gray-700 font-medium"
+                            >
+                              Reply
+                            </button>
+                            {comment.replies && comment.replies.length > 0 && (
+                              <span className="text-xs text-gray-400">
+                                {comment.replies.length} {comment.replies.length === 1 ? 'reply' : 'replies'}
+                              </span>
+                            )}
+                          </div>
                         </div>
+                        
+                        {/* Like button */}
+                        <button className="flex-shrink-0 text-gray-400 hover:text-red-500 transition-colors">
+                          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                          </svg>
+                        </button>
                       </div>
-                      
-                      {/* Like button */}
-                      <button className="flex-shrink-0 text-gray-400 hover:text-red-500 transition-colors">
-                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                        </svg>
-                      </button>
+
+                      {/* Replies */}
+                      {comment.replies && comment.replies.length > 0 && (
+                        <div className="ml-11 mt-3 space-y-3">
+                          {comment.replies.map((reply) => (
+                            <div key={reply.id} className="flex gap-3">
+                              {/* Reply Avatar */}
+                              <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 ${
+                                reply.author?.role === 'CENTRE' 
+                                  ? 'bg-blue-500' 
+                                  : 'bg-gray-200'
+                              }`}>
+                                {reply.author?.role === 'CENTRE' ? (
+                                  <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                  </svg>
+                                ) : (
+                                  <svg className="w-3.5 h-3.5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                  </svg>
+                                )}
+                              </div>
+                              
+                              {/* Reply Content */}
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-baseline gap-2 flex-wrap">
+                                  <span className="font-semibold text-sm text-gray-900">
+                                    {reply.isAnonymous || !reply.author ? 'Anonymous Parent' : reply.author.email}
+                                  </span>
+                                  {reply.author?.role === 'CENTRE' && (
+                                    <span className="px-2 py-0.5 bg-blue-500 text-white rounded text-xs font-medium">
+                                      Centre
+                                    </span>
+                                  )}
+                                  <span className="text-xs text-gray-400">
+                                    {formatTimestamp(reply.createdAt)}
+                                  </span>
+                                </div>
+                                <p className="text-sm text-gray-900 mt-0.5 break-words">
+                                  {reply.body}
+                                </p>
+                              </div>
+                              
+                              {/* Like button for reply */}
+                              <button className="flex-shrink-0 text-gray-400 hover:text-red-500 transition-colors">
+                                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                </svg>
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+
+                      {/* Reply Input */}
+                      {replyingTo === comment.id && (
+                        <div className="ml-11 mt-3 flex items-center gap-2 bg-gray-50 rounded-lg p-2">
+                          <div className="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center flex-shrink-0">
+                            <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                            </svg>
+                          </div>
+                          <input
+                            type="text"
+                            value={replyText}
+                            onChange={(e) => setReplyText(e.target.value)}
+                            onKeyPress={(e) => e.key === 'Enter' && handlePostReply(comment.id)}
+                            placeholder={`Reply as ${centre.name}...`}
+                            className="flex-1 text-sm border-none outline-none bg-transparent placeholder-gray-400"
+                            autoFocus
+                          />
+                          <button
+                            onClick={() => setReplyingTo(null)}
+                            className="text-xs text-gray-500 hover:text-gray-700 font-medium"
+                          >
+                            Cancel
+                          </button>
+                          {replyText.trim() && (
+                            <button
+                              onClick={() => handlePostReply(comment.id)}
+                              className="text-sm font-semibold text-blue-500 hover:text-blue-600"
+                            >
+                              Post
+                            </button>
+                          )}
+                        </div>
+                      )}
                     </div>
                   ))}
                 </div>
