@@ -74,16 +74,16 @@ describe('Feature: community-forum - Comment Moderation API Property Tests', () 
           const { token } = await authService.authenticate(adminEmail, password, 'ADMIN');
 
           // Create mock request
+          const mockHeaders = new Map([
+            ['authorization', `Bearer ${token}`]
+          ]);
+
           const mockRequest = {
             url: `http://localhost:3000/api/discussions/${centre.id}/${comment.id}`,
-            headers: new Map([
-              ['authorization', `Bearer ${token}`]
-            ]),
+            headers: {
+              get: (key) => mockHeaders.get(key)
+            },
             json: async () => ({ isHidden })
-          };
-
-          mockRequest.headers.get = function(key) {
-            return this.get(key);
           };
 
           const mockParams = {

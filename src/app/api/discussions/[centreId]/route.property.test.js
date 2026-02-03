@@ -150,7 +150,7 @@ describe('Feature: community-forum - Discussion API Endpoints Property Tests', (
         fc.string({ minLength: 5, maxLength: 50 }),
         fc.string({ minLength: 8, maxLength: 15 }),
         fc.emailAddress(),
-        fc.string({ minLength: 8, maxLength: 20 }),
+        fc.string({ minLength: 8, maxLength: 20 }).filter(s => s.trim().length >= 8),
         fc.string({ minLength: 10, maxLength: 100 }),
         async (name, location, whatsappNumber, email, password, body) => {
           // Create a tuition centre
@@ -166,16 +166,16 @@ describe('Feature: community-forum - Discussion API Endpoints Property Tests', (
           const { token } = await authService.authenticate(email, password, 'CENTRE');
 
           // Create mock request with isAnonymous = true
+          const mockHeaders = new Map([
+            ['authorization', `Bearer ${token}`]
+          ]);
+
           const mockRequest = {
             url: `http://localhost:3000/api/discussions/${centre.id}`,
-            headers: new Map([
-              ['authorization', `Bearer ${token}`]
-            ]),
+            headers: {
+              get: (key) => mockHeaders.get(key)
+            },
             json: async () => ({ body, isAnonymous: true })
-          };
-
-          mockRequest.headers.get = function(key) {
-            return this.get(key);
           };
 
           const mockParams = {
@@ -290,7 +290,7 @@ describe('Feature: community-forum - Discussion API Endpoints Property Tests', (
         fc.string({ minLength: 5, maxLength: 50 }),
         fc.string({ minLength: 8, maxLength: 15 }),
         fc.emailAddress(),
-        fc.string({ minLength: 8, maxLength: 20 }),
+        fc.string({ minLength: 8, maxLength: 20 }).filter(s => s.trim().length >= 8),
         fc.string({ minLength: 1, maxLength: 20 }).map(s => s.replace(/\S/g, ' ')),
         async (name, location, whatsappNumber, email, password, whitespaceBody) => {
           // Create a tuition centre
@@ -306,16 +306,16 @@ describe('Feature: community-forum - Discussion API Endpoints Property Tests', (
           const { token } = await authService.authenticate(email, password, 'PARENT');
 
           // Create mock request with whitespace-only body
+          const mockHeaders = new Map([
+            ['authorization', `Bearer ${token}`]
+          ]);
+
           const mockRequest = {
             url: `http://localhost:3000/api/discussions/${centre.id}`,
-            headers: new Map([
-              ['authorization', `Bearer ${token}`]
-            ]),
+            headers: {
+              get: (key) => mockHeaders.get(key)
+            },
             json: async () => ({ body: whitespaceBody, isAnonymous: false })
-          };
-
-          mockRequest.headers.get = function(key) {
-            return this.get(key);
           };
 
           const mockParams = {
