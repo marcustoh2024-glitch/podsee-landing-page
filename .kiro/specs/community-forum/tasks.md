@@ -172,7 +172,7 @@ This implementation plan breaks down the community discussion feature into discr
     - Handle loading and error states
     - _Requirements: 3.1, 3.2, 3.3, 7.3, 7.4_
 
-  - [-] 9.2 Create CommentForm component
+  - [x] 9.2 Create CommentForm component
     - Input field for comment body
     - Checkbox for anonymous posting
     - Disable anonymous option for centre accounts
