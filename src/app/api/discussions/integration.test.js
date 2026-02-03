@@ -62,7 +62,8 @@ describe('Integration Tests - Community Discussion Forum', () => {
   });
 
   beforeEach(async () => {
-    // Clean up comments and users before each test
+    // Clean up comments, threads, and users before each test
+    // Order matters: comments → threads → users
     await prisma.comment.deleteMany();
     await prisma.discussionThread.deleteMany();
     await prisma.user.deleteMany();
@@ -77,10 +78,11 @@ describe('Integration Tests - Community Discussion Forum', () => {
       // Step 1: Login (create new user)
       const { POST: loginPost } = await import('../auth/login/route.js');
       
+      const uniqueEmail = generateTestEmail('parent');
       const loginRequest = new Request('http://localhost/api/auth/login', {
         method: 'POST',
         body: JSON.stringify({
-          email: 'parent@example.com',
+          email: uniqueEmail,
           password: 'securepassword123',
           role: 'PARENT'
         })
@@ -91,7 +93,7 @@ describe('Integration Tests - Community Discussion Forum', () => {
 
       expect(loginResponse.status).toBe(200);
       expect(loginData.user).toBeDefined();
-      expect(loginData.user.email).toBe('parent@example.com');
+      expect(loginData.user.email).toBe(uniqueEmail);
       expect(loginData.user.role).toBe('PARENT');
       expect(loginData.token).toBeDefined();
 
