@@ -561,7 +561,7 @@ describe('Integration Tests - Community Discussion Forum', () => {
       const token = loginData.token;
 
       // Step 2: Create comment as centre
-      const { POST: discussionPost } = await import('./discussions/[centreId]/route.js');
+      const { POST: discussionPost } = await import('./[centreId]/route.js');
       
       const createCommentRequest = new Request(
         `http://localhost/api/discussions/${testCentre.id}`,
@@ -585,7 +585,7 @@ describe('Integration Tests - Community Discussion Forum', () => {
       expect(createCommentData.comment.author.role).toBe('CENTRE');
 
       // Step 3: Verify role is displayed in public view
-      const { GET: discussionGet } = await import('./discussions/[centreId]/route.js');
+      const { GET: discussionGet } = await import('./[centreId]/route.js');
       
       const getCommentsRequest = new Request(
         `http://localhost/api/discussions/${testCentre.id}`
@@ -621,7 +621,7 @@ describe('Integration Tests - Community Discussion Forum', () => {
       const token = loginData.token;
 
       // Attempt to create anonymous comment as centre
-      const { POST: discussionPost } = await import('./discussions/[centreId]/route.js');
+      const { POST: discussionPost } = await import('./[centreId]/route.js');
       
       const createCommentRequest = new Request(
         `http://localhost/api/discussions/${testCentre.id}`,
@@ -715,7 +715,7 @@ describe('Integration Tests - Community Discussion Forum', () => {
       }), { params: { centreId: testCentre.id } });
 
       // Read all comments
-      const { GET: discussionGet } = await import('./discussions/[centreId]/route.js');
+      const { GET: discussionGet } = await import('./[centreId]/route.js');
       const getResponse = await discussionGet(
         new Request(`http://localhost/api/discussions/${testCentre.id}`),
         { params: { centreId: testCentre.id } }
