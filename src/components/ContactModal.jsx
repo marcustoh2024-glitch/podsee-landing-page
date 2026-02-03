@@ -19,6 +19,8 @@ export default function ContactModal({ isOpen, onClose, centre }) {
       document.body.style.overflow = 'hidden'
       // Fetch comments when modal opens
       fetchComments()
+      // Check if user is logged in
+      checkAuth()
     } else {
       document.body.style.overflow = 'unset'
       setReplyingTo(null)
@@ -28,6 +30,27 @@ export default function ContactModal({ isOpen, onClose, centre }) {
       document.body.style.overflow = 'unset'
     }
   }, [isOpen, centre?.id])
+
+  const checkAuth = () => {
+    const user = localStorage.getItem('podsee_current_user')
+    if (user) {
+      try {
+        setCurrentUser(JSON.parse(user))
+      } catch (err) {
+        console.error('Failed to parse user:', err)
+        localStorage.removeItem('podsee_current_user')
+      }
+    }
+  }
+
+  const handleAuthSuccess = (user) => {
+    setCurrentUser(user)
+  }
+
+  const handleSignOut = () => {
+    localStorage.removeItem('podsee_current_user')
+    setCurrentUser(null)
+  }
 
   const fetchComments = async () => {
     if (!centre?.id) return
@@ -88,14 +111,21 @@ export default function ContactModal({ isOpen, onClose, centre }) {
 
   const handlePostComment = async () => {
     if (!newComment.trim()) return
+    if (!currentUser) {
+      setShowAuthModal(true)
+      return
+    }
     
     // In a real app, this would post to the API
     const mockComment = {
       id: Date.now(),
       body: newComment,
-      isAnonymous: true,
+      isAnonymous: currentUser.isAnonymous || false,
       createdAt: new Date().toISOString(),
-      author: null,
+      author: currentUser.isAnonymous ? null : {
+        email: currentUser.name || currentUser.email,
+        role: currentUser.role
+      },
       replies: []
     }
     
