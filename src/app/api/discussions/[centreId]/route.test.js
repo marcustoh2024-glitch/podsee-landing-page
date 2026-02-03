@@ -1,11 +1,22 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { GET, POST } from './route';
+import { generateTestUUID } from '@/lib/testUtils';
 
 describe('Discussion API Endpoints - Unit Tests', () => {
   let mockDiscussionService;
   let mockAuthService;
+  let testCentreId;
+  let testThreadId;
+  let testUserId;
+  let testCommentId;
 
   beforeEach(() => {
+    // Generate valid UUIDs for each test
+    testCentreId = generateTestUUID();
+    testThreadId = generateTestUUID();
+    testUserId = generateTestUUID();
+    testCommentId = generateTestUUID();
+
     mockDiscussionService = {
       getOrCreateThread: vi.fn(),
       getComments: vi.fn(),
@@ -20,10 +31,10 @@ describe('Discussion API Endpoints - Unit Tests', () => {
   describe('GET /api/discussions/[centreId]', () => {
     it('should return thread and comments for valid centre ID', async () => {
       const mockThread = {
-        id: 'thread-123',
-        tuitionCentreId: 'centre-123',
+        id: testThreadId,
+        tuitionCentreId: testCentreId,
         tuitionCentre: {
-          id: 'centre-123',
+          id: testCentreId,
           name: 'Test Centre',
           location: 'Tampines'
         },
@@ -32,11 +43,11 @@ describe('Discussion API Endpoints - Unit Tests', () => {
 
       const mockComments = [
         {
-          id: 'comment-1',
+          id: testCommentId,
           body: 'Great centre!',
           isAnonymous: false,
           author: {
-            id: 'user-1',
+            id: testUserId,
             email: 'parent@example.com',
             role: 'PARENT'
           },
@@ -47,9 +58,9 @@ describe('Discussion API Endpoints - Unit Tests', () => {
       mockDiscussionService.getOrCreateThread.mockResolvedValue(mockThread);
       mockDiscussionService.getComments.mockResolvedValue(mockComments);
 
-      const request = new Request('http://localhost/api/discussions/centre-123');
+      const request = new Request(`http://localhost/api/discussions/${testCentreId}`);
       const response = await GET(request, {
-        params: { centreId: 'centre-123' },
+        params: { centreId: testCentreId },
         discussionService: mockDiscussionService
       });
 

@@ -670,10 +670,11 @@ describe('Integration Tests - Community Discussion Forum', () => {
       const { POST: discussionPost } = await import('./[centreId]/route.js');
 
       // Create parent 1 (anonymous comment)
+      const parent1Email = generateTestEmail('parent1');
       const parent1Login = await loginPost(new Request('http://localhost/api/auth/login', {
         method: 'POST',
         body: JSON.stringify({
-          email: 'parent1@example.com',
+          email: parent1Email,
           password: 'password12345678',
           role: 'PARENT'
         })
@@ -690,10 +691,11 @@ describe('Integration Tests - Community Discussion Forum', () => {
       }), { params: { centreId: testCentre.id } });
 
       // Create parent 2 (public comment)
+      const parent2Email = generateTestEmail('parent2');
       const parent2Login = await loginPost(new Request('http://localhost/api/auth/login', {
         method: 'POST',
         body: JSON.stringify({
-          email: 'parent2@example.com',
+          email: parent2Email,
           password: 'password12345678',
           role: 'PARENT'
         })
@@ -710,10 +712,11 @@ describe('Integration Tests - Community Discussion Forum', () => {
       }), { params: { centreId: testCentre.id } });
 
       // Create centre comment
+      const centreEmail = generateTestEmail('centre');
       const centreLogin = await loginPost(new Request('http://localhost/api/auth/login', {
         method: 'POST',
         body: JSON.stringify({
-          email: 'centre@example.com',
+          email: centreEmail,
           password: 'password12345678',
           role: 'CENTRE'
         })
@@ -747,13 +750,13 @@ describe('Integration Tests - Community Discussion Forum', () => {
       // Verify public parent comment
       const publicComment = getData.comments.find(c => c.body === 'Public parent comment');
       expect(publicComment.isAnonymous).toBe(false);
-      expect(publicComment.author.email).toBe('parent2@example.com');
+      expect(publicComment.author.email).toBe(parent2Email);
       expect(publicComment.author.role).toBe('PARENT');
 
       // Verify centre comment
       const centreComment = getData.comments.find(c => c.body === 'Centre response');
       expect(centreComment.isAnonymous).toBe(false);
-      expect(centreComment.author.email).toBe('centre@example.com');
+      expect(centreComment.author.email).toBe(centreEmail);
       expect(centreComment.author.role).toBe('CENTRE');
     });
   });
