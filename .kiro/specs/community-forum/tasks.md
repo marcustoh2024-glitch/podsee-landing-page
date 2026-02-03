@@ -210,7 +210,7 @@ This implementation plan breaks down the community discussion feature into discr
     - _Requirements: 7.1, 7.2_
 
 - [-] 11. Create discussion page route
-  - [-] 11.1 Create /discussions/[centreId]/page.jsx
+  - [x] 11.1 Create /discussions/[centreId]/page.jsx
     - Render DiscussionPage component
     - Pass centreId from route params
     - Set page metadata (title, description)
