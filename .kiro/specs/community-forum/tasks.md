@@ -172,7 +172,7 @@ This implementation plan breaks down the community discussion feature into discr
     - Handle loading and error states
     - _Requirements: 3.1, 3.2, 3.3, 7.3, 7.4_
 
-  - [ ] 9.2 Create CommentForm component
+  - [-] 9.2 Create CommentForm component
     - Input field for comment body
     - Checkbox for anonymous posting
     - Disable anonymous option for centre accounts
@@ -181,7 +181,7 @@ This implementation plan breaks down the community discussion feature into discr
     - Clear form after successful submission
     - _Requirements: 4.1, 4.2, 4.3, 5.2_
 
-  - [-] 9.3 Create CommentList component
+  - [x] 9.3 Create CommentList component
     - Render list of comments
     - Display author name or "Anonymous Parent"
     - Display timestamp
