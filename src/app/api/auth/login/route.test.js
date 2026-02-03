@@ -91,8 +91,8 @@ describe('POST /api/auth/login', () => {
         id: 'user-456',
         email: 'test@example.com',
         role: 'PARENT',
-        createdAt: new Date(),
-        updatedAt: new Date()
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
       };
 
       mockAuthService.authenticate.mockResolvedValue({
@@ -159,8 +159,8 @@ describe('POST /api/auth/login', () => {
 
       expect(response.status).toBe(401);
       expect(data.error.message).toBe('Invalid email or password');
-      expect(data.error.message).not.toContain('email');
-      expect(data.error.message).not.toContain('user');
+      // Message should be generic and not reveal specific details
+      expect(data.error.message.toLowerCase()).toContain('invalid');
     });
   });
 
