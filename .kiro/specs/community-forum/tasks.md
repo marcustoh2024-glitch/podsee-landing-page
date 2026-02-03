@@ -113,7 +113,7 @@ This implementation plan breaks down the community discussion feature into discr
     - _Requirements: 1.1, 1.2_
 
 - [-] 6. Implement discussion API endpoints
-  - [ ] 6.1 Create GET /api/discussions/[centreId] route
+  - [-] 6.1 Create GET /api/discussions/[centreId] route
     - Validate centre ID format (UUID)
     - Call DiscussionService.getOrCreateThread()
     - Call DiscussionService.getComments()
