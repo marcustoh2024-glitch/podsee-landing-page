@@ -3,6 +3,7 @@ import fc from 'fast-check';
 import { PATCH } from './route.js';
 import { PrismaClient } from '@prisma/client';
 import AuthService from '@/lib/services/authService.js';
+import { generateTestEmail, generateTestUUID } from '@/lib/testUtils.js';
 
 const prisma = new PrismaClient();
 const authService = new AuthService(prisma);
@@ -30,12 +31,14 @@ describe('Feature: community-forum - Comment Moderation API Property Tests', () 
         fc.string({ minLength: 5, maxLength: 50 }),
         fc.string({ minLength: 5, maxLength: 50 }),
         fc.string({ minLength: 8, maxLength: 15 }),
-        fc.emailAddress(),
         fc.string({ minLength: 8, maxLength: 20 }).filter(s => s.trim().length >= 8),
         fc.string({ minLength: 10, maxLength: 100 }),
         fc.boolean(),
         fc.boolean(),
-        async (name, location, whatsappNumber, email, password, body, isAnonymous, isHidden) => {
+        async (name, location, whatsappNumber, password, body, isAnonymous, isHidden) => {
+          // Generate unique email for each test run
+          const email = generateTestEmail('test');
+          
           // Create centre, user, thread, and comment
           const centre = await prisma.tuitionCentre.create({
             data: { name, location, whatsappNumber }
