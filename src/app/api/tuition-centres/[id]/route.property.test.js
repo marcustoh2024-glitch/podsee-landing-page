@@ -8,10 +8,15 @@ const prisma = new PrismaClient();
 const service = new TuitionCentreService(prisma);
 
 // Helper to clean up test data
+// CRITICAL: Deletion order must respect foreign key constraints
+// Order: comments → discussion threads → tuition centres (with relations) → users → levels/subjects
 async function cleanupTestData() {
+  await prisma.comment.deleteMany();
+  await prisma.discussionThread.deleteMany();
   await prisma.tuitionCentreSubject.deleteMany();
   await prisma.tuitionCentreLevel.deleteMany();
   await prisma.tuitionCentre.deleteMany();
+  await prisma.user.deleteMany();
   await prisma.subject.deleteMany();
   await prisma.level.deleteMany();
 }
