@@ -461,7 +461,7 @@ describe('Feature: community-forum - DiscussionService Property Tests', () => {
         fc.string({ minLength: 5, maxLength: 50 }),
         fc.string({ minLength: 8, maxLength: 15 }),
         fc.emailAddress(),
-        fc.stringOf(fc.constantFrom(' ', '\t', '\n', '\r'), { minLength: 1, maxLength: 20 }),
+        fc.string({ minLength: 1, maxLength: 20 }).map(s => s.replace(/\S/g, ' ')),
         async (name, location, whatsappNumber, email, whitespaceBody) => {
           // Create centre, thread, and user
           const centre = await prisma.tuitionCentre.create({
@@ -513,7 +513,6 @@ describe('Feature: community-forum - DiscussionService Property Tests', () => {
         fc.string({ minLength: 5, maxLength: 50 }),
         fc.string({ minLength: 5, maxLength: 50 }),
         fc.string({ minLength: 8, maxLength: 15 }),
-        fc.emailAddress(),
         fc.string({ minLength: 5, maxLength: 50 }),
         fc.constantFrom(
           '<script>alert("xss")</script>',
@@ -522,7 +521,7 @@ describe('Feature: community-forum - DiscussionService Property Tests', () => {
           '<b>Bold text</b>',
           '<a href="javascript:alert(1)">Link</a>'
         ),
-        async (name, location, whatsappNumber, email, safeText, maliciousCode) => {
+        async (name, location, whatsappNumber, safeText, maliciousCode) => {
           // Create centre, thread, and user
           const centre = await prisma.tuitionCentre.create({
             data: { name, location, whatsappNumber }
@@ -530,6 +529,9 @@ describe('Feature: community-forum - DiscussionService Property Tests', () => {
 
           const thread = await discussionService.getOrCreateThread(centre.id);
 
+          // Generate unique email for each test run
+          const email = `user-${Date.now()}-${Math.random().toString(36).substring(7)}@test.com`;
+          
           const user = await prisma.user.create({
             data: {
               email,
