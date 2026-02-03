@@ -97,7 +97,7 @@ This implementation plan breaks down the community discussion feature into discr
 - [x] 4. Checkpoint - Ensure all service layer tests pass
   - Ensure all tests pass, ask the user if questions arise.
 
-- [-] 5. Implement authentication API endpoint
+- [x] 5. Implement authentication API endpoint
   - [x] 5.1 Create POST /api/auth/login route
     - Parse and validate request body (email, password)
     - Call AuthService.authenticate()
@@ -105,14 +105,14 @@ This implementation plan breaks down the community discussion feature into discr
     - Handle authentication errors (401, 400, 500)
     - _Requirements: 1.1, 1.2_
 
-  - [-] 5.2 Write unit tests for login endpoint
+  - [x] 5.2 Write unit tests for login endpoint
     - Test successful login response format
     - Test invalid credentials error
     - Test missing fields error
     - Test malformed request body
     - _Requirements: 1.1, 1.2_
 
-- [ ] 6. Implement discussion API endpoints
+- [-] 6. Implement discussion API endpoints
   - [ ] 6.1 Create GET /api/discussions/[centreId] route
     - Validate centre ID format (UUID)
     - Call DiscussionService.getOrCreateThread()
