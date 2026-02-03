@@ -65,6 +65,57 @@ function ResultsContent() {
     setIsModalOpen(true)
   }
 
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-[#F5F1E8] pb-24 lg:pb-8">
+        <div className="max-w-4xl mx-auto px-4 md:px-10 py-8">
+          <Link 
+            href="/"
+            className="inline-flex items-center gap-2 text-label-large text-[#6B7566] hover:text-[#2C3E2F] mb-4 transition-colors"
+          >
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+            Back to filters
+          </Link>
+          <div className="text-center py-12">
+            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-white/50 animate-pulse" />
+            <p className="text-body-large text-[#6B7566]">Loading results...</p>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="min-h-screen bg-[#F5F1E8] pb-24 lg:pb-8">
+        <div className="max-w-4xl mx-auto px-4 md:px-10 py-8">
+          <Link 
+            href="/"
+            className="inline-flex items-center gap-2 text-label-large text-[#6B7566] hover:text-[#2C3E2F] mb-4 transition-colors"
+          >
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+            Back to filters
+          </Link>
+          <div className="text-center py-12">
+            <p className="text-body-large text-[#8B5A54] mb-4">{error}</p>
+            <button
+              onClick={() => window.location.reload()}
+              className="px-6 py-3 bg-primary text-white rounded-full text-label-large font-medium hover:shadow-elevation-2 transition-all"
+            >
+              Try Again
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen bg-[#F5F1E8] pb-24 lg:pb-8">
       <div className="max-w-4xl mx-auto px-4 md:px-10 py-8">
@@ -104,34 +155,41 @@ function ResultsContent() {
           </div>
           
           <p className="text-body-large text-[#6B7566]">
-            {mockResults.length} centres found
+            {results.length} centres found
           </p>
         </div>
 
         {/* Results list */}
         <div className="space-y-3">
-          {mockResults.map((result) => (
-            <button
-              key={result.id}
-              onClick={() => handleCentreClick(result)}
-              className="w-full text-left bg-white/90 backdrop-blur-sm rounded-[18px] p-5 shadow-premium-sm hover:shadow-premium-md transition-all duration-300 ease-emphasized hover:scale-[1.01] active:scale-[0.99]"
-            >
-              <h3 className="text-title-medium font-semibold text-[#2C3E2F] mb-3">
-                {result.name}
-              </h3>
-              <div className="flex flex-wrap gap-2">
-                <span className="px-3 py-1 bg-[#F5F1E8] rounded-full text-label-small text-[#6B7566]">
-                  {result.location}
-                </span>
-                <span className="px-3 py-1 bg-[#F5F1E8] rounded-full text-label-small text-[#6B7566]">
-                  {result.level}
-                </span>
-                <span className="px-3 py-1 bg-[#F5F1E8] rounded-full text-label-small text-[#6B7566]">
-                  {result.subject}
-                </span>
-              </div>
-            </button>
-          ))}
+          {results.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-body-large text-[#6B7566] mb-2">No centres found</p>
+              <p className="text-body-medium text-[#6B7566]">Try adjusting your filters</p>
+            </div>
+          ) : (
+            results.map((result) => (
+              <button
+                key={result.id}
+                onClick={() => handleCentreClick(result)}
+                className="w-full text-left bg-white/90 backdrop-blur-sm rounded-[18px] p-5 shadow-premium-sm hover:shadow-premium-md transition-all duration-300 ease-emphasized hover:scale-[1.01] active:scale-[0.99]"
+              >
+                <h3 className="text-title-medium font-semibold text-[#2C3E2F] mb-3">
+                  {result.name}
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  <span className="px-3 py-1 bg-[#F5F1E8] rounded-full text-label-small text-[#6B7566]">
+                    {result.location}
+                  </span>
+                  <span className="px-3 py-1 bg-[#F5F1E8] rounded-full text-label-small text-[#6B7566]">
+                    {result.level}
+                  </span>
+                  <span className="px-3 py-1 bg-[#F5F1E8] rounded-full text-label-small text-[#6B7566]">
+                    {result.subject}
+                  </span>
+                </div>
+              </button>
+            ))
+          )}
         </div>
       </div>
 
