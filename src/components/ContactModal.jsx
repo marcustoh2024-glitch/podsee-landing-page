@@ -96,8 +96,13 @@ export default function ContactModal({ isOpen, onClose, centre }) {
       replies: []
     }
     
-    setComments([mockComment, ...comments])
+    const updatedComments = [mockComment, ...comments]
+    setComments(updatedComments)
     setNewComment('')
+    
+    // Save to localStorage
+    const localStorageKey = `comments_${centre.id}`
+    localStorage.setItem(localStorageKey, JSON.stringify(updatedComments))
   }
 
   const handlePostReply = async (parentId) => {
@@ -117,7 +122,7 @@ export default function ContactModal({ isOpen, onClose, centre }) {
     }
     
     // Add reply to the parent comment
-    setComments(comments.map(comment => {
+    const updatedComments = comments.map(comment => {
       if (comment.id === parentId) {
         return {
           ...comment,
@@ -125,10 +130,15 @@ export default function ContactModal({ isOpen, onClose, centre }) {
         }
       }
       return comment
-    }))
+    })
     
+    setComments(updatedComments)
     setReplyText('')
     setReplyingTo(null)
+    
+    // Save to localStorage
+    const localStorageKey = `comments_${centre.id}`
+    localStorage.setItem(localStorageKey, JSON.stringify(updatedComments))
   }
 
   const formatTimestamp = (dateString) => {
