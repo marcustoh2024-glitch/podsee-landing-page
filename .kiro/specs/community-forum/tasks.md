@@ -94,7 +94,7 @@ This implementation plan breaks down the community discussion feature into discr
     - Test sanitization with specific XSS patterns
     - _Requirements: 2.1, 3.1, 4.1, 4.3, 4.5, 6.1_
 
-- [ ] 4. Checkpoint - Ensure all service layer tests pass
+- [-] 4. Checkpoint - Ensure all service layer tests pass
   - Ensure all tests pass, ask the user if questions arise.
 
 - [ ] 5. Implement authentication API endpoint
