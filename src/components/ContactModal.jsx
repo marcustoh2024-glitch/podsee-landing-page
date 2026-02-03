@@ -1,8 +1,10 @@
 'use client'
 
 import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 
 export default function ContactModal({ isOpen, onClose, centre }) {
+  const router = useRouter()
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden'
