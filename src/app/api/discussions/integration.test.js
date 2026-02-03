@@ -216,7 +216,7 @@ describe('Integration Tests - Community Discussion Forum', () => {
   describe('Flow 2: Moderation - Create Comment → Hide → Verify Hidden', () => {
     it('should allow admin to hide a comment and verify it is excluded from public view', async () => {
       // Step 1: Create a parent user and comment
-      const { POST: loginPost } = await import('./auth/login/route.js');
+      const { POST: loginPost } = await import('../auth/login/route.js');
       
       const parentLoginRequest = new Request('http://localhost/api/auth/login', {
         method: 'POST',
@@ -306,7 +306,7 @@ describe('Integration Tests - Community Discussion Forum', () => {
 
     it('should allow admin to unhide a comment and restore visibility', async () => {
       // Create parent and comment
-      const { POST: loginPost } = await import('./auth/login/route.js');
+      const { POST: loginPost } = await import('../auth/login/route.js');
       
       const parentLoginRequest = new Request('http://localhost/api/auth/login', {
         method: 'POST',
@@ -410,7 +410,7 @@ describe('Integration Tests - Community Discussion Forum', () => {
   describe('Flow 3: Anonymous - Create Anonymous Comment → Verify Author Hidden', () => {
     it('should hide author identity for anonymous comments in public view', async () => {
       // Step 1: Login as parent
-      const { POST: loginPost } = await import('./auth/login/route.js');
+      const { POST: loginPost } = await import('../auth/login/route.js');
       
       const loginRequest = new Request('http://localhost/api/auth/login', {
         method: 'POST',
@@ -479,7 +479,7 @@ describe('Integration Tests - Community Discussion Forum', () => {
 
     it('should show author for non-anonymous comments', async () => {
       // Login as parent
-      const { POST: loginPost } = await import('./auth/login/route.js');
+      const { POST: loginPost } = await import('../auth/login/route.js');
       
       const loginRequest = new Request('http://localhost/api/auth/login', {
         method: 'POST',
