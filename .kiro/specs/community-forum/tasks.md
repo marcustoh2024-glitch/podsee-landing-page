@@ -39,8 +39,8 @@ This implementation plan breaks down the community discussion feature into discr
     - Test password hashing security
     - _Requirements: 1.1, 1.2, 1.3_
 
-- [ ] 3. Implement DiscussionService for thread and comment management
-  - [ ] 3.1 Create DiscussionService class with core methods
+- [-] 3. Implement DiscussionService for thread and comment management
+  - [-] 3.1 Create DiscussionService class with core methods
     - Implement getOrCreateThread() to ensure one thread per centre
     - Implement getComments() to retrieve non-hidden comments ordered chronologically
     - Implement createComment() with validation and sanitization
