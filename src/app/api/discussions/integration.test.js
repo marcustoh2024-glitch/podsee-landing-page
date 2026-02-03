@@ -147,16 +147,17 @@ describe('Integration Tests - Community Discussion Forum', () => {
       expect(getCommentsData.thread.tuitionCentreId).toBe(testCentre.id);
       expect(getCommentsData.comments).toHaveLength(1);
       expect(getCommentsData.comments[0].body).toBe('This is a great tuition centre!');
-      expect(getCommentsData.comments[0].author.email).toBe('parent@example.com');
+      expect(getCommentsData.comments[0].author.email).toBe(uniqueEmail);
     });
 
     it('should allow multiple comments from the same user', async () => {
       // Login
       const { POST: loginPost } = await import('../auth/login/route.js');
+      const uniqueEmail = generateTestEmail('parent');
       const loginRequest = new Request('http://localhost/api/auth/login', {
         method: 'POST',
         body: JSON.stringify({
-          email: 'parent2@example.com',
+          email: uniqueEmail,
           password: 'password12345678',
           role: 'PARENT'
         })
@@ -224,10 +225,11 @@ describe('Integration Tests - Community Discussion Forum', () => {
       // Step 1: Create a parent user and comment
       const { POST: loginPost } = await import('../auth/login/route.js');
       
+      const parentEmail = generateTestEmail('parent');
       const parentLoginRequest = new Request('http://localhost/api/auth/login', {
         method: 'POST',
         body: JSON.stringify({
-          email: 'parent@example.com',
+          email: parentEmail,
           password: 'password12345678',
           role: 'PARENT'
         })
@@ -259,10 +261,11 @@ describe('Integration Tests - Community Discussion Forum', () => {
       const commentId = createCommentData.comment.id;
 
       // Step 2: Create admin user and hide the comment
+      const adminEmail = generateTestEmail('admin');
       const adminLoginRequest = new Request('http://localhost/api/auth/login', {
         method: 'POST',
         body: JSON.stringify({
-          email: 'admin@example.com',
+          email: adminEmail,
           password: 'adminpassword123',
           role: 'ADMIN'
         })
@@ -314,10 +317,11 @@ describe('Integration Tests - Community Discussion Forum', () => {
       // Create parent and comment
       const { POST: loginPost } = await import('../auth/login/route.js');
       
+      const parentEmail = generateTestEmail('parent');
       const parentLoginRequest = new Request('http://localhost/api/auth/login', {
         method: 'POST',
         body: JSON.stringify({
-          email: 'parent@example.com',
+          email: parentEmail,
           password: 'password12345678',
           role: 'PARENT'
         })
