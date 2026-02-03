@@ -36,7 +36,6 @@ const filterConfig = [
 export default function FilterWizardMinimal() {
   const router = useRouter()
   const [filters, setFilters] = useState({
-    location: '',
     level: '',
     subject: ''
   })
@@ -52,19 +51,27 @@ export default function FilterWizardMinimal() {
   }
 
   const handleApply = () => {
-    if (filters.location && filters.level && filters.subject) {
-      const params = new URLSearchParams(filters)
+    if (filters.level && filters.subject) {
+      const params = new URLSearchParams({
+        location: 'Marine Parade',
+        level: filters.level,
+        subject: filters.subject
+      })
       router.push(`/results?${params.toString()}`)
     }
   }
 
-  const canApply = filters.location && filters.level && filters.subject
+  const canApply = filters.level && filters.subject
 
-  const canSearch = filters.location && filters.level && filters.subject
+  const canSearch = filters.level && filters.subject
 
   const handleSearch = () => {
     if (canSearch) {
-      const params = new URLSearchParams(filters)
+      const params = new URLSearchParams({
+        location: 'Marine Parade',
+        level: filters.level,
+        subject: filters.subject
+      })
       router.push(`/results?${params.toString()}`)
     }
   }
