@@ -1,7 +1,7 @@
 'use client'
 
 import { useSearchParams } from 'next/navigation'
-import { Suspense, useState } from 'react'
+import { Suspense, useState, useEffect } from 'react'
 import Link from 'next/link'
 import ContactModal from '@/components/ContactModal'
 
@@ -13,55 +13,52 @@ function ResultsContent() {
 
   const [selectedCentre, setSelectedCentre] = useState(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [results, setResults] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState(null)
 
-  // Mock data - will be replaced with real data later
-  const mockResults = [
-    {
-      id: 1,
-      name: "Learning Hub @ " + location,
-      location: location,
-      level: level,
-      subject: subject,
-      whatsapp: "6591234567", // Singapore format
-      website: "https://example.com"
-    },
-    {
-      id: 2,
-      name: "Education Centre",
-      location: location,
-      level: level,
-      subject: subject,
-      whatsapp: "6591234568",
-      website: "https://example.com"
-    },
-    {
-      id: 3,
-      name: "Tuition Studio",
-      location: location,
-      level: level,
-      subject: subject,
-      whatsapp: "6591234569",
-      website: null // Some centres might not have website
-    },
-    {
-      id: 4,
-      name: "Academic Excellence",
-      location: location,
-      level: level,
-      subject: subject,
-      whatsapp: "6591234570",
-      website: "https://example.com"
-    },
-    {
-      id: 5,
-      name: "Study Point",
-      location: location,
-      level: level,
-      subject: subject,
-      whatsapp: "6591234571",
-      website: "https://example.com"
+  // Fetch real tuition centres from API
+  useEffect(() => {
+    const fetchResults = async () => {
+      try {
+        setIsLoading(true)
+        setError(null)
+
+        // Build query params
+        const params = new URLSearchParams()
+        if (location) params.append('location', location)
+        if (level) params.append('level', level)
+        if (subject) params.append('subject', subject)
+
+        const response = await fetch(`/api/tuition-centres?${params.toString()}`)
+        const data = await response.json()
+
+        if (!response.ok) {
+          throw new Error(data.error?.message || 'Failed to load results')
+        }
+
+        // Transform data to match expected format
+        const transformedResults = data.data.map(centre => ({
+          id: centre.id,
+          name: centre.name,
+          location: centre.location,
+          level: centre.levels?.[0] || level,
+          subject: centre.subjects?.[0] || subject,
+          whatsapp: centre.whatsappNumber,
+          website: centre.website
+        }))
+
+        setResults(transformedResults)
+      } catch (err) {
+        console.error('Error fetching results:', err)
+        setError(err.message)
+      } finally {
+        setIsLoading(false)
+      }
     }
-  ]
+
+    fetchResults()
+  }, [location, level, subject])
 
   const handleCentreClick = (centre) => {
     setSelectedCentre(centre)
