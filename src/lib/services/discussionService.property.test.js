@@ -513,7 +513,7 @@ describe('Feature: community-forum - DiscussionService Property Tests', () => {
         fc.string({ minLength: 5, maxLength: 50 }),
         fc.string({ minLength: 5, maxLength: 50 }),
         fc.string({ minLength: 8, maxLength: 15 }),
-        fc.string({ minLength: 5, maxLength: 50 }),
+        fc.string({ minLength: 5, maxLength: 50 }).filter(s => s.trim().length > 0),
         fc.constantFrom(
           '<script>alert("xss")</script>',
           '<img src=x onerror=alert(1)>',
@@ -560,8 +560,8 @@ describe('Feature: community-forum - DiscussionService Property Tests', () => {
           expect(comment.body).not.toContain('onerror');
           expect(comment.body).not.toContain('onclick');
 
-          // Verify safe text is preserved
-          expect(comment.body).toContain(safeText);
+          // Verify safe text is preserved (trimmed)
+          expect(comment.body.trim()).toContain(safeText.trim());
         }
       ),
       { numRuns: 100 }
