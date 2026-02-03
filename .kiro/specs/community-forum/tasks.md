@@ -112,7 +112,7 @@ This implementation plan breaks down the community discussion feature into discr
     - Test malformed request body
     - _Requirements: 1.1, 1.2_
 
-- [-] 6. Implement discussion API endpoints
+- [x] 6. Implement discussion API endpoints
   - [x] 6.1 Create GET /api/discussions/[centreId] route
     - Validate centre ID format (UUID)
     - Call DiscussionService.getOrCreateThread()
@@ -145,7 +145,7 @@ This implementation plan breaks down the community discussion feature into discr
     - Test PATCH endpoint modifies only isHidden flag
     - **Validates: Requirements 3.1, 4.1, 6.1**
 
-  - [-] 6.5 Write unit tests for discussion endpoints
+  - [x] 6.5 Write unit tests for discussion endpoints
     - Test specific request/response formats
     - Test error responses (missing auth, invalid IDs)
     - Test unauthenticated read access
