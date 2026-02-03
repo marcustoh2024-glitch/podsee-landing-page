@@ -6,7 +6,7 @@ This implementation plan breaks down the community discussion feature into discr
 
 ## Tasks
 
-- [-] 1. Set up database schema and migrations
+- [x] 1. Set up database schema and migrations
   - Create Prisma schema for User, DiscussionThread, and Comment models
   - Add UserRole enum (PARENT, CENTRE, ADMIN)
   - Configure foreign key relationships and constraints
@@ -14,7 +14,7 @@ This implementation plan breaks down the community discussion feature into discr
   - Update TuitionCentre model to include discussionThread relation
   - _Requirements: 1.4, 2.1, 2.2, 9.1, 9.2, 9.3, 9.4_
 
-- [-] 1.1 Write property test for schema constraints
+- [x] 1.1 Write property test for schema constraints
   - **Property 24: Invalid thread foreign keys are rejected**
   - **Property 25: Invalid centre foreign keys are rejected**
   - **Validates: Requirements 9.3, 9.4**
