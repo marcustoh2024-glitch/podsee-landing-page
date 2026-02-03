@@ -189,7 +189,7 @@ This implementation plan breaks down the community discussion feature into discr
     - Handle empty state (no comments yet)
     - _Requirements: 3.1, 3.2, 3.3, 5.3_
 
-  - [ ]* 9.4 Write unit tests for frontend components
+  - [ ] 9.4 Write unit tests for frontend components
     - Test DiscussionPage renders correctly with data
     - Test CommentForm validation and submission
     - Test CommentList displays comments correctly
@@ -204,7 +204,7 @@ This implementation plan breaks down the community discussion feature into discr
     - Style consistently with existing buttons
     - _Requirements: 7.1, 7.2_
 
-  - [ ]* 10.2 Write unit test for modal integration
+  - [ ] 10.2 Write unit test for modal integration
     - Test button appears in correct position
     - Test navigation on click
     - _Requirements: 7.1, 7.2_
@@ -230,7 +230,7 @@ This implementation plan breaks down the community discussion feature into discr
     - Simplify authentication checks in components
     - _Requirements: 1.3, 7.4_
 
-  - [ ]* 12.3 Write unit tests for auth context
+  - [ ] 12.3 Write unit tests for auth context
     - Test login updates context
     - Test logout clears context
     - Test token persistence
@@ -243,7 +243,6 @@ This implementation plan breaks down the community discussion feature into discr
 
 ## Notes
 
-- Tasks marked with `*` are optional and can be skipped for faster MVP
 - Each task references specific requirements for traceability
 - Checkpoints ensure incremental validation
 - Property tests validate universal correctness properties across many inputs
