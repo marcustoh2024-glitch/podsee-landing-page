@@ -53,13 +53,13 @@ This implementation plan breaks down the community discussion feature into discr
     - **Property 6: Threads cannot be deleted**
     - **Validates: Requirements 2.1, 2.2, 2.3, 2.4**
 
-  - [-] 3.3 Write property tests for comment display
+  - [x] 3.3 Write property tests for comment display
     - **Property 7: Hidden comments are excluded**
     - **Property 8: Comments are chronologically ordered**
     - **Property 9: Anonymous comments hide author identity**
     - **Validates: Requirements 3.1, 3.2, 3.3, 6.2, 8.2**
 
-  - [ ] 3.4 Write property tests for comment creation
+  - [-] 3.4 Write property tests for comment creation
     - **Property 10: Valid comments are stored**
     - **Property 11: Anonymity preference is respected**
     - **Property 12: Whitespace-only comments are rejected**
