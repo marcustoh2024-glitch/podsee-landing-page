@@ -80,7 +80,7 @@ describe('Feature: community-forum - Discussion API Endpoints Property Tests', (
         fc.string({ minLength: 5, maxLength: 50 }),
         fc.string({ minLength: 8, maxLength: 15 }),
         fc.emailAddress(),
-        fc.string({ minLength: 8, maxLength: 20 }),
+        fc.string({ minLength: 8, maxLength: 20 }).filter(s => s.trim().length >= 8),
         fc.string({ minLength: 1, maxLength: 500 }).filter(s => s.trim().length > 0),
         fc.boolean(),
         async (name, location, whatsappNumber, email, password, body, isAnonymous) => {
@@ -97,16 +97,16 @@ describe('Feature: community-forum - Discussion API Endpoints Property Tests', (
           const { token } = await authService.authenticate(email, password, 'PARENT');
 
           // Create mock request
+          const mockHeaders = new Map([
+            ['authorization', `Bearer ${token}`]
+          ]);
+
           const mockRequest = {
             url: `http://localhost:3000/api/discussions/${centre.id}`,
-            headers: new Map([
-              ['authorization', `Bearer ${token}`]
-            ]),
+            headers: {
+              get: (key) => mockHeaders.get(key)
+            },
             json: async () => ({ body, isAnonymous })
-          };
-
-          mockRequest.headers.get = function(key) {
-            return this.get(key);
           };
 
           const mockParams = {
