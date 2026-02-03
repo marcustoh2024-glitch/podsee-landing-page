@@ -17,8 +17,8 @@ describe('POST /api/auth/login', () => {
         id: 'user-123',
         email: 'parent@example.com',
         role: 'PARENT',
-        createdAt: new Date(),
-        updatedAt: new Date()
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
       };
       const mockToken = 'jwt-token-abc123';
 
@@ -54,8 +54,8 @@ describe('POST /api/auth/login', () => {
         id: 'centre-123',
         email: 'centre@example.com',
         role: 'CENTRE',
-        createdAt: new Date(),
-        updatedAt: new Date()
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
       };
       const mockToken = 'jwt-token-xyz789';
 
