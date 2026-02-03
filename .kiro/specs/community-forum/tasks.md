@@ -197,7 +197,7 @@ This implementation plan breaks down the community discussion feature into discr
     - Test centre comment badge display
     - _Requirements: 3.3, 4.3, 5.3, 7.3, 7.4_
 
-- [ ] 10. Integrate discussion link into tuition centre modal
+- [-] 10. Integrate discussion link into tuition centre modal
   - [ ] 10.1 Add "Community Discussion" button to centre details modal
     - Position below WhatsApp and Website options
     - Link to /discussions/[centreId] page
