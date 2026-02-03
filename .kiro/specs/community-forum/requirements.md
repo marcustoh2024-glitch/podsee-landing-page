@@ -102,6 +102,6 @@ This document specifies the requirements for a community forum feature that allo
 #### Acceptance Criteria
 
 1. WHEN a comment is created, THE Forum_System SHALL link it to both a user and a discussion thread
-2. WHEN a discussion thread is accessed, THE Forum_System SHALL ensure it exists or create it automaically
+2. WHEN a discussion thread is accessed, THE Forum_System SHALL ensure it exists or create it automatically
 3. THE Forum_System SHALL prevent orphaned comments that reference non-existent users or threads
 4. WHEN anonymous content is stored, THE Forum_System SHALL maintain the internal user link for traceability
