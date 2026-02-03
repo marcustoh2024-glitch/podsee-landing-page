@@ -47,13 +47,13 @@ This implementation plan breaks down the community discussion feature into discr
     - Implement hideComment() for moderation
     - _Requirements: 2.1, 2.2, 2.3, 3.1, 3.2, 4.1, 4.3, 4.5, 6.1, 6.3_
 
-  - [-] 3.2 Write property tests for thread management
+  - [x] 3.2 Write property tests for thread management
     - **Property 4: One thread per centre invariant**
     - **Property 5: Thread retrieval returns correct thread**
     - **Property 6: Threads cannot be deleted**
     - **Validates: Requirements 2.1, 2.2, 2.3, 2.4**
 
-  - [ ] 3.3 Write property tests for comment display
+  - [-] 3.3 Write property tests for comment display
     - **Property 7: Hidden comments are excluded**
     - **Property 8: Comments are chronologically ordered**
     - **Property 9: Anonymous comments hide author identity**
