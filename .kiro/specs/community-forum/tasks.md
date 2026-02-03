@@ -66,29 +66,29 @@ This implementation plan breaks down the community discussion feature into discr
     - **Property 13: HTML and scripts are sanitized**
     - **Validates: Requirements 4.1, 4.2, 4.3, 4.4, 4.5**
 
-  - [-] 3.5 Write property tests for centre accounts
+  - [x] 3.5 Write property tests for centre accounts
     - **Property 14: Centre comments store correct role**
     - **Property 15: Centres cannot post anonymously**
     - **Validates: Requirements 5.1, 5.2, 5.3**
 
-  - [ ] 3.6 Write property tests for moderation
+  - [x] 3.6 Write property tests for moderation
     - **Property 16: Hiding sets flag**
     - **Property 17: Unhiding restores visibility**
     - **Property 18: Hiding preserves data**
     - **Validates: Requirements 6.1, 6.3, 6.4**
 
-  - [ ] 3.7 Write property tests for privacy
+  - [x] 3.7 Write property tests for privacy
     - **Property 19: Anonymous comments store author internally**
     - **Property 20: Admins can see anonymous authors**
     - **Property 21: Anonymous comments maintain referential integrity**
     - **Validates: Requirements 8.1, 8.3, 8.4**
 
-  - [ ] 3.8 Write property tests for data integrity
+  - [x] 3.8 Write property tests for data integrity
     - **Property 22: Centre deletion preserves discussions**
     - **Property 23: User deletion preserves comments**
     - **Validates: Requirements 9.1, 9.2**
 
-  - [ ] 3.9 Write unit tests for DiscussionService
+  - [-] 3.9 Write unit tests for DiscussionService
     - Test specific edge cases (empty threads, single comment, many comments)
     - Test error conditions (invalid IDs, missing fields)
     - Test sanitization with specific XSS patterns
