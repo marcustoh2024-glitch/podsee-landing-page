@@ -113,7 +113,7 @@ This implementation plan breaks down the community discussion feature into discr
     - _Requirements: 1.1, 1.2_
 
 - [-] 6. Implement discussion API endpoints
-  - [-] 6.1 Create GET /api/discussions/[centreId] route
+  - [x] 6.1 Create GET /api/discussions/[centreId] route
     - Validate centre ID format (UUID)
     - Call DiscussionService.getOrCreateThread()
     - Call DiscussionService.getComments()
@@ -122,7 +122,7 @@ This implementation plan breaks down the community discussion feature into discr
     - Allow unauthenticated access
     - _Requirements: 2.3, 3.1, 3.2, 3.3, 3.4_
 
-  - [ ] 6.2 Create POST /api/discussions/[centreId] route
+  - [x] 6.2 Create POST /api/discussions/[centreId] route
     - Validate authentication token (extract from Authorization header)
     - Validate request body (body, isAnonymous)
     - Reject centre accounts posting anonymously
@@ -131,7 +131,7 @@ This implementation plan breaks down the community discussion feature into discr
     - Handle errors (400, 401, 403, 404, 500)
     - _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5, 5.1, 5.2_
 
-  - [ ] 6.3 Create PATCH /api/discussions/[centreId]/[commentId] route
+  - [-] 6.3 Create PATCH /api/discussions/[centreId]/[commentId] route
     - Validate authentication token and admin role
     - Validate request body (isHidden)
     - Call DiscussionService.hideComment()
