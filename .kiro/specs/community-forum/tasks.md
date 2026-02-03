@@ -159,7 +159,7 @@ This implementation plan breaks down the community discussion feature into discr
   - Test centre flow: centre login → create comment → verify role displayed
   - _Requirements: 1.1, 3.1, 4.1, 5.1, 6.1, 8.1_
 
-- [ ] 8. Checkpoint - Ensure all API tests pass
+- [-] 8. Checkpoint - Ensure all API tests pass
   - Ensure all tests pass, ask the user if questions arise.
 
 - [ ] 9. Create frontend components for discussion UI
