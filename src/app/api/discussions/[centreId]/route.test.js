@@ -89,9 +89,10 @@ describe('Discussion API Endpoints - Unit Tests', () => {
       error.code = 'CENTRE_NOT_FOUND';
       mockDiscussionService.getOrCreateThread.mockRejectedValue(error);
 
-      const request = new Request('http://localhost/api/discussions/00000000-0000-0000-0000-000000000000');
+      const nonExistentId = generateTestUUID();
+      const request = new Request(`http://localhost/api/discussions/${nonExistentId}`);
       const response = await GET(request, {
-        params: { centreId: '00000000-0000-0000-0000-000000000000' },
+        params: { centreId: nonExistentId },
         discussionService: mockDiscussionService
       });
 
@@ -103,17 +104,17 @@ describe('Discussion API Endpoints - Unit Tests', () => {
 
     it('should allow unauthenticated access', async () => {
       const mockThread = {
-        id: 'thread-123',
-        tuitionCentreId: 'centre-123',
+        id: testThreadId,
+        tuitionCentreId: testCentreId,
         createdAt: new Date().toISOString()
       };
 
       mockDiscussionService.getOrCreateThread.mockResolvedValue(mockThread);
       mockDiscussionService.getComments.mockResolvedValue([]);
 
-      const request = new Request('http://localhost/api/discussions/centre-123');
+      const request = new Request(`http://localhost/api/discussions/${testCentreId}`);
       const response = await GET(request, {
-        params: { centreId: 'centre-123' },
+        params: { centreId: testCentreId },
         discussionService: mockDiscussionService
       });
 
@@ -125,18 +126,18 @@ describe('Discussion API Endpoints - Unit Tests', () => {
   describe('POST /api/discussions/[centreId]', () => {
     it('should create comment with valid authentication and data', async () => {
       const mockUser = {
-        id: 'user-123',
+        id: testUserId,
         email: 'parent@example.com',
         role: 'PARENT'
       };
 
       const mockThread = {
-        id: 'thread-123',
-        tuitionCentreId: 'centre-123'
+        id: testThreadId,
+        tuitionCentreId: testCentreId
       };
 
       const mockComment = {
-        id: 'comment-123',
+        id: testCommentId,
         body: 'This is a test comment',
         isAnonymous: false,
         author: mockUser,
@@ -147,7 +148,7 @@ describe('Discussion API Endpoints - Unit Tests', () => {
       mockDiscussionService.getOrCreateThread.mockResolvedValue(mockThread);
       mockDiscussionService.createComment.mockResolvedValue(mockComment);
 
-      const request = new Request('http://localhost/api/discussions/centre-123', {
+      const request = new Request(`http://localhost/api/discussions/${testCentreId}`, {
         method: 'POST',
         headers: {
           'Authorization': 'Bearer valid-token',
@@ -160,7 +161,7 @@ describe('Discussion API Endpoints - Unit Tests', () => {
       });
 
       const response = await POST(request, {
-        params: { centreId: 'centre-123' },
+        params: { centreId: testCentreId },
         discussionService: mockDiscussionService,
         authService: mockAuthService
       });
@@ -172,7 +173,7 @@ describe('Discussion API Endpoints - Unit Tests', () => {
     });
 
     it('should return 401 when authorization header is missing', async () => {
-      const request = new Request('http://localhost/api/discussions/centre-123', {
+      const request = new Request(`http://localhost/api/discussions/${testCentreId}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -182,7 +183,7 @@ describe('Discussion API Endpoints - Unit Tests', () => {
       });
 
       const response = await POST(request, {
-        params: { centreId: 'centre-123' },
+        params: { centreId: testCentreId },
         discussionService: mockDiscussionService,
         authService: mockAuthService
       });
@@ -195,14 +196,14 @@ describe('Discussion API Endpoints - Unit Tests', () => {
 
     it('should return 403 when centre tries to post anonymously', async () => {
       const mockUser = {
-        id: 'centre-123',
+        id: generateTestUUID(),
         email: 'centre@example.com',
         role: 'CENTRE'
       };
 
       mockAuthService.validateSession.mockResolvedValue(mockUser);
 
-      const request = new Request('http://localhost/api/discussions/centre-123', {
+      const request = new Request(`http://localhost/api/discussions/${testCentreId}`, {
         method: 'POST',
         headers: {
           'Authorization': 'Bearer valid-token',
@@ -215,7 +216,7 @@ describe('Discussion API Endpoints - Unit Tests', () => {
       });
 
       const response = await POST(request, {
-        params: { centreId: 'centre-123' },
+        params: { centreId: testCentreId },
         discussionService: mockDiscussionService,
         authService: mockAuthService
       });
@@ -228,14 +229,14 @@ describe('Discussion API Endpoints - Unit Tests', () => {
 
     it('should return 400 when body is missing', async () => {
       const mockUser = {
-        id: 'user-123',
+        id: testUserId,
         email: 'parent@example.com',
         role: 'PARENT'
       };
 
       mockAuthService.validateSession.mockResolvedValue(mockUser);
 
-      const request = new Request('http://localhost/api/discussions/centre-123', {
+      const request = new Request(`http://localhost/api/discussions/${testCentreId}`, {
         method: 'POST',
         headers: {
           'Authorization': 'Bearer valid-token',
@@ -247,7 +248,7 @@ describe('Discussion API Endpoints - Unit Tests', () => {
       });
 
       const response = await POST(request, {
-        params: { centreId: 'centre-123' },
+        params: { centreId: testCentreId },
         discussionService: mockDiscussionService,
         authService: mockAuthService
       });
@@ -259,7 +260,7 @@ describe('Discussion API Endpoints - Unit Tests', () => {
     });
 
     it('should return 400 for invalid JSON', async () => {
-      const request = new Request('http://localhost/api/discussions/centre-123', {
+      const request = new Request(`http://localhost/api/discussions/${testCentreId}`, {
         method: 'POST',
         headers: {
           'Authorization': 'Bearer valid-token',
@@ -269,7 +270,7 @@ describe('Discussion API Endpoints - Unit Tests', () => {
       });
 
       const response = await POST(request, {
-        params: { centreId: 'centre-123' },
+        params: { centreId: testCentreId },
         discussionService: mockDiscussionService,
         authService: mockAuthService
       });
