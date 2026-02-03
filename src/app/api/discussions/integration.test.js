@@ -321,7 +321,7 @@ describe('Integration Tests - Community Discussion Forum', () => {
       const parentLoginData = await parentLoginResponse.json();
       const parentToken = parentLoginData.token;
 
-      const { POST: discussionPost } = await import('./discussions/[centreId]/route.js');
+      const { POST: discussionPost } = await import('./[centreId]/route.js');
       
       const createCommentRequest = new Request(
         `http://localhost/api/discussions/${testCentre.id}`,
@@ -355,7 +355,7 @@ describe('Integration Tests - Community Discussion Forum', () => {
       const adminToken = adminLoginData.token;
 
       const { PATCH: discussionPatch } = await import(
-        './discussions/[centreId]/[commentId]/route.js'
+        './[centreId]/[commentId]/route.js'
       );
       
       const hideRequest = new Request(
@@ -390,7 +390,7 @@ describe('Integration Tests - Community Discussion Forum', () => {
       expect(unhideData.comment.isHidden).toBe(false);
 
       // Verify comment is visible again
-      const { GET: discussionGet } = await import('./discussions/[centreId]/route.js');
+      const { GET: discussionGet } = await import('./[centreId]/route.js');
       
       const getRequest = new Request(`http://localhost/api/discussions/${testCentre.id}`);
       const getResponse = await discussionGet(getRequest, {
