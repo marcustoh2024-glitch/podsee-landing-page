@@ -351,10 +351,11 @@ describe('Integration Tests - Community Discussion Forum', () => {
       const commentId = createCommentResponse.json().then(d => d.comment.id);
 
       // Create admin and hide comment
+      const adminEmail = generateTestEmail('admin');
       const adminLoginRequest = new Request('http://localhost/api/auth/login', {
         method: 'POST',
         body: JSON.stringify({
-          email: 'admin@example.com',
+          email: adminEmail,
           password: 'adminpassword123',
           role: 'ADMIN'
         })
@@ -422,10 +423,11 @@ describe('Integration Tests - Community Discussion Forum', () => {
       // Step 1: Login as parent
       const { POST: loginPost } = await import('../auth/login/route.js');
       
+      const uniqueEmail = generateTestEmail('anonymous-parent');
       const loginRequest = new Request('http://localhost/api/auth/login', {
         method: 'POST',
         body: JSON.stringify({
-          email: 'anonymous.parent@example.com',
+          email: uniqueEmail,
           password: 'password12345678',
           role: 'PARENT'
         })
@@ -491,10 +493,11 @@ describe('Integration Tests - Community Discussion Forum', () => {
       // Login as parent
       const { POST: loginPost } = await import('../auth/login/route.js');
       
+      const uniqueEmail = generateTestEmail('identified-parent');
       const loginRequest = new Request('http://localhost/api/auth/login', {
         method: 'POST',
         body: JSON.stringify({
-          email: 'identified.parent@example.com',
+          email: uniqueEmail,
           password: 'password12345678',
           role: 'PARENT'
         })
@@ -527,7 +530,7 @@ describe('Integration Tests - Community Discussion Forum', () => {
       expect(createCommentResponse.status).toBe(201);
       expect(createCommentData.comment.isAnonymous).toBe(false);
       expect(createCommentData.comment.author).toBeDefined();
-      expect(createCommentData.comment.author.email).toBe('identified.parent@example.com');
+      expect(createCommentData.comment.author.email).toBe(uniqueEmail);
 
       // Verify author is visible in public view
       const { GET: discussionGet } = await import('./[centreId]/route.js');
@@ -540,7 +543,7 @@ describe('Integration Tests - Community Discussion Forum', () => {
 
       expect(getData.comments).toHaveLength(1);
       expect(getData.comments[0].author).toBeDefined();
-      expect(getData.comments[0].author.email).toBe('identified.parent@example.com');
+      expect(getData.comments[0].author.email).toBe(uniqueEmail);
     });
   });
 
