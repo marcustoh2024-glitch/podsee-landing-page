@@ -19,7 +19,7 @@ This implementation plan breaks down the community discussion feature into discr
   - **Property 25: Invalid centre foreign keys are rejected**
   - **Validates: Requirements 9.3, 9.4**
 
-- [-] 2. Implement AuthService for user authentication
+- [x] 2. Implement AuthService for user authentication
   - [x] 2.1 Create AuthService class with password hashing
     - Implement hashPassword() using bcrypt
     - Implement authenticate() for email/password login
