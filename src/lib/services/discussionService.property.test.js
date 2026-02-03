@@ -676,4 +676,467 @@ describe('Feature: community-forum - DiscussionService Property Tests', () => {
       { numRuns: 100 }
     );
   }, 60000);
+
+  /**
+   * Property 16: Hiding sets flag
+   * For any comment, when an admin marks it as hidden, the isHidden flag 
+   * should be set to true
+   * Validates: Requirements 6.1
+   */
+  it('Property 16: Hiding sets flag', async () => {
+    await fc.assert(
+      fc.asyncProperty(
+        fc.string({ minLength: 5, maxLength: 50 }),
+        fc.string({ minLength: 5, maxLength: 50 }),
+        fc.string({ minLength: 8, maxLength: 15 }),
+        fc.emailAddress(),
+        fc.string({ minLength: 10, maxLength: 100 }),
+        async (name, location, whatsappNumber, email, body) => {
+          // Create centre, thread, user, and comment
+          const centre = await prisma.tuitionCentre.create({
+            data: { name, location, whatsappNumber }
+          });
+
+          const thread = await discussionService.getOrCreateThread(centre.id);
+
+          const user = await prisma.user.create({
+            data: {
+              email,
+              passwordHash: 'hashed',
+              role: 'PARENT'
+            }
+          });
+
+          const comment = await discussionService.createComment({
+            threadId: thread.id,
+            authorId: user.id,
+            body,
+            isAnonymous: false,
+            authorRole: 'PARENT'
+          });
+
+          // Hide the comment
+          const hiddenComment = await discussionService.hideComment(comment.id, true);
+
+          // Verify isHidden is set to true
+          expect(hiddenComment.isHidden).toBe(true);
+
+          // Verify in database
+          const dbComment = await prisma.comment.findUnique({
+            where: { id: comment.id }
+          });
+
+          expect(dbComment.isHidden).toBe(true);
+        }
+      ),
+      { numRuns: 100 }
+    );
+  }, 60000);
+
+  /**
+   * Property 17: Unhiding restores visibility
+   * For any hidden comment, when an admin unhides it, the isHidden flag 
+   * should be set to false and the comment should appear in subsequent queries
+   * Validates: Requirements 6.3
+   */
+  it('Property 17: Unhiding restores visibility', async () => {
+    await fc.assert(
+      fc.asyncProperty(
+        fc.string({ minLength: 5, maxLength: 50 }),
+        fc.string({ minLength: 5, maxLength: 50 }),
+        fc.string({ minLength: 8, maxLength: 15 }),
+        fc.emailAddress(),
+        fc.string({ minLength: 10, maxLength: 100 }),
+        async (name, location, whatsappNumber, email, body) => {
+          // Create centre, thread, user, and comment
+          const centre = await prisma.tuitionCentre.create({
+            data: { name, location, whatsappNumber }
+          });
+
+          const thread = await discussionService.getOrCreateThread(centre.id);
+
+          const user = await prisma.user.create({
+            data: {
+              email,
+              passwordHash: 'hashed',
+              role: 'PARENT'
+            }
+          });
+
+          const comment = await discussionService.createComment({
+            threadId: thread.id,
+            authorId: user.id,
+            body,
+            isAnonymous: false,
+            authorRole: 'PARENT'
+          });
+
+          // Hide then unhide the comment
+          await discussionService.hideComment(comment.id, true);
+          const unhiddenComment = await discussionService.hideComment(comment.id, false);
+
+          // Verify isHidden is set to false
+          expect(unhiddenComment.isHidden).toBe(false);
+
+          // Verify comment appears in queries
+          const comments = await discussionService.getComments(thread.id);
+          const foundComment = comments.find(c => c.id === comment.id);
+          expect(foundComment).toBeDefined();
+        }
+      ),
+      { numRuns: 100 }
+    );
+  }, 60000);
+
+  /**
+   * Property 18: Hiding preserves data
+   * For any comment, hiding it should not modify any fields except 
+   * isHidden and updatedAt
+   * Validates: Requirements 6.4
+   */
+  it('Property 18: Hiding preserves data', async () => {
+    await fc.assert(
+      fc.asyncProperty(
+        fc.string({ minLength: 5, maxLength: 50 }),
+        fc.string({ minLength: 5, maxLength: 50 }),
+        fc.string({ minLength: 8, maxLength: 15 }),
+        fc.emailAddress(),
+        fc.string({ minLength: 10, maxLength: 100 }),
+        fc.boolean(),
+        async (name, location, whatsappNumber, email, body, isAnonymous) => {
+          // Create centre, thread, user, and comment
+          const centre = await prisma.tuitionCentre.create({
+            data: { name, location, whatsappNumber }
+          });
+
+          const thread = await discussionService.getOrCreateThread(centre.id);
+
+          const user = await prisma.user.create({
+            data: {
+              email,
+              passwordHash: 'hashed',
+              role: 'PARENT'
+            }
+          });
+
+          const comment = await discussionService.createComment({
+            threadId: thread.id,
+            authorId: user.id,
+            body,
+            isAnonymous,
+            authorRole: 'PARENT'
+          });
+
+          // Store original values
+          const originalBody = comment.body;
+          const originalAuthorId = comment.authorId || user.id;
+          const originalIsAnonymous = comment.isAnonymous;
+          const originalThreadId = comment.discussionThreadId;
+
+          // Hide the comment
+          await discussionService.hideComment(comment.id, true);
+
+          // Verify other fields are preserved
+          const dbComment = await prisma.comment.findUnique({
+            where: { id: comment.id }
+          });
+
+          expect(dbComment.body).toBe(originalBody);
+          expect(dbComment.authorId).toBe(originalAuthorId);
+          expect(dbComment.isAnonymous).toBe(originalIsAnonymous);
+          expect(dbComment.discussionThreadId).toBe(originalThreadId);
+        }
+      ),
+      { numRuns: 100 }
+    );
+  }, 60000);
+
+  /**
+   * Property 19: Anonymous comments store author internally
+   * For any anonymous comment, the authorId should be stored in the database 
+   * but not exposed in public API responses
+   * Validates: Requirements 8.1
+   */
+  it('Property 19: Anonymous comments store author internally', async () => {
+    await fc.assert(
+      fc.asyncProperty(
+        fc.string({ minLength: 5, maxLength: 50 }),
+        fc.string({ minLength: 5, maxLength: 50 }),
+        fc.string({ minLength: 8, maxLength: 15 }),
+        fc.emailAddress(),
+        fc.string({ minLength: 10, maxLength: 100 }),
+        async (name, location, whatsappNumber, email, body) => {
+          // Create centre, thread, and user
+          const centre = await prisma.tuitionCentre.create({
+            data: { name, location, whatsappNumber }
+          });
+
+          const thread = await discussionService.getOrCreateThread(centre.id);
+
+          const user = await prisma.user.create({
+            data: {
+              email,
+              passwordHash: 'hashed',
+              role: 'PARENT'
+            }
+          });
+
+          // Create anonymous comment
+          const comment = await discussionService.createComment({
+            threadId: thread.id,
+            authorId: user.id,
+            body,
+            isAnonymous: true,
+            authorRole: 'PARENT'
+          });
+
+          // Public API should not expose author
+          expect(comment.author).toBeNull();
+
+          // Database should store authorId
+          const dbComment = await prisma.comment.findUnique({
+            where: { id: comment.id }
+          });
+
+          expect(dbComment.authorId).toBe(user.id);
+          expect(dbComment.authorId).not.toBeNull();
+        }
+      ),
+      { numRuns: 100 }
+    );
+  }, 60000);
+
+  /**
+   * Property 20: Admins can see anonymous authors
+   * For any anonymous comment, when retrieved through an admin endpoint, 
+   * the true author information should be included
+   * Validates: Requirements 8.3
+   */
+  it('Property 20: Admins can see anonymous authors', async () => {
+    await fc.assert(
+      fc.asyncProperty(
+        fc.string({ minLength: 5, maxLength: 50 }),
+        fc.string({ minLength: 5, maxLength: 50 }),
+        fc.string({ minLength: 8, maxLength: 15 }),
+        fc.emailAddress(),
+        fc.string({ minLength: 10, maxLength: 100 }),
+        async (name, location, whatsappNumber, email, body) => {
+          // Create centre, thread, and user
+          const centre = await prisma.tuitionCentre.create({
+            data: { name, location, whatsappNumber }
+          });
+
+          const thread = await discussionService.getOrCreateThread(centre.id);
+
+          const user = await prisma.user.create({
+            data: {
+              email,
+              passwordHash: 'hashed',
+              role: 'PARENT'
+            }
+          });
+
+          // Create anonymous comment
+          const comment = await discussionService.createComment({
+            threadId: thread.id,
+            authorId: user.id,
+            body,
+            isAnonymous: true,
+            authorRole: 'PARENT'
+          });
+
+          // Admin view (includeHidden = true) should show author
+          const adminComments = await discussionService.getComments(thread.id, true);
+          const adminComment = adminComments.find(c => c.id === comment.id);
+
+          expect(adminComment).toBeDefined();
+          expect(adminComment.author).toBeDefined();
+          expect(adminComment.author.id).toBe(user.id);
+        }
+      ),
+      { numRuns: 100 }
+    );
+  }, 60000);
+
+  /**
+   * Property 21: Anonymous comments maintain referential integrity
+   * For any anonymous comment, the authorId foreign key relationship 
+   * should be maintained in the database
+   * Validates: Requirements 8.4
+   */
+  it('Property 21: Anonymous comments maintain referential integrity', async () => {
+    await fc.assert(
+      fc.asyncProperty(
+        fc.string({ minLength: 5, maxLength: 50 }),
+        fc.string({ minLength: 5, maxLength: 50 }),
+        fc.string({ minLength: 8, maxLength: 15 }),
+        fc.emailAddress(),
+        fc.string({ minLength: 10, maxLength: 100 }),
+        async (name, location, whatsappNumber, email, body) => {
+          // Create centre, thread, and user
+          const centre = await prisma.tuitionCentre.create({
+            data: { name, location, whatsappNumber }
+          });
+
+          const thread = await discussionService.getOrCreateThread(centre.id);
+
+          const user = await prisma.user.create({
+            data: {
+              email,
+              passwordHash: 'hashed',
+              role: 'PARENT'
+            }
+          });
+
+          // Create anonymous comment
+          const comment = await discussionService.createComment({
+            threadId: thread.id,
+            authorId: user.id,
+            body,
+            isAnonymous: true,
+            authorRole: 'PARENT'
+          });
+
+          // Verify foreign key relationship
+          const dbComment = await prisma.comment.findUnique({
+            where: { id: comment.id },
+            include: { author: true }
+          });
+
+          expect(dbComment.author).toBeDefined();
+          expect(dbComment.author.id).toBe(user.id);
+          expect(dbComment.authorId).toBe(user.id);
+        }
+      ),
+      { numRuns: 100 }
+    );
+  }, 60000);
+
+  /**
+   * Property 22: Centre deletion preserves discussions
+   * For any tuition centre with a discussion thread and comments, deleting 
+   * the centre should fail due to the onDelete: Restrict constraint, 
+   * preserving all discussion data
+   * Validates: Requirements 9.1
+   */
+  it('Property 22: Centre deletion preserves discussions', async () => {
+    await fc.assert(
+      fc.asyncProperty(
+        fc.string({ minLength: 5, maxLength: 50 }),
+        fc.string({ minLength: 5, maxLength: 50 }),
+        fc.string({ minLength: 8, maxLength: 15 }),
+        fc.emailAddress(),
+        fc.string({ minLength: 10, maxLength: 100 }),
+        async (name, location, whatsappNumber, email, body) => {
+          // Create centre, thread, user, and comment
+          const centre = await prisma.tuitionCentre.create({
+            data: { name, location, whatsappNumber }
+          });
+
+          const thread = await discussionService.getOrCreateThread(centre.id);
+
+          const user = await prisma.user.create({
+            data: {
+              email,
+              passwordHash: 'hashed',
+              role: 'PARENT'
+            }
+          });
+
+          const comment = await discussionService.createComment({
+            threadId: thread.id,
+            authorId: user.id,
+            body,
+            isAnonymous: false,
+            authorRole: 'PARENT'
+          });
+
+          // Attempt to delete centre
+          let error;
+          try {
+            await prisma.tuitionCentre.delete({
+              where: { id: centre.id }
+            });
+          } catch (err) {
+            error = err;
+          }
+
+          // Deletion should fail
+          expect(error).toBeDefined();
+
+          // Thread and comment should still exist
+          const threadExists = await prisma.discussionThread.findUnique({
+            where: { id: thread.id }
+          });
+          const commentExists = await prisma.comment.findUnique({
+            where: { id: comment.id }
+          });
+
+          expect(threadExists).toBeDefined();
+          expect(commentExists).toBeDefined();
+        }
+      ),
+      { numRuns: 100 }
+    );
+  }, 60000);
+
+  /**
+   * Property 23: User deletion preserves comments
+   * For any user with comments, deleting the user should set the authorId 
+   * to null on all their comments while preserving the comment data
+   * Validates: Requirements 9.2
+   */
+  it('Property 23: User deletion preserves comments', async () => {
+    await fc.assert(
+      fc.asyncProperty(
+        fc.string({ minLength: 5, maxLength: 50 }),
+        fc.string({ minLength: 5, maxLength: 50 }),
+        fc.string({ minLength: 8, maxLength: 15 }),
+        fc.emailAddress(),
+        fc.string({ minLength: 10, maxLength: 100 }),
+        async (name, location, whatsappNumber, email, body) => {
+          // Create centre, thread, user, and comment
+          const centre = await prisma.tuitionCentre.create({
+            data: { name, location, whatsappNumber }
+          });
+
+          const thread = await discussionService.getOrCreateThread(centre.id);
+
+          const user = await prisma.user.create({
+            data: {
+              email,
+              passwordHash: 'hashed',
+              role: 'PARENT'
+            }
+          });
+
+          const comment = await discussionService.createComment({
+            threadId: thread.id,
+            authorId: user.id,
+            body,
+            isAnonymous: false,
+            authorRole: 'PARENT'
+          });
+
+          const originalBody = comment.body;
+          const commentId = comment.id;
+
+          // Delete user
+          await prisma.user.delete({
+            where: { id: user.id }
+          });
+
+          // Comment should still exist with null authorId
+          const dbComment = await prisma.comment.findUnique({
+            where: { id: commentId }
+          });
+
+          expect(dbComment).toBeDefined();
+          expect(dbComment.body).toBe(originalBody);
+          expect(dbComment.authorId).toBeNull();
+        }
+      ),
+      { numRuns: 100 }
+    );
+  }, 60000);
 });
