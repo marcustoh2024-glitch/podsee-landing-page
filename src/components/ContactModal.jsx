@@ -212,3 +212,207 @@ export default function ContactModal({ isOpen, onClose, centre }) {
 
             {/* Comments List - Scrollable */}
             <div className="flex-1 overflow-y-auto px-6 py-4">
+              {isLoadingComments ? (
+                <div className="text-center py-8">
+                  <div className="w-10 h-10 mx-auto border-3 border-outline-variant border-t-primary rounded-full animate-spin" />
+                </div>
+              ) : comments.length === 0 ? (
+                <div className="text-center py-8">
+                  <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-surface-container-high flex items-center justify-center">
+                    <svg className="w-8 h-8 text-on-surface-variant" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                    </svg>
+                  </div>
+                  <p className="text-body-medium text-on-surface-variant">No comments yet</p>
+                  <p className="text-body-small text-on-surface-variant mt-1">Be the first to comment!</p>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {comments.map((comment) => (
+                    <div key={comment.id}>
+                      {/* Main Comment */}
+                      <div className="flex gap-3">
+                        {/* Avatar */}
+                        <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
+                          comment.author?.role === 'CENTRE' 
+                            ? 'bg-primary text-on-primary' 
+                            : 'bg-secondary-container text-on-secondary-container'
+                        }`}>
+                          {comment.author?.role === 'CENTRE' ? (
+                            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                            </svg>
+                          ) : (
+                            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                          )}
+                        </div>
+                        
+                        {/* Comment Content */}
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-baseline gap-2 flex-wrap">
+                            <span className="text-label-large font-medium text-on-surface">
+                              {comment.isAnonymous || !comment.author ? 'Anonymous Parent' : comment.author.email}
+                            </span>
+                            {comment.author?.role === 'CENTRE' && (
+                              <span className="px-2 py-0.5 bg-primary text-on-primary rounded-sm text-label-small font-medium">
+                                Centre
+                              </span>
+                            )}
+                            <span className="text-label-small text-on-surface-variant">
+                              {formatTimestamp(comment.createdAt)}
+                            </span>
+                          </div>
+                          <p className="text-body-medium text-on-surface mt-1 break-words">
+                            {comment.body}
+                          </p>
+                          
+                          {/* Like/Reply actions */}
+                          <div className="flex items-center gap-4 mt-2">
+                            <button 
+                              onClick={() => setReplyingTo(comment.id)}
+                              className="text-label-medium text-on-surface-variant hover:text-on-surface font-medium transition-colors"
+                            >
+                              Reply
+                            </button>
+                            {comment.replies && comment.replies.length > 0 && (
+                              <span className="text-label-small text-on-surface-variant">
+                                {comment.replies.length} {comment.replies.length === 1 ? 'reply' : 'replies'}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                        
+                        {/* Like button */}
+                        <button className="flex-shrink-0 text-on-surface-variant hover:text-error transition-colors p-2 -mr-2 rounded-full hover:bg-error/8">
+                          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                          </svg>
+                        </button>
+                      </div>
+
+                      {/* Replies */}
+                      {comment.replies && comment.replies.length > 0 && (
+                        <div className="ml-13 mt-3 space-y-3 pl-4 border-l-2 border-outline-variant">
+                          {comment.replies.map((reply) => (
+                            <div key={reply.id} className="flex gap-3">
+                              {/* Reply Avatar */}
+                              <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
+                                reply.author?.role === 'CENTRE' 
+                                  ? 'bg-primary text-on-primary' 
+                                  : 'bg-secondary-container text-on-secondary-container'
+                              }`}>
+                                {reply.author?.role === 'CENTRE' ? (
+                                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                  </svg>
+                                ) : (
+                                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                  </svg>
+                                )}
+                              </div>
+                              
+                              {/* Reply Content */}
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-baseline gap-2 flex-wrap">
+                                  <span className="text-label-large font-medium text-on-surface">
+                                    {reply.isAnonymous || !reply.author ? 'Anonymous Parent' : reply.author.email}
+                                  </span>
+                                  {reply.author?.role === 'CENTRE' && (
+                                    <span className="px-2 py-0.5 bg-primary text-on-primary rounded-sm text-label-small font-medium">
+                                      Centre
+                                    </span>
+                                  )}
+                                  <span className="text-label-small text-on-surface-variant">
+                                    {formatTimestamp(reply.createdAt)}
+                                  </span>
+                                </div>
+                                <p className="text-body-medium text-on-surface mt-1 break-words">
+                                  {reply.body}
+                                </p>
+                              </div>
+                              
+                              {/* Like button for reply */}
+                              <button className="flex-shrink-0 text-on-surface-variant hover:text-error transition-colors p-2 -mr-2 rounded-full hover:bg-error/8">
+                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                </svg>
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+
+                      {/* Reply Input */}
+                      {replyingTo === comment.id && (
+                        <div className="ml-13 mt-3 flex items-center gap-3 bg-surface-container rounded-xl p-3 shadow-elevation-1">
+                          <div className="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center flex-shrink-0">
+                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                            </svg>
+                          </div>
+                          <input
+                            type="text"
+                            value={replyText}
+                            onChange={(e) => setReplyText(e.target.value)}
+                            onKeyPress={(e) => e.key === 'Enter' && handlePostReply(comment.id)}
+                            placeholder={`Reply as ${centre.name}...`}
+                            className="flex-1 text-body-medium border-none outline-none bg-transparent placeholder-on-surface-variant text-on-surface"
+                            autoFocus
+                          />
+                          <button
+                            onClick={() => setReplyingTo(null)}
+                            className="text-label-medium text-on-surface-variant hover:text-on-surface font-medium transition-colors"
+                          >
+                            Cancel
+                          </button>
+                          {replyText.trim() && (
+                            <button
+                              onClick={() => handlePostReply(comment.id)}
+                              className="text-label-medium font-medium text-primary hover:text-primary/80 transition-colors"
+                            >
+                              Post
+                            </button>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Comment Input - Fixed at bottom */}
+            <div className="border-t border-outline-variant p-4 bg-surface-container-lowest">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center flex-shrink-0">
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                </div>
+                <input
+                  type="text"
+                  value={newComment}
+                  onChange={(e) => setNewComment(e.target.value)}
+                  onKeyPress={(e) => e.key === 'Enter' && handlePostComment()}
+                  placeholder="Add a comment..."
+                  className="flex-1 text-body-medium border-none outline-none bg-transparent placeholder-on-surface-variant text-on-surface"
+                />
+                {newComment.trim() && (
+                  <button
+                    onClick={handlePostComment}
+                    className="text-label-large font-medium text-primary hover:text-primary/80 transition-colors"
+                  >
+                    Post
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  )
+}
