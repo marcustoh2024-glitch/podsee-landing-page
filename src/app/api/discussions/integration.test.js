@@ -71,7 +71,7 @@ describe('Integration Tests - Community Discussion Forum', () => {
   describe('Flow 1: Login → Create Comment → Read Comments', () => {
     it('should allow a parent to login, create a comment, and read it back', async () => {
       // Step 1: Login (create new user)
-      const { POST: loginPost } = await import('./auth/login/route.js');
+      const { POST: loginPost } = await import('../auth/login/route.js');
       
       const loginRequest = new Request('http://localhost/api/auth/login', {
         method: 'POST',
@@ -146,7 +146,7 @@ describe('Integration Tests - Community Discussion Forum', () => {
 
     it('should allow multiple comments from the same user', async () => {
       // Login
-      const { POST: loginPost } = await import('./auth/login/route.js');
+      const { POST: loginPost } = await import('../auth/login/route.js');
       const loginRequest = new Request('http://localhost/api/auth/login', {
         method: 'POST',
         body: JSON.stringify({
