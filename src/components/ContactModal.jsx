@@ -31,6 +31,18 @@ export default function ContactModal({ isOpen, onClose, centre }) {
     
     setIsLoadingComments(true)
     try {
+      // First, try to get comments from localStorage
+      const localStorageKey = `comments_${centre.id}`
+      const localComments = localStorage.getItem(localStorageKey)
+      
+      if (localComments) {
+        const parsedComments = JSON.parse(localComments)
+        setComments(parsedComments)
+        setIsLoadingComments(false)
+        return
+      }
+      
+      // If no local comments, try to fetch from API
       const response = await fetch(`/api/discussions/${centre.id}`)
       const data = await response.json()
       
@@ -42,9 +54,17 @@ export default function ContactModal({ isOpen, onClose, centre }) {
         })).filter(comment => !comment.parentId) // Only show top-level comments
         
         setComments(commentsWithReplies)
+        // Save to localStorage
+        localStorage.setItem(localStorageKey, JSON.stringify(commentsWithReplies))
       }
     } catch (err) {
       console.error('Failed to fetch comments:', err)
+      // If API fails, still try to load from localStorage
+      const localStorageKey = `comments_${centre.id}`
+      const localComments = localStorage.getItem(localStorageKey)
+      if (localComments) {
+        setComments(JSON.parse(localComments))
+      }
     } finally {
       setIsLoadingComments(false)
     }
