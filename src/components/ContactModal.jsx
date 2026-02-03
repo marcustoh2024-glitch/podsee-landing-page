@@ -69,6 +69,18 @@ export default function ContactModal({ isOpen, onClose, centre }) {
     setNewComment('')
   }
 
+  const formatTimestamp = (dateString) => {
+    const date = new Date(dateString)
+    const now = new Date()
+    const diffInSeconds = Math.floor((now - date) / 1000)
+    
+    if (diffInSeconds < 60) return 'now'
+    if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m`
+    if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h`
+    if (diffInSeconds < 604800) return `${Math.floor(diffInSeconds / 86400)}d`
+    return `${Math.floor(diffInSeconds / 604800)}w`
+  }
+
   return (
     <>
       {/* Backdrop */}
@@ -79,9 +91,9 @@ export default function ContactModal({ isOpen, onClose, centre }) {
       
       {/* Modal */}
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-        <div className="bg-white rounded-3xl max-w-md w-full p-6 shadow-xl">
-          {/* Header */}
-          <div className="flex items-start justify-between mb-4">
+        <div className="bg-white rounded-3xl max-w-md w-full shadow-xl flex flex-col max-h-[90vh]">
+          {/* Header - Fixed */}
+          <div className="flex items-start justify-between p-6 pb-4 border-b border-gray-100">
             <div>
               <h3 className="text-xl font-semibold text-primary mb-1">
                 {centre.name}
@@ -108,8 +120,8 @@ export default function ContactModal({ isOpen, onClose, centre }) {
             </button>
           </div>
 
-          {/* Contact options */}
-          <div className="space-y-3 mt-6">
+          {/* Contact options - Fixed */}
+          <div className="px-6 pt-4 space-y-3">
             <button
               onClick={handleWhatsApp}
               className="w-full flex items-center gap-4 p-4 bg-green-50 hover:bg-green-100 rounded-xl transition-all border border-green-200"
@@ -147,24 +159,97 @@ export default function ContactModal({ isOpen, onClose, centre }) {
                 </svg>
               </button>
             )}
+          </div>
 
-            <button
-              onClick={handleDiscussion}
-              className="w-full flex items-center gap-4 p-4 bg-blue-50 hover:bg-blue-100 rounded-xl transition-all border border-blue-200"
-            >
-              <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0">
-                <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" />
-                </svg>
+          {/* Comments Section - Scrollable */}
+          <div className="flex-1 overflow-hidden flex flex-col">
+            {/* Comments Header */}
+            <div className="px-6 py-4 border-t border-b border-gray-100">
+              <h4 className="font-semibold text-gray-900 text-center">Comments</h4>
+            </div>
+
+            {/* Comments List - Scrollable */}
+            <div className="flex-1 overflow-y-auto px-6 py-4">
+              {isLoadingComments ? (
+                <div className="text-center py-8">
+                  <div className="w-8 h-8 mx-auto border-2 border-gray-300 border-t-blue-500 rounded-full animate-spin" />
+                </div>
+              ) : comments.length === 0 ? (
+                <div className="text-center py-8">
+                  <p className="text-sm text-gray-500">No comments yet</p>
+                  <p className="text-xs text-gray-400 mt-1">Be the first to comment!</p>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {comments.map((comment) => (
+                    <div key={comment.id} className="flex gap-3">
+                      {/* Avatar */}
+                      <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center flex-shrink-0">
+                        <svg className="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                      </div>
+                      
+                      {/* Comment Content */}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-baseline gap-2">
+                          <span className="font-semibold text-sm text-gray-900">
+                            {comment.isAnonymous || !comment.author ? 'Anonymous Parent' : comment.author.email}
+                          </span>
+                          <span className="text-xs text-gray-400">
+                            {formatTimestamp(comment.createdAt)}
+                          </span>
+                        </div>
+                        <p className="text-sm text-gray-900 mt-0.5 break-words">
+                          {comment.body}
+                        </p>
+                        
+                        {/* Like/Reply actions */}
+                        <div className="flex items-center gap-4 mt-2">
+                          <button className="text-xs text-gray-500 hover:text-gray-700 font-medium">
+                            Reply
+                          </button>
+                        </div>
+                      </div>
+                      
+                      {/* Like button */}
+                      <button className="flex-shrink-0 text-gray-400 hover:text-red-500 transition-colors">
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                        </svg>
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Comment Input - Fixed at bottom */}
+            <div className="border-t border-gray-100 p-4">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center flex-shrink-0">
+                  <svg className="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                </div>
+                <input
+                  type="text"
+                  value={newComment}
+                  onChange={(e) => setNewComment(e.target.value)}
+                  onKeyPress={(e) => e.key === 'Enter' && handlePostComment()}
+                  placeholder="Add a comment..."
+                  className="flex-1 text-sm border-none outline-none bg-transparent placeholder-gray-400"
+                />
+                {newComment.trim() && (
+                  <button
+                    onClick={handlePostComment}
+                    className="text-sm font-semibold text-blue-500 hover:text-blue-600"
+                  >
+                    Post
+                  </button>
+                )}
               </div>
-              <div className="text-left flex-1">
-                <p className="font-semibold text-primary">Community Discussion</p>
-                <p className="text-sm text-secondary">Read parent reviews and questions</p>
-              </div>
-              <svg className="w-5 h-5 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
+            </div>
           </div>
         </div>
       </div>
