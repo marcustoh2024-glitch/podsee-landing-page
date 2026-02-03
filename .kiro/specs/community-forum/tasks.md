@@ -97,7 +97,7 @@ This implementation plan breaks down the community discussion feature into discr
 - [x] 4. Checkpoint - Ensure all service layer tests pass
   - Ensure all tests pass, ask the user if questions arise.
 
-- [ ] 5. Implement authentication API endpoint
+- [-] 5. Implement authentication API endpoint
   - [ ] 5.1 Create POST /api/auth/login route
     - Parse and validate request body (email, password)
     - Call AuthService.authenticate()
