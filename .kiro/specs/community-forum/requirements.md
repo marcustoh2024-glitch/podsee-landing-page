@@ -79,10 +79,10 @@ This document specifies the requirements for a community forum feature that allo
 
 #### Acceptance Criteria
 
-1. WHEN an admin hides a comment, THE Forum_System SHALL mark it as hidden without deleting it
-2. WHEN a comment is hidden, THE Forum_System SHALL exclude it from public display
+1. WHEN an admin marks a comment as hidden, THE Forum_System SHALL set a hidden flag on that comment
+2. WHEN a comment is hidden, THE Forum_System SHALL exclude it from public listings
 3. WHEN an admin restores hidden content, THE Forum_System SHALL make it visible again
-4. THE Forum_System SHALL preserve all hidden content for audit purposes
+4. THE Forum_System SHALL preserve all hidden content in the database for audit purposes
 
 ### Requirement 7: User Interface Integration
 
@@ -102,6 +102,6 @@ This document specifies the requirements for a community forum feature that allo
 #### Acceptance Criteria
 
 1. WHEN a comment is created, THE Forum_System SHALL link it to both a user and a discussion thread
-2. WHEN a discussion thread is accessed, THE Forum_System SHALL ensure it exists or create it automatically
+2. WHEN a discussion thread is created, THE Forum_System SHALL link it to exactly one tuition centre
 3. THE Forum_System SHALL prevent orphaned comments that reference non-existent users or threads
-4. WHEN anonymous content is stored, THE Forum_System SHALL maintain the internal user link for traceability
+4. WHEN querying comments, THE Forum_System SHALL efficiently retrieve associated user and centre information
