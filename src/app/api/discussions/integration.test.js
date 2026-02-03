@@ -95,7 +95,7 @@ describe('Integration Tests - Community Discussion Forum', () => {
       const userId = loginData.user.id;
 
       // Step 2: Create a comment
-      const { POST: discussionPost } = await import('./discussions/[centreId]/route.js');
+      const { POST: discussionPost } = await import('./[centreId]/route.js');
       
       const createCommentRequest = new Request(
         `http://localhost/api/discussions/${testCentre.id}`,
@@ -125,7 +125,7 @@ describe('Integration Tests - Community Discussion Forum', () => {
       expect(createCommentData.comment.author.id).toBe(userId);
 
       // Step 3: Read comments back
-      const { GET: discussionGet } = await import('./discussions/[centreId]/route.js');
+      const { GET: discussionGet } = await import('./[centreId]/route.js');
       
       const getCommentsRequest = new Request(
         `http://localhost/api/discussions/${testCentre.id}`
@@ -541,7 +541,7 @@ describe('Integration Tests - Community Discussion Forum', () => {
   describe('Flow 4: Centre - Centre Login → Create Comment → Verify Role Displayed', () => {
     it('should display centre role when centre account creates a comment', async () => {
       // Step 1: Login as centre
-      const { POST: loginPost } = await import('./auth/login/route.js');
+      const { POST: loginPost } = await import('../auth/login/route.js');
       
       const loginRequest = new Request('http://localhost/api/auth/login', {
         method: 'POST',
@@ -605,7 +605,7 @@ describe('Integration Tests - Community Discussion Forum', () => {
 
     it('should prevent centre accounts from posting anonymously', async () => {
       // Login as centre
-      const { POST: loginPost } = await import('./auth/login/route.js');
+      const { POST: loginPost } = await import('../auth/login/route.js');
       
       const loginRequest = new Request('http://localhost/api/auth/login', {
         method: 'POST',
@@ -651,8 +651,8 @@ describe('Integration Tests - Community Discussion Forum', () => {
    */
   describe('Flow 5: Mixed Scenario - Multiple Users and Comment Types', () => {
     it('should handle multiple users with different roles and anonymity settings', async () => {
-      const { POST: loginPost } = await import('./auth/login/route.js');
-      const { POST: discussionPost } = await import('./discussions/[centreId]/route.js');
+      const { POST: loginPost } = await import('../auth/login/route.js');
+      const { POST: discussionPost } = await import('./[centreId]/route.js');
 
       // Create parent 1 (anonymous comment)
       const parent1Login = await loginPost(new Request('http://localhost/api/auth/login', {
