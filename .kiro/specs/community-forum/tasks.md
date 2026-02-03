@@ -163,7 +163,7 @@ This implementation plan breaks down the community discussion feature into discr
   - Ensure all tests pass, ask the user if questions arise.
 
 - [-] 9. Create frontend components for discussion UI
-  - [-] 9.1 Create DiscussionPage component
+  - [x] 9.1 Create DiscussionPage component
     - Fetch discussion thread and comments on mount
     - Display centre name and tags at top
     - Render comments in chronological order
