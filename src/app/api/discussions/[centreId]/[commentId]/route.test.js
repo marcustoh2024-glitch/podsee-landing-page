@@ -111,7 +111,7 @@ describe('Comment Moderation API - Unit Tests', () => {
     });
 
     it('should return 401 when authorization header is missing', async () => {
-      const request = new Request('http://localhost/api/discussions/centre-123/comment-123', {
+      const request = new Request(`http://localhost/api/discussions/${testCentreId}/${testCommentId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -121,8 +121,8 @@ describe('Comment Moderation API - Unit Tests', () => {
 
       const response = await PATCH(request, {
         params: {
-          centreId: 'centre-123',
-          commentId: 'comment-123'
+          centreId: testCentreId,
+          commentId: testCommentId
         },
         discussionService: mockDiscussionService,
         authService: mockAuthService
@@ -136,14 +136,14 @@ describe('Comment Moderation API - Unit Tests', () => {
 
     it('should return 403 when non-admin user attempts moderation', async () => {
       const mockParent = {
-        id: 'user-123',
+        id: generateTestUUID(),
         email: 'parent@example.com',
         role: 'PARENT'
       };
 
       mockAuthService.validateSession.mockResolvedValue(mockParent);
 
-      const request = new Request('http://localhost/api/discussions/centre-123/comment-123', {
+      const request = new Request(`http://localhost/api/discussions/${testCentreId}/${testCommentId}`, {
         method: 'PATCH',
         headers: {
           'Authorization': 'Bearer user-token',
@@ -156,8 +156,8 @@ describe('Comment Moderation API - Unit Tests', () => {
 
       const response = await PATCH(request, {
         params: {
-          centreId: 'centre-123',
-          commentId: 'comment-123'
+          centreId: testCentreId,
+          commentId: testCommentId
         },
         discussionService: mockDiscussionService,
         authService: mockAuthService
@@ -171,14 +171,14 @@ describe('Comment Moderation API - Unit Tests', () => {
 
     it('should return 400 for invalid centre ID format', async () => {
       const mockAdmin = {
-        id: 'admin-123',
+        id: testAdminId,
         email: 'admin@example.com',
         role: 'ADMIN'
       };
 
       mockAuthService.validateSession.mockResolvedValue(mockAdmin);
 
-      const request = new Request('http://localhost/api/discussions/invalid-id/comment-123', {
+      const request = new Request(`http://localhost/api/discussions/invalid-id/${testCommentId}`, {
         method: 'PATCH',
         headers: {
           'Authorization': 'Bearer admin-token',
@@ -192,7 +192,7 @@ describe('Comment Moderation API - Unit Tests', () => {
       const response = await PATCH(request, {
         params: {
           centreId: 'invalid-id',
-          commentId: 'comment-123'
+          commentId: testCommentId
         },
         discussionService: mockDiscussionService,
         authService: mockAuthService
@@ -206,14 +206,14 @@ describe('Comment Moderation API - Unit Tests', () => {
 
     it('should return 400 for invalid comment ID format', async () => {
       const mockAdmin = {
-        id: 'admin-123',
+        id: testAdminId,
         email: 'admin@example.com',
         role: 'ADMIN'
       };
 
       mockAuthService.validateSession.mockResolvedValue(mockAdmin);
 
-      const request = new Request('http://localhost/api/discussions/centre-123/invalid-id', {
+      const request = new Request(`http://localhost/api/discussions/${testCentreId}/invalid-id`, {
         method: 'PATCH',
         headers: {
           'Authorization': 'Bearer admin-token',
@@ -226,7 +226,7 @@ describe('Comment Moderation API - Unit Tests', () => {
 
       const response = await PATCH(request, {
         params: {
-          centreId: 'centre-123',
+          centreId: testCentreId,
           commentId: 'invalid-id'
         },
         discussionService: mockDiscussionService,
@@ -241,7 +241,7 @@ describe('Comment Moderation API - Unit Tests', () => {
 
     it('should return 404 when comment not found', async () => {
       const mockAdmin = {
-        id: 'admin-123',
+        id: testAdminId,
         email: 'admin@example.com',
         role: 'ADMIN'
       };
@@ -249,10 +249,13 @@ describe('Comment Moderation API - Unit Tests', () => {
       const error = new Error('Comment not found');
       error.code = 'COMMENT_NOT_FOUND';
 
+      const nonExistentCentreId = generateTestUUID();
+      const nonExistentCommentId = generateTestUUID();
+
       mockAuthService.validateSession.mockResolvedValue(mockAdmin);
       mockDiscussionService.hideComment.mockRejectedValue(error);
 
-      const request = new Request('http://localhost/api/discussions/00000000-0000-0000-0000-000000000000/00000000-0000-0000-0000-000000000001', {
+      const request = new Request(`http://localhost/api/discussions/${nonExistentCentreId}/${nonExistentCommentId}`, {
         method: 'PATCH',
         headers: {
           'Authorization': 'Bearer admin-token',
@@ -265,8 +268,8 @@ describe('Comment Moderation API - Unit Tests', () => {
 
       const response = await PATCH(request, {
         params: {
-          centreId: '00000000-0000-0000-0000-000000000000',
-          commentId: '00000000-0000-0000-0000-000000000001'
+          centreId: nonExistentCentreId,
+          commentId: nonExistentCommentId
         },
         discussionService: mockDiscussionService,
         authService: mockAuthService
@@ -280,14 +283,14 @@ describe('Comment Moderation API - Unit Tests', () => {
 
     it('should return 400 when isHidden is not a boolean', async () => {
       const mockAdmin = {
-        id: 'admin-123',
+        id: testAdminId,
         email: 'admin@example.com',
         role: 'ADMIN'
       };
 
       mockAuthService.validateSession.mockResolvedValue(mockAdmin);
 
-      const request = new Request('http://localhost/api/discussions/centre-123/comment-123', {
+      const request = new Request(`http://localhost/api/discussions/${testCentreId}/${testCommentId}`, {
         method: 'PATCH',
         headers: {
           'Authorization': 'Bearer admin-token',
@@ -300,8 +303,8 @@ describe('Comment Moderation API - Unit Tests', () => {
 
       const response = await PATCH(request, {
         params: {
-          centreId: 'centre-123',
-          commentId: 'comment-123'
+          centreId: testCentreId,
+          commentId: testCommentId
         },
         discussionService: mockDiscussionService,
         authService: mockAuthService
