@@ -8,6 +8,8 @@ const service = new TuitionCentreService(prisma);
 
 // Helper to clean up test data
 async function cleanupTestData() {
+  await prisma.comment.deleteMany();
+  await prisma.discussionThread.deleteMany();
   await prisma.tuitionCentreSubject.deleteMany();
   await prisma.tuitionCentreLevel.deleteMany();
   await prisma.tuitionCentre.deleteMany();
