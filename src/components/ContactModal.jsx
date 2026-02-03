@@ -444,33 +444,72 @@ export default function ContactModal({ isOpen, onClose, centre }) {
 
             {/* Comment Input - Fixed at bottom */}
             <div className="border-t border-gray-100 p-4">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center flex-shrink-0">
-                  <svg className="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                  </svg>
-                </div>
-                <input
-                  type="text"
-                  value={newComment}
-                  onChange={(e) => setNewComment(e.target.value)}
-                  onKeyPress={(e) => e.key === 'Enter' && handlePostComment()}
-                  placeholder="Add a comment..."
-                  className="flex-1 text-sm border-none outline-none bg-transparent placeholder-gray-400"
-                />
-                {newComment.trim() && (
-                  <button
-                    onClick={handlePostComment}
-                    className="text-sm font-semibold text-blue-500 hover:text-blue-600"
-                  >
-                    Post
-                  </button>
-                )}
-              </div>
+              {currentUser ? (
+                <>
+                  {/* User info bar */}
+                  <div className="flex items-center justify-between mb-3 pb-3 border-b border-gray-100">
+                    <div className="flex items-center gap-2">
+                      <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center">
+                        <span className="text-xs font-semibold text-blue-600">
+                          {currentUser.isAnonymous ? 'A' : (currentUser.name || currentUser.email).charAt(0).toUpperCase()}
+                        </span>
+                      </div>
+                      <span className="text-sm text-gray-700">
+                        {currentUser.isAnonymous ? 'Anonymous Parent' : currentUser.name || currentUser.email}
+                      </span>
+                    </div>
+                    <button
+                      onClick={handleSignOut}
+                      className="text-xs text-gray-500 hover:text-gray-700"
+                    >
+                      Sign Out
+                    </button>
+                  </div>
+                  
+                  {/* Comment input */}
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center flex-shrink-0">
+                      <span className="text-sm font-semibold text-gray-600">
+                        {currentUser.isAnonymous ? 'A' : (currentUser.name || currentUser.email).charAt(0).toUpperCase()}
+                      </span>
+                    </div>
+                    <input
+                      type="text"
+                      value={newComment}
+                      onChange={(e) => setNewComment(e.target.value)}
+                      onKeyPress={(e) => e.key === 'Enter' && handlePostComment()}
+                      placeholder="Add a comment..."
+                      className="flex-1 text-sm border-none outline-none bg-transparent placeholder-gray-400"
+                    />
+                    {newComment.trim() && (
+                      <button
+                        onClick={handlePostComment}
+                        className="text-sm font-semibold text-blue-500 hover:text-blue-600"
+                      >
+                        Post
+                      </button>
+                    )}
+                  </div>
+                </>
+              ) : (
+                <button
+                  onClick={() => setShowAuthModal(true)}
+                  className="w-full py-3 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-xl transition-colors"
+                >
+                  Sign In to Comment
+                </button>
+              )}
             </div>
           </div>
         </div>
       </div>
+
+      {/* Auth Modal */}
+      <AuthModal 
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        onAuthSuccess={handleAuthSuccess}
+      />
     </>
   )
 }
