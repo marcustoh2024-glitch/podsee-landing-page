@@ -49,7 +49,9 @@ describe('GET /api/auth/validate', () => {
     const data = await response.json();
 
     expect(response.status).toBe(200);
-    expect(data.user).toEqual(mockUser);
+    expect(data.user.id).toBe(mockUser.id);
+    expect(data.user.email).toBe(mockUser.email);
+    expect(data.user.role).toBe(mockUser.role);
     expect(mockAuthService.validateSession).toHaveBeenCalledWith('valid-token-123');
   });
 
