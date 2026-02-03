@@ -161,7 +161,7 @@ describe('Integration Tests - Community Discussion Forum', () => {
       const token = loginData.token;
 
       // Create first comment
-      const { POST: discussionPost } = await import('./discussions/[centreId]/route.js');
+      const { POST: discussionPost } = await import('./[centreId]/route.js');
       
       const comment1Request = new Request(
         `http://localhost/api/discussions/${testCentre.id}`,
@@ -193,7 +193,7 @@ describe('Integration Tests - Community Discussion Forum', () => {
       await discussionPost(comment2Request, { params: { centreId: testCentre.id } });
 
       // Read comments
-      const { GET: discussionGet } = await import('./discussions/[centreId]/route.js');
+      const { GET: discussionGet } = await import('./[centreId]/route.js');
       const getRequest = new Request(`http://localhost/api/discussions/${testCentre.id}`);
       const getResponse = await discussionGet(getRequest, {
         params: { centreId: testCentre.id }
@@ -232,7 +232,7 @@ describe('Integration Tests - Community Discussion Forum', () => {
       const parentToken = parentLoginData.token;
 
       // Create comment
-      const { POST: discussionPost } = await import('./discussions/[centreId]/route.js');
+      const { POST: discussionPost } = await import('./[centreId]/route.js');
       
       const createCommentRequest = new Request(
         `http://localhost/api/discussions/${testCentre.id}`,
@@ -268,7 +268,7 @@ describe('Integration Tests - Community Discussion Forum', () => {
 
       // Hide the comment
       const { PATCH: discussionPatch } = await import(
-        './discussions/[centreId]/[commentId]/route.js'
+        './[centreId]/[commentId]/route.js'
       );
       
       const hideCommentRequest = new Request(
@@ -289,7 +289,7 @@ describe('Integration Tests - Community Discussion Forum', () => {
       expect(hideCommentData.comment.isHidden).toBe(true);
 
       // Step 3: Verify comment is hidden from public view
-      const { GET: discussionGet } = await import('./discussions/[centreId]/route.js');
+      const { GET: discussionGet } = await import('./[centreId]/route.js');
       
       const getCommentsRequest = new Request(
         `http://localhost/api/discussions/${testCentre.id}`
