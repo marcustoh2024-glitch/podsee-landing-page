@@ -17,7 +17,7 @@ export default function HeroSection() {
           Every tuition centre
         </h1>
         <h2 className="text-display-medium font-display text-primary mb-8 fade-in-fwd" style={{ animationDelay: '0.2s' }}>
-          in Singapore
+          in Marina Parade
         </h2>
         
         {/* Subtext */}
