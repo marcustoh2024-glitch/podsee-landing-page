@@ -27,13 +27,13 @@ This implementation plan breaks down the community discussion feature into discr
     - Generate JWT tokens with user ID and role
     - _Requirements: 1.1, 1.2, 1.3_
 
-  - [-] 2.2 Write property tests for authentication
+  - [x] 2.2 Write property tests for authentication
     - **Property 1: Valid credentials create or retrieve user**
     - **Property 2: Successful authentication issues token**
     - **Property 3: Valid tokens authorize write operations**
     - **Validates: Requirements 1.1, 1.2, 1.3**
 
-  - [ ] 2.3 Write unit tests for AuthService
+  - [-] 2.3 Write unit tests for AuthService
     - Test specific login scenarios (valid, invalid password, non-existent user)
     - Test token expiration handling
     - Test password hashing security
