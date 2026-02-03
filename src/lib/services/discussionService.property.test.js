@@ -11,10 +11,10 @@ describe('Feature: community-forum - DiscussionService Property Tests', () => {
   afterEach(async () => {
     await prisma.comment.deleteMany();
     await prisma.discussionThread.deleteMany();
-    await prisma.user.deleteMany();
     await prisma.tuitionCentreSubject.deleteMany();
     await prisma.tuitionCentreLevel.deleteMany();
     await prisma.tuitionCentre.deleteMany();
+    await prisma.user.deleteMany();
   });
 
   /**

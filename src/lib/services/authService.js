@@ -50,9 +50,16 @@ class AuthService {
       throw error;
     }
 
-    // Validate password length
+    // Validate password length and content
     if (password.length < 8) {
       const error = new Error('Password must be at least 8 characters');
+      error.code = 'INVALID_PASSWORD';
+      throw error;
+    }
+
+    // Validate password is not only whitespace
+    if (password.trim().length === 0) {
+      const error = new Error('Password cannot be only whitespace');
       error.code = 'INVALID_PASSWORD';
       throw error;
     }
