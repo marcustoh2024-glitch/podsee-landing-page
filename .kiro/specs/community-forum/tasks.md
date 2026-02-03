@@ -40,14 +40,14 @@ This implementation plan breaks down the community discussion feature into discr
     - _Requirements: 1.1, 1.2, 1.3_
 
 - [-] 3. Implement DiscussionService for thread and comment management
-  - [-] 3.1 Create DiscussionService class with core methods
+  - [x] 3.1 Create DiscussionService class with core methods
     - Implement getOrCreateThread() to ensure one thread per centre
     - Implement getComments() to retrieve non-hidden comments ordered chronologically
     - Implement createComment() with validation and sanitization
     - Implement hideComment() for moderation
     - _Requirements: 2.1, 2.2, 2.3, 3.1, 3.2, 4.1, 4.3, 4.5, 6.1, 6.3_
 
-  - [ ] 3.2 Write property tests for thread management
+  - [-] 3.2 Write property tests for thread management
     - **Property 4: One thread per centre invariant**
     - **Property 5: Thread retrieval returns correct thread**
     - **Property 6: Threads cannot be deleted**
