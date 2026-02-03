@@ -123,14 +123,14 @@ class DiscussionService {
     const { threadId, authorId, body, isAnonymous = false, authorRole } = data;
 
     // Validate required fields
-    if (!threadId || !authorId || !body) {
+    if (!threadId || !authorId || body === undefined || body === null) {
       const error = new Error('Thread ID, author ID, and body are required');
       error.code = 'MISSING_FIELDS';
       throw error;
     }
 
     // Validate body is not empty or whitespace-only
-    if (!body.trim()) {
+    if (typeof body !== 'string' || !body.trim()) {
       const error = new Error('Comment body cannot be empty or whitespace-only');
       error.code = 'INVALID_COMMENT_BODY';
       throw error;
