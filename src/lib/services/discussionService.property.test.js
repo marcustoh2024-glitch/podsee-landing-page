@@ -333,4 +333,236 @@ describe('Feature: community-forum - DiscussionService Property Tests', () => {
       { numRuns: 100 }
     );
   }, 60000);
+
+  /**
+   * Property 10: Valid comments are stored
+   * For any authenticated parent with valid comment text, creating a comment 
+   * should result in the comment being stored in the database with all required fields
+   * Validates: Requirements 4.1, 4.4
+   */
+  it('Property 10: Valid comments are stored', async () => {
+    await fc.assert(
+      fc.asyncProperty(
+        fc.string({ minLength: 5, maxLength: 50 }),
+        fc.string({ minLength: 5, maxLength: 50 }),
+        fc.string({ minLength: 8, maxLength: 15 }),
+        fc.emailAddress(),
+        fc.string({ minLength: 1, maxLength: 500 }).filter(s => s.trim().length > 0),
+        fc.boolean(),
+        async (name, location, whatsappNumber, email, body, isAnonymous) => {
+          // Create centre, thread, and user
+          const centre = await prisma.tuitionCentre.create({
+            data: { name, location, whatsappNumber }
+          });
+
+          const thread = await discussionService.getOrCreateThread(centre.id);
+
+          const user = await prisma.user.create({
+            data: {
+              email,
+              passwordHash: 'hashed',
+              role: 'PARENT'
+            }
+          });
+
+          // Create comment
+          const comment = await discussionService.createComment({
+            threadId: thread.id,
+            authorId: user.id,
+            body,
+            isAnonymous,
+            authorRole: 'PARENT'
+          });
+
+          // Verify comment is stored with all required fields
+          expect(comment).toBeDefined();
+          expect(comment.id).toBeDefined();
+          expect(comment.discussionThreadId).toBe(thread.id);
+          expect(comment.body).toBeDefined();
+          expect(comment.isAnonymous).toBe(isAnonymous);
+          expect(comment.createdAt).toBeDefined();
+
+          // Verify in database
+          const dbComment = await prisma.comment.findUnique({
+            where: { id: comment.id }
+          });
+
+          expect(dbComment).toBeDefined();
+          expect(dbComment.authorId).toBe(user.id);
+          expect(dbComment.body).toBeDefined();
+        }
+      ),
+      { numRuns: 100 }
+    );
+  }, 60000);
+
+  /**
+   * Property 11: Anonymity preference is respected
+   * For any parent creating a comment, the isAnonymous flag should be 
+   * stored exactly as specified in the request
+   * Validates: Requirements 4.2
+   */
+  it('Property 11: Anonymity preference is respected', async () => {
+    await fc.assert(
+      fc.asyncProperty(
+        fc.string({ minLength: 5, maxLength: 50 }),
+        fc.string({ minLength: 5, maxLength: 50 }),
+        fc.string({ minLength: 8, maxLength: 15 }),
+        fc.emailAddress(),
+        fc.string({ minLength: 10, maxLength: 100 }),
+        fc.boolean(),
+        async (name, location, whatsappNumber, email, body, isAnonymous) => {
+          // Create centre, thread, and user
+          const centre = await prisma.tuitionCentre.create({
+            data: { name, location, whatsappNumber }
+          });
+
+          const thread = await discussionService.getOrCreateThread(centre.id);
+
+          const user = await prisma.user.create({
+            data: {
+              email,
+              passwordHash: 'hashed',
+              role: 'PARENT'
+            }
+          });
+
+          // Create comment with specific anonymity preference
+          const comment = await discussionService.createComment({
+            threadId: thread.id,
+            authorId: user.id,
+            body,
+            isAnonymous,
+            authorRole: 'PARENT'
+          });
+
+          // Verify anonymity preference is stored correctly
+          const dbComment = await prisma.comment.findUnique({
+            where: { id: comment.id }
+          });
+
+          expect(dbComment.isAnonymous).toBe(isAnonymous);
+        }
+      ),
+      { numRuns: 100 }
+    );
+  }, 60000);
+
+  /**
+   * Property 12: Whitespace-only comments are rejected
+   * For any string composed entirely of whitespace characters (spaces, tabs, newlines), 
+   * attempting to create a comment with that body should be rejected
+   * Validates: Requirements 4.3
+   */
+  it('Property 12: Whitespace-only comments are rejected', async () => {
+    await fc.assert(
+      fc.asyncProperty(
+        fc.string({ minLength: 5, maxLength: 50 }),
+        fc.string({ minLength: 5, maxLength: 50 }),
+        fc.string({ minLength: 8, maxLength: 15 }),
+        fc.emailAddress(),
+        fc.stringOf(fc.constantFrom(' ', '\t', '\n', '\r'), { minLength: 1, maxLength: 20 }),
+        async (name, location, whatsappNumber, email, whitespaceBody) => {
+          // Create centre, thread, and user
+          const centre = await prisma.tuitionCentre.create({
+            data: { name, location, whatsappNumber }
+          });
+
+          const thread = await discussionService.getOrCreateThread(centre.id);
+
+          const user = await prisma.user.create({
+            data: {
+              email,
+              passwordHash: 'hashed',
+              role: 'PARENT'
+            }
+          });
+
+          // Attempt to create comment with whitespace-only body
+          let error;
+          try {
+            await discussionService.createComment({
+              threadId: thread.id,
+              authorId: user.id,
+              body: whitespaceBody,
+              isAnonymous: false,
+              authorRole: 'PARENT'
+            });
+          } catch (err) {
+            error = err;
+          }
+
+          // Should be rejected
+          expect(error).toBeDefined();
+          expect(error.code).toBe('INVALID_COMMENT_BODY');
+        }
+      ),
+      { numRuns: 100 }
+    );
+  }, 60000);
+
+  /**
+   * Property 13: HTML and scripts are sanitized
+   * For any comment body containing HTML tags or script elements, 
+   * the stored comment should have those elements removed or escaped
+   * Validates: Requirements 4.5
+   */
+  it('Property 13: HTML and scripts are sanitized', async () => {
+    await fc.assert(
+      fc.asyncProperty(
+        fc.string({ minLength: 5, maxLength: 50 }),
+        fc.string({ minLength: 5, maxLength: 50 }),
+        fc.string({ minLength: 8, maxLength: 15 }),
+        fc.emailAddress(),
+        fc.string({ minLength: 5, maxLength: 50 }),
+        fc.constantFrom(
+          '<script>alert("xss")</script>',
+          '<img src=x onerror=alert(1)>',
+          '<div onclick="alert(1)">Click me</div>',
+          '<b>Bold text</b>',
+          '<a href="javascript:alert(1)">Link</a>'
+        ),
+        async (name, location, whatsappNumber, email, safeText, maliciousCode) => {
+          // Create centre, thread, and user
+          const centre = await prisma.tuitionCentre.create({
+            data: { name, location, whatsappNumber }
+          });
+
+          const thread = await discussionService.getOrCreateThread(centre.id);
+
+          const user = await prisma.user.create({
+            data: {
+              email,
+              passwordHash: 'hashed',
+              role: 'PARENT'
+            }
+          });
+
+          // Create comment with malicious code
+          const body = `${safeText} ${maliciousCode}`;
+          const comment = await discussionService.createComment({
+            threadId: thread.id,
+            authorId: user.id,
+            body,
+            isAnonymous: false,
+            authorRole: 'PARENT'
+          });
+
+          // Verify HTML/script tags are removed
+          expect(comment.body).not.toContain('<script');
+          expect(comment.body).not.toContain('</script>');
+          expect(comment.body).not.toContain('<img');
+          expect(comment.body).not.toContain('<div');
+          expect(comment.body).not.toContain('<b>');
+          expect(comment.body).not.toContain('<a');
+          expect(comment.body).not.toContain('onerror');
+          expect(comment.body).not.toContain('onclick');
+
+          // Verify safe text is preserved
+          expect(comment.body).toContain(safeText);
+        }
+      ),
+      { numRuns: 100 }
+    );
+  }, 60000);
 });
