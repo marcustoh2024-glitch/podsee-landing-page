@@ -189,7 +189,7 @@ This implementation plan breaks down the community discussion feature into discr
     - Handle empty state (no comments yet)
     - _Requirements: 3.1, 3.2, 3.3, 5.3_
 
-  - [ ] 9.4 Write unit tests for frontend components
+  - [-] 9.4 Write unit tests for frontend components
     - Test DiscussionPage renders correctly with data
     - Test CommentForm validation and submission
     - Test CommentList displays comments correctly
