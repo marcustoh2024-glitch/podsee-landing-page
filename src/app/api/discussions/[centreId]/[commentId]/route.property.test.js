@@ -31,7 +31,7 @@ describe('Feature: community-forum - Comment Moderation API Property Tests', () 
         fc.string({ minLength: 5, maxLength: 50 }),
         fc.string({ minLength: 8, maxLength: 15 }),
         fc.emailAddress(),
-        fc.string({ minLength: 8, maxLength: 20 }),
+        fc.string({ minLength: 8, maxLength: 20 }).filter(s => s.trim().length >= 8),
         fc.string({ minLength: 10, maxLength: 100 }),
         fc.boolean(),
         fc.boolean(),
@@ -166,16 +166,16 @@ describe('Feature: community-forum - Comment Moderation API Property Tests', () 
           const { token } = await authService.authenticate(nonAdminEmail, password, role);
 
           // Create mock request
+          const mockHeaders = new Map([
+            ['authorization', `Bearer ${token}`]
+          ]);
+
           const mockRequest = {
             url: `http://localhost:3000/api/discussions/${centre.id}/${comment.id}`,
-            headers: new Map([
-              ['authorization', `Bearer ${token}`]
-            ]),
+            headers: {
+              get: (key) => mockHeaders.get(key)
+            },
             json: async () => ({ isHidden: true })
-          };
-
-          mockRequest.headers.get = function(key) {
-            return this.get(key);
           };
 
           const mockParams = {
