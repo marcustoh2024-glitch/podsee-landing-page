@@ -131,7 +131,7 @@ This implementation plan breaks down the community discussion feature into discr
     - Handle errors (400, 401, 403, 404, 500)
     - _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5, 5.1, 5.2_
 
-  - [-] 6.3 Create PATCH /api/discussions/[centreId]/[commentId] route
+  - [x] 6.3 Create PATCH /api/discussions/[centreId]/[commentId] route
     - Validate authentication token and admin role
     - Validate request body (isHidden)
     - Call DiscussionService.hideComment()
@@ -139,7 +139,7 @@ This implementation plan breaks down the community discussion feature into discr
     - Handle errors (400, 401, 403, 404, 500)
     - _Requirements: 6.1, 6.3, 6.4_
 
-  - [ ] 6.4 Write property tests for discussion endpoints
+  - [-] 6.4 Write property tests for discussion endpoints
     - Test GET endpoint returns correct data format for any valid centre
     - Test POST endpoint creates comments for any valid input
     - Test PATCH endpoint modifies only isHidden flag
