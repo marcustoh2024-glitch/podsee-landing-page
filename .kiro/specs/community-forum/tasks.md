@@ -20,14 +20,14 @@ This implementation plan breaks down the community discussion feature into discr
   - **Validates: Requirements 9.3, 9.4**
 
 - [-] 2. Implement AuthService for user authentication
-  - [-] 2.1 Create AuthService class with password hashing
+  - [x] 2.1 Create AuthService class with password hashing
     - Implement hashPassword() using bcrypt
     - Implement authenticate() for email/password login
     - Implement validateSession() for JWT token validation
     - Generate JWT tokens with user ID and role
     - _Requirements: 1.1, 1.2, 1.3_
 
-  - [ ] 2.2 Write property tests for authentication
+  - [-] 2.2 Write property tests for authentication
     - **Property 1: Valid credentials create or retrieve user**
     - **Property 2: Successful authentication issues token**
     - **Property 3: Valid tokens authorize write operations**
