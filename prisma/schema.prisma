@@ -11,15 +11,16 @@ datasource db {
 }
 
 model TuitionCentre {
-  id             String                 @id @default(uuid())
-  name           String
-  location       String
-  whatsappNumber String
-  website        String?
-  levels         TuitionCentreLevel[]
-  subjects       TuitionCentreSubject[]
-  createdAt      DateTime               @default(now())
-  updatedAt      DateTime               @updatedAt
+  id               String                 @id @default(uuid())
+  name             String
+  location         String
+  whatsappNumber   String
+  website          String?
+  levels           TuitionCentreLevel[]
+  subjects         TuitionCentreSubject[]
+  discussionThread DiscussionThread?
+  createdAt        DateTime               @default(now())
+  updatedAt        DateTime               @updatedAt
 
   @@index([name])
   @@index([location])
@@ -55,4 +56,48 @@ model TuitionCentreSubject {
   subject         Subject       @relation(fields: [subjectId], references: [id], onDelete: Cascade)
 
   @@id([tuitionCentreId, subjectId])
+}
+
+enum UserRole {
+  PARENT
+  CENTRE
+  ADMIN
+}
+
+model User {
+  id           String    @id @default(uuid())
+  email        String    @unique
+  passwordHash String
+  role         UserRole  @default(PARENT)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  comments     Comment[]
+
+  @@index([email])
+}
+
+model DiscussionThread {
+  id              String         @id @default(uuid())
+  tuitionCentreId String         @unique
+  tuitionCentre   TuitionCentre  @relation(fields: [tuitionCentreId], references: [id], onDelete: Restrict)
+  createdAt       DateTime       @default(now())
+  comments        Comment[]
+
+  @@index([tuitionCentreId])
+}
+
+model Comment {
+  id                 String           @id @default(uuid())
+  discussionThreadId String
+  discussionThread   DiscussionThread @relation(fields: [discussionThreadId], references: [id], onDelete: Cascade)
+  authorId           String?
+  author             User?            @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  body               String
+  isAnonymous        Boolean          @default(false)
+  isHidden           Boolean          @default(false)
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+
+  @@index([discussionThreadId, createdAt])
+  @@index([isHidden])
 }
