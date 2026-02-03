@@ -8,6 +8,8 @@ export default function ContactModal({ isOpen, onClose, centre }) {
   const [comments, setComments] = useState([])
   const [isLoadingComments, setIsLoadingComments] = useState(false)
   const [newComment, setNewComment] = useState('')
+  const [replyingTo, setReplyingTo] = useState(null)
+  const [replyText, setReplyText] = useState('')
   
   useEffect(() => {
     if (isOpen) {
@@ -16,6 +18,8 @@ export default function ContactModal({ isOpen, onClose, centre }) {
       fetchComments()
     } else {
       document.body.style.overflow = 'unset'
+      setReplyingTo(null)
+      setReplyText('')
     }
     return () => {
       document.body.style.overflow = 'unset'
@@ -31,7 +35,13 @@ export default function ContactModal({ isOpen, onClose, centre }) {
       const data = await response.json()
       
       if (response.ok && data.comments) {
-        setComments(data.comments)
+        // Group comments with their replies
+        const commentsWithReplies = data.comments.map(comment => ({
+          ...comment,
+          replies: data.comments.filter(c => c.parentId === comment.id)
+        })).filter(comment => !comment.parentId) // Only show top-level comments
+        
+        setComments(commentsWithReplies)
       }
     } catch (err) {
       console.error('Failed to fetch comments:', err)
@@ -62,11 +72,43 @@ export default function ContactModal({ isOpen, onClose, centre }) {
       body: newComment,
       isAnonymous: true,
       createdAt: new Date().toISOString(),
-      author: null
+      author: null,
+      replies: []
     }
     
     setComments([mockComment, ...comments])
     setNewComment('')
+  }
+
+  const handlePostReply = async (parentId) => {
+    if (!replyText.trim()) return
+    
+    // In a real app, this would post to the API
+    const mockReply = {
+      id: Date.now(),
+      body: replyText,
+      isAnonymous: false,
+      createdAt: new Date().toISOString(),
+      parentId: parentId,
+      author: {
+        email: centre.name,
+        role: 'CENTRE'
+      }
+    }
+    
+    // Add reply to the parent comment
+    setComments(comments.map(comment => {
+      if (comment.id === parentId) {
+        return {
+          ...comment,
+          replies: [...(comment.replies || []), mockReply]
+        }
+      }
+      return comment
+    }))
+    
+    setReplyText('')
+    setReplyingTo(null)
   }
 
   const formatTimestamp = (dateString) => {
