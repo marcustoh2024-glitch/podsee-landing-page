@@ -105,7 +105,7 @@ This implementation plan breaks down the community discussion feature into discr
     - Handle authentication errors (401, 400, 500)
     - _Requirements: 1.1, 1.2_
 
-  - [ ] 5.2 Write unit tests for login endpoint
+  - [-] 5.2 Write unit tests for login endpoint
     - Test successful login response format
     - Test invalid credentials error
     - Test missing fields error
