@@ -1,20 +1,44 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 
 export default function ContactModal({ isOpen, onClose, centre }) {
   const router = useRouter()
+  const [comments, setComments] = useState([])
+  const [isLoadingComments, setIsLoadingComments] = useState(false)
+  const [newComment, setNewComment] = useState('')
+  
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden'
+      // Fetch comments when modal opens
+      fetchComments()
     } else {
       document.body.style.overflow = 'unset'
     }
     return () => {
       document.body.style.overflow = 'unset'
     }
-  }, [isOpen])
+  }, [isOpen, centre?.id])
+
+  const fetchComments = async () => {
+    if (!centre?.id) return
+    
+    setIsLoadingComments(true)
+    try {
+      const response = await fetch(`/api/discussions/${centre.id}`)
+      const data = await response.json()
+      
+      if (response.ok && data.comments) {
+        setComments(data.comments)
+      }
+    } catch (err) {
+      console.error('Failed to fetch comments:', err)
+    } finally {
+      setIsLoadingComments(false)
+    }
+  }
 
   if (!isOpen || !centre) return null
 
@@ -27,12 +51,22 @@ export default function ContactModal({ isOpen, onClose, centre }) {
 
   const handleWebsite = () => {
     window.open(centre.website, '_blank')
-    onClose()
   }
 
-  const handleDiscussion = () => {
-    router.push(`/discussions/${centre.id}`)
-    onClose()
+  const handlePostComment = async () => {
+    if (!newComment.trim()) return
+    
+    // In a real app, this would post to the API
+    const mockComment = {
+      id: Date.now(),
+      body: newComment,
+      isAnonymous: true,
+      createdAt: new Date().toISOString(),
+      author: null
+    }
+    
+    setComments([mockComment, ...comments])
+    setNewComment('')
   }
 
   return (
