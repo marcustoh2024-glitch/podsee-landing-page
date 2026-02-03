@@ -567,4 +567,113 @@ describe('Feature: community-forum - DiscussionService Property Tests', () => {
       { numRuns: 100 }
     );
   }, 60000);
+
+  /**
+   * Property 14: Centre comments store correct role
+   * For any authenticated centre account creating a comment, the stored comment 
+   * should be associated with a user whose role is CENTRE
+   * Validates: Requirements 5.1, 5.3
+   */
+  it('Property 14: Centre comments store correct role', async () => {
+    await fc.assert(
+      fc.asyncProperty(
+        fc.string({ minLength: 5, maxLength: 50 }),
+        fc.string({ minLength: 5, maxLength: 50 }),
+        fc.string({ minLength: 8, maxLength: 15 }),
+        fc.emailAddress(),
+        fc.string({ minLength: 10, maxLength: 100 }),
+        async (name, location, whatsappNumber, email, body) => {
+          // Create centre, thread, and centre user
+          const centre = await prisma.tuitionCentre.create({
+            data: { name, location, whatsappNumber }
+          });
+
+          const thread = await discussionService.getOrCreateThread(centre.id);
+
+          const centreUser = await prisma.user.create({
+            data: {
+              email,
+              passwordHash: 'hashed',
+              role: 'CENTRE'
+            }
+          });
+
+          // Create comment as centre
+          const comment = await discussionService.createComment({
+            threadId: thread.id,
+            authorId: centreUser.id,
+            body,
+            isAnonymous: false,
+            authorRole: 'CENTRE'
+          });
+
+          // Verify comment is associated with CENTRE role user
+          expect(comment.author).toBeDefined();
+          expect(comment.author.role).toBe('CENTRE');
+
+          // Verify in database
+          const dbComment = await prisma.comment.findUnique({
+            where: { id: comment.id },
+            include: { author: true }
+          });
+
+          expect(dbComment.author.role).toBe('CENTRE');
+        }
+      ),
+      { numRuns: 100 }
+    );
+  }, 60000);
+
+  /**
+   * Property 15: Centres cannot post anonymously
+   * For any centre account attempting to create a comment with isAnonymous 
+   * set to true, the request should be rejected
+   * Validates: Requirements 5.2
+   */
+  it('Property 15: Centres cannot post anonymously', async () => {
+    await fc.assert(
+      fc.asyncProperty(
+        fc.string({ minLength: 5, maxLength: 50 }),
+        fc.string({ minLength: 5, maxLength: 50 }),
+        fc.string({ minLength: 8, maxLength: 15 }),
+        fc.emailAddress(),
+        fc.string({ minLength: 10, maxLength: 100 }),
+        async (name, location, whatsappNumber, email, body) => {
+          // Create centre, thread, and centre user
+          const centre = await prisma.tuitionCentre.create({
+            data: { name, location, whatsappNumber }
+          });
+
+          const thread = await discussionService.getOrCreateThread(centre.id);
+
+          const centreUser = await prisma.user.create({
+            data: {
+              email,
+              passwordHash: 'hashed',
+              role: 'CENTRE'
+            }
+          });
+
+          // Attempt to create anonymous comment as centre
+          let error;
+          try {
+            await discussionService.createComment({
+              threadId: thread.id,
+              authorId: centreUser.id,
+              body,
+              isAnonymous: true,
+              authorRole: 'CENTRE'
+            });
+          } catch (err) {
+            error = err;
+          }
+
+          // Should be rejected
+          expect(error).toBeDefined();
+          expect(error.code).toBe('FORBIDDEN_ANONYMOUS_CENTRE');
+        }
+      ),
+      { numRuns: 100 }
+    );
+  }, 60000);
 });

@@ -59,14 +59,14 @@ This implementation plan breaks down the community discussion feature into discr
     - **Property 9: Anonymous comments hide author identity**
     - **Validates: Requirements 3.1, 3.2, 3.3, 6.2, 8.2**
 
-  - [-] 3.4 Write property tests for comment creation
+  - [x] 3.4 Write property tests for comment creation
     - **Property 10: Valid comments are stored**
     - **Property 11: Anonymity preference is respected**
     - **Property 12: Whitespace-only comments are rejected**
     - **Property 13: HTML and scripts are sanitized**
     - **Validates: Requirements 4.1, 4.2, 4.3, 4.4, 4.5**
 
-  - [ ] 3.5 Write property tests for centre accounts
+  - [-] 3.5 Write property tests for centre accounts
     - **Property 14: Centre comments store correct role**
     - **Property 15: Centres cannot post anonymously**
     - **Validates: Requirements 5.1, 5.2, 5.3**
