@@ -198,13 +198,13 @@ This implementation plan breaks down the community discussion feature into discr
     - _Requirements: 3.3, 4.3, 5.3, 7.3, 7.4_
 
 - [-] 10. Integrate discussion link into tuition centre modal
-  - [-] 10.1 Add "Community Discussion" button to centre details modal
+  - [x] 10.1 Add "Community Discussion" button to centre details modal
     - Position below WhatsApp and Website options
     - Link to /discussions/[centreId] page
     - Style consistently with existing buttons
     - _Requirements: 7.1, 7.2_
 
-  - [ ] 10.2 Write unit test for modal integration
+  - [-] 10.2 Write unit test for modal integration
     - Test button appears in correct position
     - Test navigation on click
     - _Requirements: 7.1, 7.2_
