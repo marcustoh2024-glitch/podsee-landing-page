@@ -47,48 +47,48 @@ This implementation plan breaks down the community discussion feature into discr
     - Implement hideComment() for moderation
     - _Requirements: 2.1, 2.2, 2.3, 3.1, 3.2, 4.1, 4.3, 4.5, 6.1, 6.3_
 
-  - [ ]* 3.2 Write property tests for thread management
+  - [ ] 3.2 Write property tests for thread management
     - **Property 4: One thread per centre invariant**
     - **Property 5: Thread retrieval returns correct thread**
     - **Property 6: Threads cannot be deleted**
     - **Validates: Requirements 2.1, 2.2, 2.3, 2.4**
 
-  - [ ]* 3.3 Write property tests for comment display
+  - [ ] 3.3 Write property tests for comment display
     - **Property 7: Hidden comments are excluded**
     - **Property 8: Comments are chronologically ordered**
     - **Property 9: Anonymous comments hide author identity**
     - **Validates: Requirements 3.1, 3.2, 3.3, 6.2, 8.2**
 
-  - [ ]* 3.4 Write property tests for comment creation
+  - [ ] 3.4 Write property tests for comment creation
     - **Property 10: Valid comments are stored**
     - **Property 11: Anonymity preference is respected**
     - **Property 12: Whitespace-only comments are rejected**
     - **Property 13: HTML and scripts are sanitized**
     - **Validates: Requirements 4.1, 4.2, 4.3, 4.4, 4.5**
 
-  - [ ]* 3.5 Write property tests for centre accounts
+  - [ ] 3.5 Write property tests for centre accounts
     - **Property 14: Centre comments store correct role**
     - **Property 15: Centres cannot post anonymously**
     - **Validates: Requirements 5.1, 5.2, 5.3**
 
-  - [ ]* 3.6 Write property tests for moderation
+  - [ ] 3.6 Write property tests for moderation
     - **Property 16: Hiding sets flag**
     - **Property 17: Unhiding restores visibility**
     - **Property 18: Hiding preserves data**
     - **Validates: Requirements 6.1, 6.3, 6.4**
 
-  - [ ]* 3.7 Write property tests for privacy
+  - [ ] 3.7 Write property tests for privacy
     - **Property 19: Anonymous comments store author internally**
     - **Property 20: Admins can see anonymous authors**
     - **Property 21: Anonymous comments maintain referential integrity**
     - **Validates: Requirements 8.1, 8.3, 8.4**
 
-  - [ ]* 3.8 Write property tests for data integrity
+  - [ ] 3.8 Write property tests for data integrity
     - **Property 22: Centre deletion preserves discussions**
     - **Property 23: User deletion preserves comments**
     - **Validates: Requirements 9.1, 9.2**
 
-  - [ ]* 3.9 Write unit tests for DiscussionService
+  - [ ] 3.9 Write unit tests for DiscussionService
     - Test specific edge cases (empty threads, single comment, many comments)
     - Test error conditions (invalid IDs, missing fields)
     - Test sanitization with specific XSS patterns
@@ -105,7 +105,7 @@ This implementation plan breaks down the community discussion feature into discr
     - Handle authentication errors (401, 400, 500)
     - _Requirements: 1.1, 1.2_
 
-  - [ ]* 5.2 Write unit tests for login endpoint
+  - [ ] 5.2 Write unit tests for login endpoint
     - Test successful login response format
     - Test invalid credentials error
     - Test missing fields error
@@ -139,20 +139,20 @@ This implementation plan breaks down the community discussion feature into discr
     - Handle errors (400, 401, 403, 404, 500)
     - _Requirements: 6.1, 6.3, 6.4_
 
-  - [ ]* 6.4 Write property tests for discussion endpoints
+  - [ ] 6.4 Write property tests for discussion endpoints
     - Test GET endpoint returns correct data format for any valid centre
     - Test POST endpoint creates comments for any valid input
     - Test PATCH endpoint modifies only isHidden flag
     - **Validates: Requirements 3.1, 4.1, 6.1**
 
-  - [ ]* 6.5 Write unit tests for discussion endpoints
+  - [ ] 6.5 Write unit tests for discussion endpoints
     - Test specific request/response formats
     - Test error responses (missing auth, invalid IDs)
     - Test unauthenticated read access
     - Test centre anonymous rejection
     - _Requirements: 3.4, 4.1, 5.2, 6.1_
 
-- [ ]* 7. Write integration tests for complete flows
+- [ ] 7. Write integration tests for complete flows
   - Test end-to-end flow: login → create comment → read comments
   - Test moderation flow: create comment → hide → verify hidden
   - Test anonymous flow: create anonymous comment → verify author hidden
