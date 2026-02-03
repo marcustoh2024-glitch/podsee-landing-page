@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import AuthModal from './AuthModal'
 
 export default function ContactModal({ isOpen, onClose, centre }) {
   const router = useRouter()
@@ -10,6 +11,8 @@ export default function ContactModal({ isOpen, onClose, centre }) {
   const [newComment, setNewComment] = useState('')
   const [replyingTo, setReplyingTo] = useState(null)
   const [replyText, setReplyText] = useState('')
+  const [currentUser, setCurrentUser] = useState(null)
+  const [showAuthModal, setShowAuthModal] = useState(false)
   
   useEffect(() => {
     if (isOpen) {
