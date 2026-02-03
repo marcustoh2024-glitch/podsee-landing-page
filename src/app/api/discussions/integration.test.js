@@ -556,10 +556,11 @@ describe('Integration Tests - Community Discussion Forum', () => {
       // Step 1: Login as centre
       const { POST: loginPost } = await import('../auth/login/route.js');
       
+      const centreEmail = generateTestEmail('centre');
       const loginRequest = new Request('http://localhost/api/auth/login', {
         method: 'POST',
         body: JSON.stringify({
-          email: 'centre@example.com',
+          email: centreEmail,
           password: 'centrepassword123',
           role: 'CENTRE'
         })
@@ -613,17 +614,18 @@ describe('Integration Tests - Community Discussion Forum', () => {
       expect(getCommentsData.comments).toHaveLength(1);
       expect(getCommentsData.comments[0].author).toBeDefined();
       expect(getCommentsData.comments[0].author.role).toBe('CENTRE');
-      expect(getCommentsData.comments[0].author.email).toBe('centre@example.com');
+      expect(getCommentsData.comments[0].author.email).toBe(centreEmail);
     });
 
     it('should prevent centre accounts from posting anonymously', async () => {
       // Login as centre
       const { POST: loginPost } = await import('../auth/login/route.js');
       
+      const centreEmail = generateTestEmail('centre');
       const loginRequest = new Request('http://localhost/api/auth/login', {
         method: 'POST',
         body: JSON.stringify({
-          email: 'centre2@example.com',
+          email: centreEmail,
           password: 'centrepassword123',
           role: 'CENTRE'
         })
