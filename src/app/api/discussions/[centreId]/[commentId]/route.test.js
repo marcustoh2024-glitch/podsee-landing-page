@@ -1,11 +1,20 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { PATCH } from './route';
+import { generateTestUUID } from '@/lib/testUtils';
 
 describe('Comment Moderation API - Unit Tests', () => {
   let mockDiscussionService;
   let mockAuthService;
+  let testCentreId;
+  let testCommentId;
+  let testAdminId;
 
   beforeEach(() => {
+    // Generate valid UUIDs for each test
+    testCentreId = generateTestUUID();
+    testCommentId = generateTestUUID();
+    testAdminId = generateTestUUID();
+
     mockDiscussionService = {
       hideComment: vi.fn()
     };
@@ -18,13 +27,13 @@ describe('Comment Moderation API - Unit Tests', () => {
   describe('PATCH /api/discussions/[centreId]/[commentId]', () => {
     it('should hide comment when admin provides valid request', async () => {
       const mockAdmin = {
-        id: 'admin-123',
+        id: testAdminId,
         email: 'admin@example.com',
         role: 'ADMIN'
       };
 
       const mockComment = {
-        id: 'comment-123',
+        id: testCommentId,
         isHidden: true,
         updatedAt: new Date().toISOString()
       };
@@ -32,7 +41,7 @@ describe('Comment Moderation API - Unit Tests', () => {
       mockAuthService.validateSession.mockResolvedValue(mockAdmin);
       mockDiscussionService.hideComment.mockResolvedValue(mockComment);
 
-      const request = new Request('http://localhost/api/discussions/centre-123/comment-123', {
+      const request = new Request(`http://localhost/api/discussions/${testCentreId}/${testCommentId}`, {
         method: 'PATCH',
         headers: {
           'Authorization': 'Bearer admin-token',
@@ -45,8 +54,8 @@ describe('Comment Moderation API - Unit Tests', () => {
 
       const response = await PATCH(request, {
         params: {
-          centreId: 'centre-123',
-          commentId: 'comment-123'
+          centreId: testCentreId,
+          commentId: testCommentId
         },
         discussionService: mockDiscussionService,
         authService: mockAuthService
@@ -56,18 +65,18 @@ describe('Comment Moderation API - Unit Tests', () => {
 
       expect(response.status).toBe(200);
       expect(data.comment.isHidden).toBe(true);
-      expect(mockDiscussionService.hideComment).toHaveBeenCalledWith('comment-123', true);
+      expect(mockDiscussionService.hideComment).toHaveBeenCalledWith(testCommentId, true);
     });
 
     it('should unhide comment when admin sets isHidden to false', async () => {
       const mockAdmin = {
-        id: 'admin-123',
+        id: testAdminId,
         email: 'admin@example.com',
         role: 'ADMIN'
       };
 
       const mockComment = {
-        id: 'comment-123',
+        id: testCommentId,
         isHidden: false,
         updatedAt: new Date().toISOString()
       };
@@ -75,7 +84,7 @@ describe('Comment Moderation API - Unit Tests', () => {
       mockAuthService.validateSession.mockResolvedValue(mockAdmin);
       mockDiscussionService.hideComment.mockResolvedValue(mockComment);
 
-      const request = new Request('http://localhost/api/discussions/centre-123/comment-123', {
+      const request = new Request(`http://localhost/api/discussions/${testCentreId}/${testCommentId}`, {
         method: 'PATCH',
         headers: {
           'Authorization': 'Bearer admin-token',
@@ -88,8 +97,8 @@ describe('Comment Moderation API - Unit Tests', () => {
 
       const response = await PATCH(request, {
         params: {
-          centreId: 'centre-123',
-          commentId: 'comment-123'
+          centreId: testCentreId,
+          commentId: testCommentId
         },
         discussionService: mockDiscussionService,
         authService: mockAuthService
