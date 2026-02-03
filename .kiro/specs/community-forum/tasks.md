@@ -217,7 +217,7 @@ This implementation plan breaks down the community discussion feature into discr
     - Handle invalid centre IDs
     - _Requirements: 7.2, 7.3_
 
-- [-] 12. Add authentication context and hooks
+- [x] 12. Add authentication context and hooks
   - [x] 12.1 Create AuthContext for managing user session
     - Store current user and token in context
     - Provide login/logout functions
@@ -230,7 +230,7 @@ This implementation plan breaks down the community discussion feature into discr
     - Simplify authentication checks in components
     - _Requirements: 1.3, 7.4_
 
-  - [-] 12.3 Write unit tests for auth context
+  - [x] 12.3 Write unit tests for auth context
     - Test login updates context
     - Test logout clears context
     - Test token persistence
