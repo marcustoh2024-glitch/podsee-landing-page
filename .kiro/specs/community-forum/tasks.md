@@ -152,7 +152,7 @@ This implementation plan breaks down the community discussion feature into discr
     - Test centre anonymous rejection
     - _Requirements: 3.4, 4.1, 5.2, 6.1_
 
-- [ ] 7. Write integration tests for complete flows
+- [-] 7. Write integration tests for complete flows
   - Test end-to-end flow: login → create comment → read comments
   - Test moderation flow: create comment → hide → verify hidden
   - Test anonymous flow: create anonymous comment → verify author hidden
