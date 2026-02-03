@@ -6,7 +6,7 @@ This implementation plan breaks down the community discussion feature into discr
 
 ## Tasks
 
-- [ ] 1. Set up database schema and migrations
+- [-] 1. Set up database schema and migrations
   - Create Prisma schema for User, DiscussionThread, and Comment models
   - Add UserRole enum (PARENT, CENTRE, ADMIN)
   - Configure foreign key relationships and constraints
