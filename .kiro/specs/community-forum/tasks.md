@@ -139,13 +139,13 @@ This implementation plan breaks down the community discussion feature into discr
     - Handle errors (400, 401, 403, 404, 500)
     - _Requirements: 6.1, 6.3, 6.4_
 
-  - [-] 6.4 Write property tests for discussion endpoints
+  - [x] 6.4 Write property tests for discussion endpoints
     - Test GET endpoint returns correct data format for any valid centre
     - Test POST endpoint creates comments for any valid input
     - Test PATCH endpoint modifies only isHidden flag
     - **Validates: Requirements 3.1, 4.1, 6.1**
 
-  - [ ] 6.5 Write unit tests for discussion endpoints
+  - [-] 6.5 Write unit tests for discussion endpoints
     - Test specific request/response formats
     - Test error responses (missing auth, invalid IDs)
     - Test unauthenticated read access

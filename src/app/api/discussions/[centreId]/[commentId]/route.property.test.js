@@ -130,7 +130,7 @@ describe('Feature: community-forum - Comment Moderation API Property Tests', () 
         fc.string({ minLength: 5, maxLength: 50 }),
         fc.string({ minLength: 8, maxLength: 15 }),
         fc.emailAddress(),
-        fc.string({ minLength: 8, maxLength: 20 }),
+        fc.string({ minLength: 8, maxLength: 20 }).filter(s => s.trim().length >= 8),
         fc.string({ minLength: 10, maxLength: 100 }),
         fc.constantFrom('PARENT', 'CENTRE'),
         async (name, location, whatsappNumber, email, password, body, role) => {
@@ -209,23 +209,23 @@ describe('Feature: community-forum - Comment Moderation API Property Tests', () 
     await fc.assert(
       fc.asyncProperty(
         fc.emailAddress(),
-        fc.string({ minLength: 8, maxLength: 20 }),
+        fc.string({ minLength: 8, maxLength: 20 }).filter(s => s.trim().length >= 8),
         fc.string({ minLength: 1, maxLength: 20 }).filter(s => !s.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i)),
         async (email, password, invalidId) => {
           // Create admin user and authenticate
           const { token } = await authService.authenticate(email, password, 'ADMIN');
 
           // Create mock request with invalid ID
+          const mockHeaders = new Map([
+            ['authorization', `Bearer ${token}`]
+          ]);
+
           const mockRequest = {
             url: `http://localhost:3000/api/discussions/${invalidId}/${invalidId}`,
-            headers: new Map([
-              ['authorization', `Bearer ${token}`]
-            ]),
+            headers: {
+              get: (key) => mockHeaders.get(key)
+            },
             json: async () => ({ isHidden: true })
-          };
-
-          mockRequest.headers.get = function(key) {
-            return this.get(key);
           };
 
           const mockParams = {
