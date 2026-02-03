@@ -162,7 +162,7 @@ This implementation plan breaks down the community discussion feature into discr
 - [x] 8. Checkpoint - Ensure all API tests pass
   - Ensure all tests pass, ask the user if questions arise.
 
-- [-] 9. Create frontend components for discussion UI
+- [x] 9. Create frontend components for discussion UI
   - [x] 9.1 Create DiscussionPage component
     - Fetch discussion thread and comments on mount
     - Display centre name and tags at top
@@ -189,7 +189,7 @@ This implementation plan breaks down the community discussion feature into discr
     - Handle empty state (no comments yet)
     - _Requirements: 3.1, 3.2, 3.3, 5.3_
 
-  - [-] 9.4 Write unit tests for frontend components
+  - [x] 9.4 Write unit tests for frontend components
     - Test DiscussionPage renders correctly with data
     - Test CommentForm validation and submission
     - Test CommentList displays comments correctly
