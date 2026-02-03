@@ -504,3 +504,349 @@ interface Comment {
 
 *A property is a characteristic or behavior that should hold true across all valid executions of a system—essentially, a formal statement about what the system should do. Properties serve as the bridge between human-readable specifications and machine-verifiable correctness guarantees.*
 
+
+### Authentication Properties
+
+Property 1: Valid credentials create or retrieve user
+*For any* valid email and password combination, authenticating should return a user account (either newly created or existing)
+**Validates: Requirements 1.1**
+
+Property 2: Successful authentication issues token
+*For any* user who successfully authenticates, the system should return a valid session token
+**Validates: Requirements 1.2**
+
+Property 3: Valid tokens authorize write operations
+*For any* user with a valid session token, the system should allow comment creation and other write operations
+**Validates: Requirements 1.3**
+
+### Discussion Thread Properties
+
+Property 4: One thread per centre invariant
+*For any* tuition centre in the system, querying its discussion threads should return exactly one thread
+**Validates: Requirements 2.1, 2.2**
+
+Property 5: Thread retrieval returns correct thread
+*For any* tuition centre, retrieving its discussion thread should return the thread associated with that specific centre
+**Validates: Requirements 2.3**
+
+Property 6: Threads cannot be deleted
+*For any* discussion thread, attempting to delete it should fail and the thread should remain in the database
+**Validates: Requirements 2.4**
+
+### Comment Display Properties
+
+Property 7: Hidden comments are excluded
+*For any* discussion thread, retrieving comments should return only comments where isHidden is false
+**Validates: Requirements 3.1, 6.2**
+
+Property 8: Comments are chronologically ordered
+*For any* discussion thread with multiple comments, the returned comments should be ordered by createdAt timestamp from oldest to newest
+**Validates: Requirements 3.2**
+
+Property 9: Anonymous comments hide author identity
+*For any* comment where isAnonymous is true, the public API response should not expose the author's identity (author field should be null or generic)
+**Validates: Requirements 3.3, 8.2**
+
+### Comment Creation Properties
+
+Property 10: Valid comments are stored
+*For any* authenticated parent with valid comment text, creating a comment should result in the comment being stored in the database with all required fields
+**Validates: Requirements 4.1, 4.4**
+
+Property 11: Anonymity preference is respected
+*For any* parent creating a comment, the isAnonymous flag should be stored exactly as specified in the request
+**Validates: Requirements 4.2**
+
+Property 12: Whitespace-only comments are rejected
+*For any* string composed entirely of whitespace characters (spaces, tabs, newlines), attempting to create a comment with that body should be rejected
+**Validates: Requirements 4.3**
+
+Property 13: HTML and scripts are sanitized
+*For any* comment body containing HTML tags or script elements, the stored comment should have those elements removed or escaped
+**Validates: Requirements 4.5**
+
+### Centre Account Properties
+
+Property 14: Centre comments store correct role
+*For any* authenticated centre account creating a comment, the stored comment should be associated with a user whose role is CENTRE
+**Validates: Requirements 5.1, 5.3**
+
+Property 15: Centres cannot post anonymously
+*For any* centre account attempting to create a comment with isAnonymous set to true, the request should be rejected
+**Validates: Requirements 5.2**
+
+### Moderation Properties
+
+Property 16: Hiding sets flag
+*For any* comment, when an admin marks it as hidden, the isHidden flag should be set to true
+**Validates: Requirements 6.1**
+
+Property 17: Unhiding restores visibility
+*For any* hidden comment, when an admin unhides it, the isHidden flag should be set to false and the comment should appear in subsequent queries
+**Validates: Requirements 6.3**
+
+Property 18: Hiding preserves data
+*For any* comment, hiding it should not modify any fields except isHidden and updatedAt
+**Validates: Requirements 6.4**
+
+### Privacy Properties
+
+Property 19: Anonymous comments store author internally
+*For any* anonymous comment, the authorId should be stored in the database but not exposed in public API responses
+**Validates: Requirements 8.1**
+
+Property 20: Admins can see anonymous authors
+*For any* anonymous comment, when retrieved through an admin endpoint, the true author information should be included
+**Validates: Requirements 8.3**
+
+Property 21: Anonymous comments maintain referential integrity
+*For any* anonymous comment, the authorId foreign key relationship should be maintained in the database
+**Validates: Requirements 8.4**
+
+### Data Integrity Properties
+
+Property 22: Centre deletion preserves discussions
+*For any* tuition centre with a discussion thread and comments, deleting the centre should fail due to the onDelete: Restrict constraint, preserving all discussion data
+**Validates: Requirements 9.1**
+
+Property 23: User deletion preserves comments
+*For any* user with comments, deleting the user should set the authorId to null on all their comments while preserving the comment data
+**Validates: Requirements 9.2**
+
+Property 24: Invalid thread foreign keys are rejected
+*For any* comment with a discussionThreadId that doesn't exist, attempting to create the comment should be rejected by the database
+**Validates: Requirements 9.3**
+
+Property 25: Invalid centre foreign keys are rejected
+*For any* discussion thread with a tuitionCentreId that doesn't exist, attempting to create the thread should be rejected by the database
+**Validates: Requirements 9.4**
+
+## Error Handling
+
+### Input Validation Errors
+
+**Empty Comment Body** (400 Bad Request):
+- Triggered when comment body is empty or whitespace-only
+- Response includes error code `INVALID_COMMENT_BODY`
+- Prevents database pollution with meaningless content
+
+**Invalid Centre ID** (400 Bad Request):
+- Triggered when centre ID is not a valid UUID format
+- Response includes error code `INVALID_ID_FORMAT`
+- Provides early validation before database query
+
+**Missing Authentication** (401 Unauthorized):
+- Triggered when write operations are attempted without valid token
+- Response includes error code `UNAUTHORIZED`
+- Protects write endpoints from anonymous access
+
+**Centre Anonymous Attempt** (403 Forbidden):
+- Triggered when centre account tries to post anonymously
+- Response includes error code `FORBIDDEN_ANONYMOUS_CENTRE`
+- Enforces business rule about centre transparency
+
+### Database Errors
+
+**Centre Not Found** (404 Not Found):
+- Triggered when discussion is requested for non-existent centre
+- Response includes error code `CENTRE_NOT_FOUND`
+- Helps users identify invalid centre references
+
+**Comment Not Found** (404 Not Found):
+- Triggered when moderation is attempted on non-existent comment
+- Response includes error code `COMMENT_NOT_FOUND`
+- Prevents silent failures in moderation operations
+
+**Foreign Key Violation** (500 Internal Server Error):
+- Triggered when database constraints are violated
+- Response includes error code `DATABASE_ERROR`
+- Logged for debugging but not exposed to users
+
+**Unique Constraint Violation** (500 Internal Server Error):
+- Triggered when attempting to create duplicate thread for centre
+- Should not occur in normal operation due to getOrCreate pattern
+- Logged for debugging
+
+### Authentication Errors
+
+**Invalid Credentials** (401 Unauthorized):
+- Triggered when email/password combination is incorrect
+- Response includes error code `INVALID_CREDENTIALS`
+- Generic message to prevent user enumeration
+
+**Expired Token** (401 Unauthorized):
+- Triggered when JWT token has expired
+- Response includes error code `TOKEN_EXPIRED`
+- Client should redirect to login
+
+**Invalid Token** (401 Unauthorized):
+- Triggered when JWT token is malformed or tampered
+- Response includes error code `INVALID_TOKEN`
+- Client should redirect to login
+
+### Authorization Errors
+
+**Insufficient Permissions** (403 Forbidden):
+- Triggered when non-admin tries to hide/unhide comments
+- Response includes error code `INSUFFICIENT_PERMISSIONS`
+- Protects admin-only operations
+
+## Testing Strategy
+
+### Dual Testing Approach
+
+This feature will use both unit tests and property-based tests to ensure comprehensive coverage:
+
+**Unit Tests**: Verify specific examples, edge cases, and error conditions
+- Specific authentication scenarios (valid login, invalid password)
+- Edge cases (empty strings, special characters, boundary values)
+- Error conditions (missing fields, invalid formats)
+- Integration points between API routes and services
+
+**Property-Based Tests**: Verify universal properties across all inputs
+- Universal properties that hold for all inputs
+- Comprehensive input coverage through randomization
+- Catch unexpected edge cases through fuzzing
+
+Both testing approaches are complementary and necessary for high confidence in correctness.
+
+### Property-Based Testing Configuration
+
+**Library**: fast-check (already in devDependencies)
+
+**Configuration**:
+- Minimum 100 iterations per property test
+- Each test references its design document property
+- Tag format: `Feature: community-forum, Property {number}: {property_text}`
+
+**Example Test Structure**:
+```javascript
+import fc from 'fast-check';
+import { describe, it, expect } from 'vitest';
+
+describe('Feature: community-forum', () => {
+  it('Property 12: Whitespace-only comments are rejected', async () => {
+    await fc.assert(
+      fc.asyncProperty(
+        fc.stringOf(fc.constantFrom(' ', '\t', '\n', '\r'), { minLength: 1 }),
+        async (whitespaceBody) => {
+          const result = await discussionService.createComment({
+            threadId: 'valid-thread-id',
+            authorId: 'valid-user-id',
+            body: whitespaceBody,
+            isAnonymous: false,
+            authorRole: 'PARENT'
+          });
+          
+          expect(result.error).toBeDefined();
+          expect(result.error.code).toBe('INVALID_COMMENT_BODY');
+        }
+      ),
+      { numRuns: 100 }
+    );
+  });
+});
+```
+
+### Test Organization
+
+**Service Layer Tests**:
+- `src/lib/services/discussionService.test.js` - Unit tests
+- `src/lib/services/discussionService.property.test.js` - Property tests
+- `src/lib/services/authService.test.js` - Unit tests
+- `src/lib/services/authService.property.test.js` - Property tests
+
+**API Route Tests**:
+- `src/app/api/discussions/[centreId]/route.test.js` - Unit tests
+- `src/app/api/discussions/[centreId]/route.property.test.js` - Property tests
+- `src/app/api/auth/login/route.test.js` - Unit tests
+
+**Integration Tests**:
+- `src/app/api/discussions/integration.test.js` - End-to-end API tests
+
+### Property Test Coverage
+
+Each correctness property listed in this document must be implemented as a property-based test:
+- Properties 1-3: Authentication properties
+- Properties 4-6: Discussion thread properties
+- Properties 7-9: Comment display properties
+- Properties 10-13: Comment creation properties
+- Properties 14-15: Centre account properties
+- Properties 16-18: Moderation properties
+- Properties 19-21: Privacy properties
+- Properties 22-25: Data integrity properties
+
+### Unit Test Focus Areas
+
+Unit tests should focus on:
+- Specific authentication examples (valid login, password mismatch)
+- API endpoint integration (request parsing, response formatting)
+- Error handling paths (missing fields, invalid tokens)
+- Database transaction behavior (rollbacks, commits)
+- Sanitization logic (specific XSS patterns)
+
+### Testing Best Practices
+
+1. **Test Isolation**: Each test should set up its own data and clean up afterward
+2. **Mock External Dependencies**: Use in-memory database for tests when possible
+3. **Clear Test Names**: Describe what is being tested and expected outcome
+4. **Arrange-Act-Assert**: Structure tests with clear setup, execution, and verification
+5. **Property Test Generators**: Write smart generators that constrain to valid input space
+6. **Avoid Over-Mocking**: Test real functionality, not mocks
+
+## Implementation Notes
+
+### Security Considerations
+
+**Password Storage**: Use bcrypt with salt rounds of 10 or higher for password hashing. Never store plain text passwords.
+
+**XSS Prevention**: Sanitize all user-generated content before storage. Use a library like DOMPurify or implement whitelist-based sanitization.
+
+**SQL Injection**: Prisma provides parameterized queries by default, protecting against SQL injection. Never concatenate user input into raw queries.
+
+**JWT Security**: 
+- Use strong secret key (minimum 256 bits)
+- Set reasonable expiration (e.g., 24 hours)
+- Include user ID and role in payload
+- Validate signature on every request
+
+**Rate Limiting**: Consider implementing rate limiting on authentication and comment creation endpoints to prevent abuse.
+
+### Performance Considerations
+
+**Database Indexes**: 
+- Index on `Comment.discussionThreadId` and `Comment.createdAt` for efficient comment retrieval
+- Index on `Comment.isHidden` for efficient filtering
+- Index on `User.email` for authentication lookups
+
+**Pagination**: For threads with many comments, implement cursor-based pagination to avoid loading all comments at once.
+
+**Caching**: Consider caching discussion threads and comments with short TTL (e.g., 1 minute) to reduce database load.
+
+### Migration Strategy
+
+**Database Migration**:
+1. Create Prisma migration for new models (User, DiscussionThread, Comment)
+2. Run migration on development database
+3. Seed with test data for development
+4. Test all endpoints thoroughly
+5. Run migration on production with backup
+
+**Backward Compatibility**:
+- New feature doesn't affect existing tuition centre functionality
+- TuitionCentre model gets new optional relation to DiscussionThread
+- No breaking changes to existing APIs
+
+### Future Enhancements
+
+**Potential Features** (not in current scope):
+- Comment editing and deletion by authors
+- Nested replies (threading)
+- Upvoting/downvoting comments
+- Email notifications for new comments
+- Rich text formatting in comments
+- Image attachments
+- Search within discussions
+- User reputation system
+
+These features are intentionally excluded from the initial implementation to maintain simplicity and focus on core functionality.
