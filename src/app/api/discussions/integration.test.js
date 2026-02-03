@@ -427,7 +427,7 @@ describe('Integration Tests - Community Discussion Forum', () => {
       const userId = loginData.user.id;
 
       // Step 2: Create anonymous comment
-      const { POST: discussionPost } = await import('./discussions/[centreId]/route.js');
+      const { POST: discussionPost } = await import('./[centreId]/route.js');
       
       const createCommentRequest = new Request(
         `http://localhost/api/discussions/${testCentre.id}`,
@@ -451,7 +451,7 @@ describe('Integration Tests - Community Discussion Forum', () => {
       expect(createCommentData.comment.author).toBeNull(); // Author hidden in response
 
       // Step 3: Verify author is hidden in public view
-      const { GET: discussionGet } = await import('./discussions/[centreId]/route.js');
+      const { GET: discussionGet } = await import('./[centreId]/route.js');
       
       const getCommentsRequest = new Request(
         `http://localhost/api/discussions/${testCentre.id}`
@@ -495,7 +495,7 @@ describe('Integration Tests - Community Discussion Forum', () => {
       const token = loginData.token;
 
       // Create non-anonymous comment
-      const { POST: discussionPost } = await import('./discussions/[centreId]/route.js');
+      const { POST: discussionPost } = await import('./[centreId]/route.js');
       
       const createCommentRequest = new Request(
         `http://localhost/api/discussions/${testCentre.id}`,
@@ -520,7 +520,7 @@ describe('Integration Tests - Community Discussion Forum', () => {
       expect(createCommentData.comment.author.email).toBe('identified.parent@example.com');
 
       // Verify author is visible in public view
-      const { GET: discussionGet } = await import('./discussions/[centreId]/route.js');
+      const { GET: discussionGet } = await import('./[centreId]/route.js');
       
       const getRequest = new Request(`http://localhost/api/discussions/${testCentre.id}`);
       const getResponse = await discussionGet(getRequest, {
