@@ -4,7 +4,6 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
 const filterOptions = {
-  location: ['Ang Mo Kio', 'Bedok', 'Bishan', 'Bukit Batok', 'Bukit Panjang', 'Bukit Timah', 'Clementi', 'Hougang', 'Jurong East', 'Jurong Point', 'Jurong West', 'Katong', 'Marine Parade', 'Pasir Ris', 'Punggol', 'Sengkang', 'Serangoon', 'Tampines', 'Tiong Bahru', 'Toa Payoh', 'Woodlands', 'Yishun'],
   level: ['Primary', 'Secondary', 'Junior College'],
   subject: ['Mathematics', 'English', 'Science', 'Chinese', 'Physics', 'Chemistry', 'Biology']
 }
@@ -12,7 +11,6 @@ const filterOptions = {
 export default function FilterWizard() {
   const router = useRouter()
   const [filters, setFilters] = useState({
-    location: '',
     level: '',
     subject: ''
   })
@@ -23,18 +21,16 @@ export default function FilterWizard() {
     setFilters({ ...filters, [category]: value })
     
     // Auto-expand next step
-    if (category === 'location' && value) {
+    if (category === 'level' && value) {
       setExpandedStep(2)
-    } else if (category === 'level' && value) {
-      setExpandedStep(3)
     }
   }
 
   const handleApply = () => {
-    if (filters.location && filters.level && filters.subject) {
+    if (filters.level && filters.subject) {
       // Navigate to results page with filters as query params
       const params = new URLSearchParams({
-        location: filters.location,
+        location: 'Marine Parade',
         level: filters.level,
         subject: filters.subject
       })
@@ -42,44 +38,20 @@ export default function FilterWizard() {
     }
   }
 
-  const canApply = filters.location && filters.level && filters.subject
+  const canApply = filters.level && filters.subject
 
   return (
     <div className="w-full h-full flex flex-col space-y-1.5 lg:space-y-3 overflow-hidden">
       <div className="flex-1 min-h-0 overflow-y-auto space-y-1.5 lg:space-y-3 pb-1.5 lg:pb-0">
-        {/* Step 1: Location */}
+        {/* Step 1: Level */}
         <div className="slide-in-bottom" style={{ animationDelay: '0.5s' }}>
           <FilterStep
             stepNumber={1}
-            title="Location"
-            isExpanded={expandedStep === 1}
-            isCompleted={!!filters.location}
-            selectedValue={filters.location}
-            onToggle={() => setExpandedStep(expandedStep === 1 ? 0 : 1)}
-          >
-            <div className="flex flex-wrap gap-1.5 lg:gap-2 p-2 lg:p-5">
-              {filterOptions.location.map((option) => (
-                <M3Chip
-                  key={option}
-                  label={option}
-                  selected={filters.location === option}
-                  onClick={() => handleFilterSelect('location', option)}
-                />
-              ))}
-            </div>
-          </FilterStep>
-        </div>
-
-        {/* Step 2: Level */}
-        <div className="slide-in-bottom" style={{ animationDelay: '0.6s' }}>
-          <FilterStep
-            stepNumber={2}
             title="Level"
-            isExpanded={expandedStep === 2}
+            isExpanded={expandedStep === 1}
             isCompleted={!!filters.level}
             selectedValue={filters.level}
-            onToggle={() => setExpandedStep(expandedStep === 2 ? 0 : 2)}
-            disabled={!filters.location}
+            onToggle={() => setExpandedStep(expandedStep === 1 ? 0 : 1)}
           >
             <div className="flex flex-wrap gap-1.5 lg:gap-2 p-2 lg:p-5">
               {filterOptions.level.map((option) => (
@@ -94,15 +66,15 @@ export default function FilterWizard() {
           </FilterStep>
         </div>
 
-        {/* Step 3: Subject */}
-        <div className="slide-in-bottom" style={{ animationDelay: '0.7s' }}>
+        {/* Step 2: Subject */}
+        <div className="slide-in-bottom" style={{ animationDelay: '0.6s' }}>
           <FilterStep
-            stepNumber={3}
+            stepNumber={2}
             title="Subject"
-            isExpanded={expandedStep === 3}
+            isExpanded={expandedStep === 2}
             isCompleted={!!filters.subject}
             selectedValue={filters.subject}
-            onToggle={() => setExpandedStep(expandedStep === 3 ? 0 : 3)}
+            onToggle={() => setExpandedStep(expandedStep === 2 ? 0 : 2)}
             disabled={!filters.level}
           >
             <div className="flex flex-wrap gap-1.5 lg:gap-2 p-2 lg:p-5">
