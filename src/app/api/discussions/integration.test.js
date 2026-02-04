@@ -99,6 +99,13 @@ describe('Integration Tests - Community Discussion Forum', () => {
 
       const token = loginData.token;
       const userId = loginData.user.id;
+      
+      // Step 1.5: Set username (required before posting)
+      await prisma.user.update({
+        where: { id: userId },
+        data: { username: 'testparent' }
+      });
+      const userId = loginData.user.id;
 
       // Step 2: Create a comment
       const { POST: discussionPost } = await import('./[centreId]/route.js');
@@ -166,6 +173,13 @@ describe('Integration Tests - Community Discussion Forum', () => {
       const loginResponse = await loginPost(loginRequest);
       const loginData = await loginResponse.json();
       const token = loginData.token;
+      const userId = loginData.user.id;
+      
+      // Set username (required before posting)
+      await prisma.user.update({
+        where: { id: userId },
+        data: { username: 'testparent2' }
+      });
 
       // Create first comment
       const { POST: discussionPost } = await import('./[centreId]/route.js');
@@ -238,6 +252,13 @@ describe('Integration Tests - Community Discussion Forum', () => {
       const parentLoginResponse = await loginPost(parentLoginRequest);
       const parentLoginData = await parentLoginResponse.json();
       const parentToken = parentLoginData.token;
+      const parentUserId = parentLoginData.user.id;
+      
+      // Set username (required before posting)
+      await prisma.user.update({
+        where: { id: parentUserId },
+        data: { username: 'testparent3' }
+      });
 
       // Create comment
       const { POST: discussionPost } = await import('./[centreId]/route.js');
@@ -330,6 +351,13 @@ describe('Integration Tests - Community Discussion Forum', () => {
       const parentLoginResponse = await loginPost(parentLoginRequest);
       const parentLoginData = await parentLoginResponse.json();
       const parentToken = parentLoginData.token;
+      const parentUserId = parentLoginData.user.id;
+      
+      // Set username (required before posting)
+      await prisma.user.update({
+        where: { id: parentUserId },
+        data: { username: 'testparent4' }
+      });
 
       const { POST: discussionPost } = await import('./[centreId]/route.js');
       
@@ -348,7 +376,8 @@ describe('Integration Tests - Community Discussion Forum', () => {
       const createCommentResponse = await discussionPost(createCommentRequest, {
         params: { centreId: testCentre.id }
       });
-      const commentId = createCommentResponse.json().then(d => d.comment.id);
+      const createCommentData = await createCommentResponse.json();
+      const commentId = createCommentData.comment.id;
 
       // Create admin and hide comment
       const adminEmail = generateTestEmail('admin');
@@ -437,6 +466,12 @@ describe('Integration Tests - Community Discussion Forum', () => {
       const loginData = await loginResponse.json();
       const token = loginData.token;
       const userId = loginData.user.id;
+      
+      // Set username (required before posting)
+      await prisma.user.update({
+        where: { id: userId },
+        data: { username: 'anonparent' }
+      });
 
       // Step 2: Create anonymous comment
       const { POST: discussionPost } = await import('./[centreId]/route.js');
@@ -506,6 +541,13 @@ describe('Integration Tests - Community Discussion Forum', () => {
       const loginResponse = await loginPost(loginRequest);
       const loginData = await loginResponse.json();
       const token = loginData.token;
+      const userId = loginData.user.id;
+      
+      // Set username (required before posting)
+      await prisma.user.update({
+        where: { id: userId },
+        data: { username: 'publicparent' }
+      });
 
       // Create non-anonymous comment
       const { POST: discussionPost } = await import('./[centreId]/route.js');
@@ -573,6 +615,13 @@ describe('Integration Tests - Community Discussion Forum', () => {
       expect(loginData.user.role).toBe('CENTRE');
 
       const token = loginData.token;
+      const userId = loginData.user.id;
+      
+      // Set username (required before posting)
+      await prisma.user.update({
+        where: { id: userId },
+        data: { username: 'testcentre' }
+      });
 
       // Step 2: Create comment as centre
       const { POST: discussionPost } = await import('./[centreId]/route.js');
@@ -634,6 +683,13 @@ describe('Integration Tests - Community Discussion Forum', () => {
       const loginResponse = await loginPost(loginRequest);
       const loginData = await loginResponse.json();
       const token = loginData.token;
+      const userId = loginData.user.id;
+      
+      // Set username (required before posting)
+      await prisma.user.update({
+        where: { id: userId },
+        data: { username: 'testcentre2' }
+      });
 
       // Attempt to create anonymous comment as centre
       const { POST: discussionPost } = await import('./[centreId]/route.js');
@@ -680,6 +736,12 @@ describe('Integration Tests - Community Discussion Forum', () => {
         })
       }));
       const parent1Data = await parent1Login.json();
+      
+      // Set username for parent1
+      await prisma.user.update({
+        where: { id: parent1Data.user.id },
+        data: { username: 'parent1user' }
+      });
 
       await discussionPost(new Request(`http://localhost/api/discussions/${testCentre.id}`, {
         method: 'POST',
@@ -701,6 +763,12 @@ describe('Integration Tests - Community Discussion Forum', () => {
         })
       }));
       const parent2Data = await parent2Login.json();
+      
+      // Set username for parent2
+      await prisma.user.update({
+        where: { id: parent2Data.user.id },
+        data: { username: 'parent2user' }
+      });
 
       await discussionPost(new Request(`http://localhost/api/discussions/${testCentre.id}`, {
         method: 'POST',
@@ -722,6 +790,12 @@ describe('Integration Tests - Community Discussion Forum', () => {
         })
       }));
       const centreData = await centreLogin.json();
+      
+      // Set username for centre
+      await prisma.user.update({
+        where: { id: centreData.user.id },
+        data: { username: 'centreuser' }
+      });
 
       await discussionPost(new Request(`http://localhost/api/discussions/${testCentre.id}`, {
         method: 'POST',

@@ -112,7 +112,8 @@ class AuthService {
     const payload = {
       userId: user.id,
       email: user.email,
-      role: user.role
+      role: user.role,
+      username: user.username || null
     };
 
     return jwt.sign(payload, this.jwtSecret, {

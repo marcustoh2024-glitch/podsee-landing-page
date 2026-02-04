@@ -18,8 +18,10 @@ export async function GET(request, { tuitionCentreService = new TuitionCentreSer
     const { searchParams } = new URL(request.url);
     
     const search = searchParams.get('search') || undefined;
-    const levelsParam = searchParams.get('levels');
-    const subjectsParam = searchParams.get('subjects');
+    
+    // Support both singular and plural for backwards compatibility
+    const levelsParam = searchParams.get('levels') || searchParams.get('level');
+    const subjectsParam = searchParams.get('subjects') || searchParams.get('subject');
     const pageParam = searchParams.get('page');
     const limitParam = searchParams.get('limit');
 

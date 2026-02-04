@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev -p 3001 -H 0.0.0.0",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 3001",
     "lint": "next lint",
     "test": "vitest --run",
     "test:watch": "vitest",
@@ -22,9 +22,11 @@
     "bcrypt": "^6.0.0",
     "jsonwebtoken": "^9.0.3",
     "next": "^14.2.0",
+    "next-auth": "^4.24.13",
     "prisma": "^6.19.2",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@vitest/ui": "^4.0.18",

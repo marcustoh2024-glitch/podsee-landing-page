@@ -7,17 +7,19 @@ const prisma = new PrismaClient();
 const service = new TuitionCentreService(prisma);
 
 // Helper to clean up test data
+// CRITICAL: Deletion order must respect foreign key constraints
 async function cleanupTestData() {
   await prisma.comment.deleteMany();
   await prisma.discussionThread.deleteMany();
   await prisma.tuitionCentreSubject.deleteMany();
   await prisma.tuitionCentreLevel.deleteMany();
   await prisma.tuitionCentre.deleteMany();
+  await prisma.user.deleteMany();
   await prisma.subject.deleteMany();
   await prisma.level.deleteMany();
 }
 
-// Helper to create test data
+// Helper to create test centres
 async function createTestCentre(data) {
   const { name, location, whatsappNumber, website, levels = [], subjects = [] } = data;
   
@@ -25,7 +27,7 @@ async function createTestCentre(data) {
   const uniqueLevels = [...new Set(levels)];
   const uniqueSubjects = [...new Set(subjects)];
   
-  // Create or get levels
+  // Create or get levels - ensure they exist first
   const levelRecords = await Promise.all(
     uniqueLevels.map(async (levelName) => {
       return await prisma.level.upsert({
@@ -36,7 +38,7 @@ async function createTestCentre(data) {
     })
   );
 
-  // Create or get subjects
+  // Create or get subjects - ensure they exist first
   const subjectRecords = await Promise.all(
     uniqueSubjects.map(async (subjectName) => {
       return await prisma.subject.upsert({
@@ -356,6 +358,9 @@ describe('TuitionCentreService - Edge Case Tests', () => {
   // Feature: tuition-search-backend, Property 2: Empty search returns all centres
   // Validates: Requirements 2.2
   it('should return all centres when search query is empty', async () => {
+    // Ensure clean state
+    await cleanupTestData();
+    
     // Create a known set of test centres
     const testCentres = [
       {
@@ -502,6 +507,9 @@ describe('TuitionCentreService - Edge Case Tests', () => {
 
   // Validates: Requirements 3.4, 4.4
   it('should return all centres when no level or subject filters are applied', async () => {
+    // Ensure clean state
+    await cleanupTestData();
+    
     // Create centres with different levels and subjects
     const testCentres = [
       {

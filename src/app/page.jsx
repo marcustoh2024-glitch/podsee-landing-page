@@ -1,5 +1,4 @@
 import PageShell from '@/components/PageShell'
-import PollSection from '@/components/PollSection'
 import SearchSection from '@/components/SearchSection'
 import ContextSection from '@/components/ContextSection'
 import WaitlistCTA from '@/components/WaitlistCTA'
@@ -8,7 +7,6 @@ import HowItWorksSection from '@/components/HowItWorksSection'
 import ComparisonSection from '@/components/ComparisonSection'
 import TrustSection from '@/components/TrustSection'
 import Header from '@/components/Header'
-import PollSectionHorizontal from '@/components/PollSectionHorizontal'
 import SearchSectionMinimal from '@/components/SearchSectionMinimal'
 import WaitlistCTAMinimal from '@/components/WaitlistCTAMinimal'
 import SMULogo from '@/components/SMULogo'
@@ -25,13 +23,8 @@ export default function Home() {
         <section id="filter-section" className="min-h-screen py-24 bg-surface">
           <div className="max-w-6xl mx-auto px-10">
             <div className="grid grid-cols-12 gap-8">
-              {/* Poll - Left column */}
-              <div className="col-span-3">
-                <PollSection />
-              </div>
-              
               {/* FilterWizard - Center column */}
-              <div className="col-span-6">
+              <div className="col-span-6 col-start-4">
                 <SearchSection />
               </div>
               
@@ -93,13 +86,8 @@ export default function Home() {
           <Header />
         </div>
         
-        {/* Poll - Horizontal cards - pushed to top */}
-        <div className="px-4 pb-2">
-          <PollSectionHorizontal />
-        </div>
-        
         {/* Filter section with title */}
-        <div className="px-4 pb-3">
+        <div className="px-4 pb-3 pt-2">
           <SearchSectionMinimal />
         </div>
         
@@ -112,6 +100,7 @@ export default function Home() {
         <div className="py-4 border-t border-[#2C3E2F]/10 mb-4">
           <div className="flex items-center justify-center gap-2">
             <SMULogo />
+            <div className="h-6 w-px bg-[#2C3E2F]/20"></div>
             <span className="text-[10px] font-light text-[#6B7566]">by SMU students</span>
           </div>
         </div>

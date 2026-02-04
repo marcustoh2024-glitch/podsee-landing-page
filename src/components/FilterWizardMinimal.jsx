@@ -1,12 +1,7 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-
-const filterOptions = {
-  level: ['Primary', 'Secondary', 'Junior College'],
-  subject: ['Mathematics', 'English', 'Science', 'Chinese', 'Physics', 'Chemistry', 'Biology']
-}
 
 const filterConfig = [
   {
@@ -40,6 +35,36 @@ export default function FilterWizardMinimal() {
     subject: ''
   })
   const [activeFilter, setActiveFilter] = useState(null)
+  
+  // Dynamic filter options from API
+  const [filterOptions, setFilterOptions] = useState({
+    level: [],
+    subject: []
+  })
+  const [isLoadingOptions, setIsLoadingOptions] = useState(true)
+  
+  // Fetch filter options on mount
+  useEffect(() => {
+    const fetchFilterOptions = async () => {
+      try {
+        const response = await fetch('/api/filter-options')
+        const data = await response.json()
+        
+        if (data.enabled) {
+          setFilterOptions({
+            level: (data.levels || []).filter(l => l !== 'UNKNOWN'),
+            subject: data.subjects || []
+          })
+        }
+      } catch (error) {
+        console.error('Failed to fetch filter options:', error)
+      } finally {
+        setIsLoadingOptions(false)
+      }
+    }
+    
+    fetchFilterOptions()
+  }, [])
 
   const handleFilterClick = (filterId) => {
     setActiveFilter(activeFilter === filterId ? null : filterId)
@@ -53,9 +78,8 @@ export default function FilterWizardMinimal() {
   const handleApply = () => {
     if (filters.level && filters.subject) {
       const params = new URLSearchParams({
-        location: 'Marine Parade',
-        level: filters.level,
-        subject: filters.subject
+        levels: filters.level,    // ✅ PLURAL
+        subjects: filters.subject // ✅ PLURAL
       })
       router.push(`/results?${params.toString()}`)
     }
@@ -68,9 +92,8 @@ export default function FilterWizardMinimal() {
   const handleSearch = () => {
     if (canSearch) {
       const params = new URLSearchParams({
-        location: 'Marine Parade',
-        level: filters.level,
-        subject: filters.subject
+        levels: filters.level,    // ✅ PLURAL
+        subjects: filters.subject // ✅ PLURAL
       })
       router.push(`/results?${params.toString()}`)
     }

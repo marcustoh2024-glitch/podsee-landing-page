@@ -8,6 +8,7 @@ const discussionService = new DiscussionService(prisma);
 
 describe('Feature: community-forum - DiscussionService Property Tests', () => {
   // Clean up test data after each test
+  // CRITICAL: Deletion order must respect foreign key constraints
   afterEach(async () => {
     await prisma.comment.deleteMany();
     await prisma.discussionThread.deleteMany();
@@ -15,6 +16,8 @@ describe('Feature: community-forum - DiscussionService Property Tests', () => {
     await prisma.tuitionCentreLevel.deleteMany();
     await prisma.tuitionCentre.deleteMany();
     await prisma.user.deleteMany();
+    await prisma.subject.deleteMany();
+    await prisma.level.deleteMany();
   });
 
   /**
@@ -170,8 +173,11 @@ describe('Feature: community-forum - DiscussionService Property Tests', () => {
 
           const thread = await discussionService.getOrCreateThread(centre.id);
 
-          const user = await prisma.user.create({
-            data: {
+          // Use upsert to handle duplicate emails across test runs
+          const user = await prisma.user.upsert({
+            where: { email },
+            update: {},
+            create: {
               email,
               passwordHash: 'hashed',
               role: 'PARENT'
@@ -237,8 +243,11 @@ describe('Feature: community-forum - DiscussionService Property Tests', () => {
 
           const thread = await discussionService.getOrCreateThread(centre.id);
 
-          const user = await prisma.user.create({
-            data: {
+          // Use upsert to handle duplicate emails across test runs
+          const user = await prisma.user.upsert({
+            where: { email },
+            update: {},
+            create: {
               email,
               passwordHash: 'hashed',
               role: 'PARENT'
@@ -980,8 +989,11 @@ describe('Feature: community-forum - DiscussionService Property Tests', () => {
 
           const thread = await discussionService.getOrCreateThread(centre.id);
 
-          const user = await prisma.user.create({
-            data: {
+          // Use upsert to handle duplicate emails across test runs
+          const user = await prisma.user.upsert({
+            where: { email },
+            update: {},
+            create: {
               email,
               passwordHash: 'hashed',
               role: 'PARENT'

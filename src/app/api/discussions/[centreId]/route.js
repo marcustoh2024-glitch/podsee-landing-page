@@ -174,6 +174,19 @@ export async function POST(request, { params }) {
       throw error;
     }
 
+    // Check if user has set a username
+    if (!user.username) {
+      return NextResponse.json(
+        {
+          error: {
+            code: 'USERNAME_REQUIRED',
+            message: 'You must set a username before posting'
+          }
+        },
+        { status: 403 }
+      );
+    }
+
     // Parse request body
     let requestBody;
     try {

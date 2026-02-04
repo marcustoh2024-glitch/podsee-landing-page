@@ -37,14 +37,18 @@ export function AuthProvider({ children }) {
             const data = await response.json();
             setUser(data.user);
             setToken(storedToken);
+            // Sync user data to localStorage for consistency
+            localStorage.setItem('user', JSON.stringify(data.user));
           } else {
             // Token is invalid or expired, clear it
             localStorage.removeItem('authToken');
+            localStorage.removeItem('user');
           }
         }
       } catch (error) {
         console.error('Error loading stored auth:', error);
         localStorage.removeItem('authToken');
+        localStorage.removeItem('user');
       } finally {
         setIsLoading(false);
       }
@@ -76,6 +80,7 @@ export function AuthProvider({ children }) {
         setUser(data.user);
         setToken(data.token);
         localStorage.setItem('authToken', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
         return { success: true };
       } else {
         return {
@@ -99,6 +104,16 @@ export function AuthProvider({ children }) {
     setUser(null);
     setToken(null);
     localStorage.removeItem('authToken');
+    localStorage.removeItem('user');
+  };
+
+  /**
+   * Update user data - used when user profile changes (e.g., username set)
+   * @param {Object} updatedUser - Updated user object
+   */
+  const updateUser = (updatedUser) => {
+    setUser(updatedUser);
+    localStorage.setItem('user', JSON.stringify(updatedUser));
   };
 
   const value = {
@@ -107,7 +122,8 @@ export function AuthProvider({ children }) {
     isAuthenticated: !!user,
     isLoading,
     login,
-    logout
+    logout,
+    updateUser
   };
 
   return (

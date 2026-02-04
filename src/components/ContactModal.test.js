@@ -39,7 +39,7 @@ describe('ContactModal - Community Discussion Integration', () => {
         id: 'centre-123',
         name: 'Test Centre',
         location: 'Tampines',
-        whatsapp: '6512345678',
+        whatsappLink: 'https://wa.me/6512345678',
         website: 'https://example.com'
       };
 
@@ -53,7 +53,7 @@ describe('ContactModal - Community Discussion Integration', () => {
         id: 'centre-123',
         name: 'Test Centre',
         location: 'Tampines',
-        whatsapp: '6512345678',
+        whatsappLink: 'https://wa.me/6512345678',
         website: null
       };
 

@@ -1,37 +1,10 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import * as fc from 'fast-check';
 import { GET } from './route';
-import { PrismaClient } from '@prisma/client';
 import TuitionCentreService from '@/lib/services/tuitionCentreService';
+import { prisma, cleanupTestData, createTestCentre } from '@/lib/testUtils';
 
-const prisma = new PrismaClient();
 const service = new TuitionCentreService(prisma);
-
-// Helper to clean up test data
-// CRITICAL: Deletion order must respect foreign key constraints
-// Order: comments → discussion threads → tuition centres (with relations) → users → levels/subjects
-async function cleanupTestData() {
-  await prisma.comment.deleteMany();
-  await prisma.discussionThread.deleteMany();
-  await prisma.tuitionCentreSubject.deleteMany();
-  await prisma.tuitionCentreLevel.deleteMany();
-  await prisma.tuitionCentre.deleteMany();
-  await prisma.user.deleteMany();
-  await prisma.subject.deleteMany();
-  await prisma.level.deleteMany();
-}
-
-// Helper to create a test centre
-async function createTestCentre(data = {}) {
-  return await prisma.tuitionCentre.create({
-    data: {
-      name: data.name || 'Test Centre',
-      location: data.location || 'Test Location',
-      whatsappNumber: data.whatsappNumber || '+6591234567',
-      website: data.website || null
-    }
-  });
-}
 
 // UUID generator for fast-check
 const uuidArbitrary = fc.uuid();

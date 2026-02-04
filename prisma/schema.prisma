@@ -11,25 +11,30 @@ datasource db {
 }
 
 model TuitionCentre {
-  id               String                 @id @default(uuid())
-  name             String
-  location         String
-  whatsappNumber   String
-  website          String?
-  levels           TuitionCentreLevel[]
-  subjects         TuitionCentreSubject[]
-  discussionThread DiscussionThread?
-  createdAt        DateTime               @default(now())
-  updatedAt        DateTime               @updatedAt
+  id                  String                 @id @default(uuid())
+  name                String
+  location            String
+  whatsappNumber      String
+  website             String?
+  dataQualityStatus   String                 @default("OK") // OK or NEEDS_REVIEW
+  dataQualityNotes    String?                // Details about data quality issues
+  levels              TuitionCentreLevel[]
+  subjects            TuitionCentreSubject[]
+  offerings           Offering[]             // Explicit level-subject combinations
+  discussionThread    DiscussionThread?
+  createdAt           DateTime               @default(now())
+  updatedAt           DateTime               @updatedAt
 
   @@index([name])
   @@index([location])
+  @@index([dataQualityStatus])
 }
 
 model Level {
   id             String               @id @default(uuid())
   name           String               @unique
   tuitionCentres TuitionCentreLevel[]
+  offerings      Offering[]
   createdAt      DateTime             @default(now())
 }
 
@@ -37,6 +42,7 @@ model Subject {
   id             String                 @id @default(uuid())
   name           String                 @unique
   tuitionCentres TuitionCentreSubject[]
+  offerings      Offering[]
   createdAt      DateTime               @default(now())
 }
 
@@ -58,6 +64,24 @@ model TuitionCentreSubject {
   @@id([tuitionCentreId, subjectId])
 }
 
+// Offering represents an explicit level-subject combination offered by a centre
+// This ensures that level + subject filters match on the same offering row
+model Offering {
+  id              String        @id @default(uuid())
+  tuitionCentreId String
+  levelId         String
+  subjectId       String
+  tuitionCentre   TuitionCentre @relation(fields: [tuitionCentreId], references: [id], onDelete: Cascade)
+  level           Level         @relation(fields: [levelId], references: [id], onDelete: Cascade)
+  subject         Subject       @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  createdAt       DateTime      @default(now())
+
+  @@unique([tuitionCentreId, levelId, subjectId])
+  @@index([tuitionCentreId])
+  @@index([levelId])
+  @@index([subjectId])
+}
+
 enum UserRole {
   PARENT
   CENTRE
@@ -68,18 +92,20 @@ model User {
   id           String    @id @default(uuid())
   email        String    @unique
   passwordHash String
+  username     String?   @unique
   role         UserRole  @default(PARENT)
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
   comments     Comment[]
 
   @@index([email])
+  @@index([username])
 }
 
 model DiscussionThread {
   id              String         @id @default(uuid())
   tuitionCentreId String         @unique
-  tuitionCentre   TuitionCentre  @relation(fields: [tuitionCentreId], references: [id], onDelete: Restrict)
+  tuitionCentre   TuitionCentre  @relation(fields: [tuitionCentreId], references: [id], onDelete: Cascade)
   createdAt       DateTime       @default(now())
   comments        Comment[]
 

@@ -1,30 +1,22 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import DiscussionService from './discussionService.js';
-import { PrismaClient } from '@prisma/client';
+import { prisma, cleanupTestData, createTestCentre, createTestUser } from '../testUtils.js';
 
-const prisma = new PrismaClient();
 const discussionService = new DiscussionService(prisma);
 
 describe('DiscussionService Unit Tests', () => {
-  // Clean up test data after each test
+  // Clean up test data before and after each test
+  beforeEach(async () => {
+    await cleanupTestData();
+  });
+
   afterEach(async () => {
-    await prisma.comment.deleteMany();
-    await prisma.discussionThread.deleteMany();
-    await prisma.tuitionCentreSubject.deleteMany();
-    await prisma.tuitionCentreLevel.deleteMany();
-    await prisma.tuitionCentre.deleteMany();
-    await prisma.user.deleteMany();
+    await cleanupTestData();
   });
 
   describe('getOrCreateThread', () => {
     it('should create a new thread if one does not exist', async () => {
-      const centre = await prisma.tuitionCentre.create({
-        data: {
-          name: 'Test Centre',
-          location: 'Test Location',
-          whatsappNumber: '12345678'
-        }
-      });
+      const centre = await createTestCentre();
 
       const thread = await discussionService.getOrCreateThread(centre.id);
 
@@ -34,13 +26,7 @@ describe('DiscussionService Unit Tests', () => {
     });
 
     it('should return existing thread if one already exists', async () => {
-      const centre = await prisma.tuitionCentre.create({
-        data: {
-          name: 'Test Centre',
-          location: 'Test Location',
-          whatsappNumber: '12345678'
-        }
-      });
+      const centre = await createTestCentre();
 
       const thread1 = await discussionService.getOrCreateThread(centre.id);
       const thread2 = await discussionService.getOrCreateThread(centre.id);
@@ -63,13 +49,7 @@ describe('DiscussionService Unit Tests', () => {
 
   describe('getComments', () => {
     it('should return empty array for thread with no comments', async () => {
-      const centre = await prisma.tuitionCentre.create({
-        data: {
-          name: 'Test Centre',
-          location: 'Test Location',
-          whatsappNumber: '12345678'
-        }
-      });
+      const centre = await createTestCentre();
 
       const thread = await discussionService.getOrCreateThread(centre.id);
       const comments = await discussionService.getComments(thread.id);
@@ -78,23 +58,9 @@ describe('DiscussionService Unit Tests', () => {
     });
 
     it('should return single comment', async () => {
-      const centre = await prisma.tuitionCentre.create({
-        data: {
-          name: 'Test Centre',
-          location: 'Test Location',
-          whatsappNumber: '12345678'
-        }
-      });
-
+      const centre = await createTestCentre();
       const thread = await discussionService.getOrCreateThread(centre.id);
-
-      const user = await prisma.user.create({
-        data: {
-          email: 'test@example.com',
-          passwordHash: 'hashed',
-          role: 'PARENT'
-        }
-      });
+      const user = await createTestUser();
 
       await discussionService.createComment({
         threadId: thread.id,
@@ -111,23 +77,9 @@ describe('DiscussionService Unit Tests', () => {
     });
 
     it('should return many comments in chronological order', async () => {
-      const centre = await prisma.tuitionCentre.create({
-        data: {
-          name: 'Test Centre',
-          location: 'Test Location',
-          whatsappNumber: '12345678'
-        }
-      });
-
+      const centre = await createTestCentre();
       const thread = await discussionService.getOrCreateThread(centre.id);
-
-      const user = await prisma.user.create({
-        data: {
-          email: 'test@example.com',
-          passwordHash: 'hashed',
-          role: 'PARENT'
-        }
-      });
+      const user = await createTestUser();
 
       // Create multiple comments
       for (let i = 1; i <= 5; i++) {
@@ -161,23 +113,9 @@ describe('DiscussionService Unit Tests', () => {
 
   describe('createComment', () => {
     it('should reject empty comment body', async () => {
-      const centre = await prisma.tuitionCentre.create({
-        data: {
-          name: 'Test Centre',
-          location: 'Test Location',
-          whatsappNumber: '12345678'
-        }
-      });
-
+      const centre = await createTestCentre();
       const thread = await discussionService.getOrCreateThread(centre.id);
-
-      const user = await prisma.user.create({
-        data: {
-          email: 'test@example.com',
-          passwordHash: 'hashed',
-          role: 'PARENT'
-        }
-      });
+      const user = await createTestUser();
 
       await expect(
         discussionService.createComment({
@@ -191,23 +129,9 @@ describe('DiscussionService Unit Tests', () => {
     });
 
     it('should reject whitespace-only comment body', async () => {
-      const centre = await prisma.tuitionCentre.create({
-        data: {
-          name: 'Test Centre',
-          location: 'Test Location',
-          whatsappNumber: '12345678'
-        }
-      });
-
+      const centre = await createTestCentre();
       const thread = await discussionService.getOrCreateThread(centre.id);
-
-      const user = await prisma.user.create({
-        data: {
-          email: 'test@example.com',
-          passwordHash: 'hashed',
-          role: 'PARENT'
-        }
-      });
+      const user = await createTestUser();
 
       await expect(
         discussionService.createComment({
@@ -221,23 +145,9 @@ describe('DiscussionService Unit Tests', () => {
     });
 
     it('should sanitize XSS script tags', async () => {
-      const centre = await prisma.tuitionCentre.create({
-        data: {
-          name: 'Test Centre',
-          location: 'Test Location',
-          whatsappNumber: '12345678'
-        }
-      });
-
+      const centre = await createTestCentre();
       const thread = await discussionService.getOrCreateThread(centre.id);
-
-      const user = await prisma.user.create({
-        data: {
-          email: 'test@example.com',
-          passwordHash: 'hashed',
-          role: 'PARENT'
-        }
-      });
+      const user = await createTestUser();
 
       const comment = await discussionService.createComment({
         threadId: thread.id,
@@ -254,23 +164,9 @@ describe('DiscussionService Unit Tests', () => {
     });
 
     it('should sanitize HTML img tags with onerror', async () => {
-      const centre = await prisma.tuitionCentre.create({
-        data: {
-          name: 'Test Centre',
-          location: 'Test Location',
-          whatsappNumber: '12345678'
-        }
-      });
-
+      const centre = await createTestCentre();
       const thread = await discussionService.getOrCreateThread(centre.id);
-
-      const user = await prisma.user.create({
-        data: {
-          email: 'test@example.com',
-          passwordHash: 'hashed',
-          role: 'PARENT'
-        }
-      });
+      const user = await createTestUser();
 
       const comment = await discussionService.createComment({
         threadId: thread.id,
@@ -285,23 +181,9 @@ describe('DiscussionService Unit Tests', () => {
     });
 
     it('should sanitize HTML anchor tags', async () => {
-      const centre = await prisma.tuitionCentre.create({
-        data: {
-          name: 'Test Centre',
-          location: 'Test Location',
-          whatsappNumber: '12345678'
-        }
-      });
-
+      const centre = await createTestCentre();
       const thread = await discussionService.getOrCreateThread(centre.id);
-
-      const user = await prisma.user.create({
-        data: {
-          email: 'test@example.com',
-          passwordHash: 'hashed',
-          role: 'PARENT'
-        }
-      });
+      const user = await createTestUser();
 
       const comment = await discussionService.createComment({
         threadId: thread.id,
@@ -329,13 +211,7 @@ describe('DiscussionService Unit Tests', () => {
     });
 
     it('should throw error for non-existent thread', async () => {
-      const user = await prisma.user.create({
-        data: {
-          email: 'test@example.com',
-          passwordHash: 'hashed',
-          role: 'PARENT'
-        }
-      });
+      const user = await createTestUser();
 
       await expect(
         discussionService.createComment({
@@ -351,23 +227,9 @@ describe('DiscussionService Unit Tests', () => {
 
   describe('hideComment', () => {
     it('should hide a comment', async () => {
-      const centre = await prisma.tuitionCentre.create({
-        data: {
-          name: 'Test Centre',
-          location: 'Test Location',
-          whatsappNumber: '12345678'
-        }
-      });
-
+      const centre = await createTestCentre();
       const thread = await discussionService.getOrCreateThread(centre.id);
-
-      const user = await prisma.user.create({
-        data: {
-          email: 'test@example.com',
-          passwordHash: 'hashed',
-          role: 'PARENT'
-        }
-      });
+      const user = await createTestUser();
 
       const comment = await discussionService.createComment({
         threadId: thread.id,
@@ -383,23 +245,9 @@ describe('DiscussionService Unit Tests', () => {
     });
 
     it('should unhide a comment', async () => {
-      const centre = await prisma.tuitionCentre.create({
-        data: {
-          name: 'Test Centre',
-          location: 'Test Location',
-          whatsappNumber: '12345678'
-        }
-      });
-
+      const centre = await createTestCentre();
       const thread = await discussionService.getOrCreateThread(centre.id);
-
-      const user = await prisma.user.create({
-        data: {
-          email: 'test@example.com',
-          passwordHash: 'hashed',
-          role: 'PARENT'
-        }
-      });
+      const user = await createTestUser();
 
       const comment = await discussionService.createComment({
         threadId: thread.id,
@@ -428,23 +276,9 @@ describe('DiscussionService Unit Tests', () => {
     });
 
     it('should throw error for invalid isHidden type', async () => {
-      const centre = await prisma.tuitionCentre.create({
-        data: {
-          name: 'Test Centre',
-          location: 'Test Location',
-          whatsappNumber: '12345678'
-        }
-      });
-
+      const centre = await createTestCentre();
       const thread = await discussionService.getOrCreateThread(centre.id);
-
-      const user = await prisma.user.create({
-        data: {
-          email: 'test@example.com',
-          passwordHash: 'hashed',
-          role: 'PARENT'
-        }
-      });
+      const user = await createTestUser();
 
       const comment = await discussionService.createComment({
         threadId: thread.id,

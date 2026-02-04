@@ -1,8 +1,10 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useSession } from 'next-auth/react'
 import CommentList from './CommentList'
 import CommentForm from './CommentForm'
+import AuthModal from './AuthModal'
 
 /**
  * DiscussionPage Component
@@ -14,17 +16,23 @@ import CommentForm from './CommentForm'
  * - Renders comments in chronological order
  * - Shows "Anonymous Parent" for anonymous comments
  * - Displays comment form if user is authenticated
+ * - Shows auth modal for unauthenticated users
  * - Handles loading and error states
  * 
  * Requirements: 3.1, 3.2, 3.3, 7.3, 7.4
  */
 
 export default function DiscussionPage({ centreId }) {
+  const { data: session, status } = useSession()
+  const isAuthenticated = status === 'authenticated'
+  const authLoading = status === 'loading'
+  const user = session?.user
+  
   const [thread, setThread] = useState(null)
   const [comments, setComments] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
-  const [user, setUser] = useState(null)
+  const [showAuthModal, setShowAuthModal] = useState(false)
 
   // Fetch discussion data
   const fetchDiscussion = async () => {
@@ -48,27 +56,10 @@ export default function DiscussionPage({ centreId }) {
     }
   }
 
-  // Check if user is authenticated
-  const checkAuth = () => {
-    const token = localStorage.getItem('authToken')
-    const userData = localStorage.getItem('user')
-    
-    if (token && userData) {
-      try {
-        setUser(JSON.parse(userData))
-      } catch (err) {
-        console.error('Failed to parse user data:', err)
-        localStorage.removeItem('user')
-        localStorage.removeItem('authToken')
-      }
-    }
-  }
-
   // Fetch discussion on mount
   useEffect(() => {
     if (centreId) {
       fetchDiscussion()
-      checkAuth()
     }
   }, [centreId])
 
@@ -79,7 +70,7 @@ export default function DiscussionPage({ centreId }) {
   }
 
   // Loading state
-  if (isLoading) {
+  if (isLoading || authLoading) {
     return (
       <div className="min-h-screen bg-[#F5F1E8] flex items-center justify-center">
         <div className="text-center">
@@ -129,7 +120,7 @@ export default function DiscussionPage({ centreId }) {
           {thread?.tuitionCentre && (
             <div className="bg-surface-container rounded-2xl p-5 shadow-premium-sm">
               <h2 className="text-title-large font-semibold text-on-surface mb-3">
-                {thread.tuitionCentre.name}
+                {thread.tuitionCentre.name.replace(/\s*\([^)]+\)\s*$/, '').trim()}
               </h2>
               
               {/* Centre tags */}
@@ -155,34 +146,53 @@ export default function DiscussionPage({ centreId }) {
         </div>
 
         {/* Comment form - only show if authenticated */}
-        {user && (
+        {isAuthenticated && (
           <div className="mb-8 slide-in-bottom" style={{ animationDelay: '0.1s' }}>
             <CommentForm 
               centreId={centreId}
-              user={user}
               onCommentCreated={handleCommentCreated}
             />
           </div>
         )}
 
         {/* Login prompt for unauthenticated users */}
-        {!user && (
-          <div className="mb-8 slide-in-bottom" style={{ animationDelay: '0.1s' }}>
-            <div className="bg-surface-container rounded-2xl p-5 shadow-premium-sm text-center">
-              <p className="text-body-large text-on-surface mb-4">
-                Sign in to join the discussion
-              </p>
-              <button
-                onClick={() => {
-                  // In a real app, this would navigate to login page
-                  alert('Login functionality would be implemented here')
-                }}
-                className="px-6 py-3 bg-primary text-primary-on rounded-full text-label-large font-medium hover:shadow-elevation-2 transition-all"
-              >
-                Sign In
-              </button>
+        {!isAuthenticated && (
+          <>
+            {/* Clickable comment input that triggers auth */}
+            <div 
+              onClick={() => setShowAuthModal(true)}
+              className="mb-4 slide-in-bottom cursor-pointer" 
+              style={{ animationDelay: '0.1s' }}
+            >
+              <div className="bg-surface-container rounded-2xl p-5 shadow-premium-sm hover:shadow-premium-md transition-all border-2 border-transparent hover:border-primary/20">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center flex-shrink-0">
+                    <svg className="w-5 h-5 text-on-surface-variant" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                  </div>
+                  <span className="text-body-large text-on-surface-variant">
+                    Add a comment...
+                  </span>
+                </div>
+              </div>
             </div>
-          </div>
+
+            {/* Sign in prompt */}
+            <div className="mb-8 slide-in-bottom" style={{ animationDelay: '0.15s' }}>
+              <div className="bg-surface-container rounded-2xl p-5 shadow-premium-sm text-center">
+                <p className="text-body-large text-on-surface mb-4">
+                  Sign in to join the discussion
+                </p>
+                <button
+                  onClick={() => setShowAuthModal(true)}
+                  className="px-6 py-3 bg-primary text-primary-on rounded-full text-label-large font-medium hover:shadow-elevation-2 transition-all"
+                >
+                  Sign In
+                </button>
+              </div>
+            </div>
+          </>
         )}
 
         {/* Comments section */}
@@ -193,6 +203,12 @@ export default function DiscussionPage({ centreId }) {
           <CommentList comments={comments} />
         </div>
       </div>
+
+      {/* Auth Modal */}
+      <AuthModal 
+        isOpen={showAuthModal} 
+        onClose={() => setShowAuthModal(false)} 
+      />
     </div>
   )
 }

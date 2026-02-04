@@ -1,6 +1,8 @@
 'use client'
 
 import { useState } from 'react'
+import { useSession } from 'next-auth/react'
+import UsernamePrompt from './UsernamePrompt'
 
 /**
  * CommentForm Component
@@ -13,11 +15,15 @@ import { useState } from 'react'
  * - Validates input before submission
  * - Shows success/error feedback
  * - Clears form after successful submission
+ * - Shows username prompt if user hasn't set username
  * 
  * Requirements: 4.1, 4.2, 4.3, 5.2
  */
 
-export default function CommentForm({ centreId, user, onCommentCreated }) {
+export default function CommentForm({ centreId, onCommentCreated }) {
+  const { data: session } = useSession()
+  const user = session?.user
+  
   const [body, setBody] = useState('')
   const [isAnonymous, setIsAnonymous] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -25,6 +31,11 @@ export default function CommentForm({ centreId, user, onCommentCreated }) {
   const [success, setSuccess] = useState(false)
 
   const isCentre = user?.role === 'CENTRE'
+
+  // Show username prompt if user doesn't have username
+  if (!user?.username) {
+    return <UsernamePrompt />
+  }
 
   // Validate comment body
   const validateBody = (text) => {
@@ -54,20 +65,11 @@ export default function CommentForm({ centreId, user, onCommentCreated }) {
     setIsSubmitting(true)
 
     try {
-      // Get token from localStorage
-      const token = localStorage.getItem('authToken')
-      if (!token) {
-        setError('You must be logged in to comment')
-        setIsSubmitting(false)
-        return
-      }
-
       // Submit comment
       const response = await fetch(`/api/discussions/${centreId}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
           body: body.trim(),

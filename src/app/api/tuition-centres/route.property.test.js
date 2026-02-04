@@ -50,9 +50,16 @@ describe('GET /api/tuition-centres - Property-Based Tests', () => {
 
   // Feature: tuition-search-backend, Property 8: Pagination consistency
   it('Property 8: For any valid page and limit, result count should not exceed limit and metadata should be accurate', async () => {
+    // Ensure clean state before creating test data
+    await cleanupTestData();
+    
     // Create a known number of test centres
     const totalCentres = 45;
     await createTestCentres(totalCentres);
+    
+    // Verify the correct number of centres were created
+    const actualCount = await prisma.tuitionCentre.count();
+    expect(actualCount).toBe(totalCentres);
 
     await fc.assert(
       fc.asyncProperty(
@@ -97,8 +104,16 @@ describe('GET /api/tuition-centres - Property-Based Tests', () => {
 
   // Additional property: Pagination should be consistent across multiple requests
   it('Property 8b: Pagination should return consistent results for the same parameters', async () => {
+    // Ensure clean state before creating test data
+    await cleanupTestData();
+    
     // Create test centres
-    await createTestCentres(30);
+    const totalCentres = 30;
+    await createTestCentres(totalCentres);
+    
+    // Verify the correct number of centres were created
+    const actualCount = await prisma.tuitionCentre.count();
+    expect(actualCount).toBe(totalCentres);
 
     await fc.assert(
       fc.asyncProperty(

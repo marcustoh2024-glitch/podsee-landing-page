@@ -1,12 +1,7 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-
-const filterOptions = {
-  level: ['Primary', 'Secondary', 'Junior College'],
-  subject: ['Mathematics', 'English', 'Science', 'Chinese', 'Physics', 'Chemistry', 'Biology']
-}
 
 export default function FilterWizard() {
   const router = useRouter()
@@ -16,6 +11,42 @@ export default function FilterWizard() {
   })
   
   const [expandedStep, setExpandedStep] = useState(1)
+  
+  // Dynamic filter options from API
+  const [filterOptions, setFilterOptions] = useState({
+    level: [],
+    subject: []
+  })
+  const [filtersEnabled, setFiltersEnabled] = useState(false)
+  const [isLoadingOptions, setIsLoadingOptions] = useState(true)
+  
+  // Fetch filter options on mount
+  useEffect(() => {
+    const fetchFilterOptions = async () => {
+      try {
+        const response = await fetch('/api/filter-options')
+        const data = await response.json()
+        
+        if (data.enabled) {
+          setFilterOptions({
+            level: (data.levels || []).filter(l => l !== 'UNKNOWN'),
+            subject: data.subjects || []
+          })
+          setFiltersEnabled(true)
+        } else {
+          // Filters disabled - keep empty arrays
+          setFiltersEnabled(false)
+        }
+      } catch (error) {
+        console.error('Failed to fetch filter options:', error)
+        setFiltersEnabled(false)
+      } finally {
+        setIsLoadingOptions(false)
+      }
+    }
+    
+    fetchFilterOptions()
+  }, [])
 
   const handleFilterSelect = (category, value) => {
     setFilters({ ...filters, [category]: value })
@@ -28,20 +59,80 @@ export default function FilterWizard() {
 
   const handleApply = () => {
     if (filters.level && filters.subject) {
-      // Navigate to results page with filters as query params
+      // Navigate to results page with filters as query params (standardized: levels/subjects PLURAL)
       const params = new URLSearchParams({
-        location: 'Marine Parade',
-        level: filters.level,
-        subject: filters.subject
+        levels: filters.level,
+        subjects: filters.subject
       })
+      
       router.push(`/results?${params.toString()}`)
     }
   }
+  
+  const handleBrowseAll = () => {
+    // Navigate to results without filters
+    router.push('/results')
+  }
+  
+  const handleClearFilters = () => {
+    setFilters({ level: '', subject: '' })
+    setExpandedStep(1)
+  }
 
   const canApply = filters.level && filters.subject
+  const hasAnyFilter = filters.level || filters.subject
+  
+  // Show loading state while fetching options
+  if (isLoadingOptions) {
+    return (
+      <div className="w-full h-full flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-surface-container-high animate-pulse" />
+          <p className="text-body-medium text-on-surface-variant">Loading filters...</p>
+        </div>
+      </div>
+    )
+  }
+  
+  // Show disabled state with banner if filters are not enabled
+  if (!filtersEnabled) {
+    return (
+      <div className="w-full h-full flex flex-col space-y-4">
+        {/* Info banner */}
+        <div className="bg-secondary-container rounded-xl p-4 slide-in-bottom" style={{ animationDelay: '0.4s' }}>
+          <div className="flex items-start gap-3">
+            <svg className="w-5 h-5 text-on-secondary-container mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <div>
+              <p className="text-label-large font-medium text-on-secondary-container">Filters temporarily disabled</p>
+              <p className="text-body-small text-on-secondary-container mt-1">
+                No offerings data yet, so filters are disabled. Showing all centres for now.
+              </p>
+            </div>
+          </div>
+        </div>
+        
+        {/* Browse all button */}
+        <button
+          onClick={handleBrowseAll}
+          className="w-full py-4 rounded-full bg-primary text-primary-on shadow-elevation-1 hover:shadow-elevation-2 hover:scale-[1.02] transition-all duration-200 ease-standard text-label-large font-medium"
+        >
+          Browse all centres
+        </button>
+      </div>
+    )
+  }
 
   return (
     <div className="w-full h-full flex flex-col space-y-1.5 lg:space-y-3 overflow-hidden">
+      {/* Disclaimer for partial data */}
+      <div className="flex-shrink-0 px-1 slide-in-bottom" style={{ animationDelay: '0.3s' }}>
+        <p className="text-label-small text-on-surface-variant text-center">
+          Results based on available data
+        </p>
+      </div>
+      
       <div className="flex-1 min-h-0 overflow-y-auto space-y-1.5 lg:space-y-3 pb-1.5 lg:pb-0">
         {/* Step 1: Level */}
         <div className="slide-in-bottom" style={{ animationDelay: '0.5s' }}>
@@ -77,22 +168,37 @@ export default function FilterWizard() {
             onToggle={() => setExpandedStep(expandedStep === 2 ? 0 : 2)}
             disabled={!filters.level}
           >
-            <div className="flex flex-wrap gap-1.5 lg:gap-2 p-2 lg:p-5">
-              {filterOptions.subject.map((option) => (
-                <M3Chip
-                  key={option}
-                  label={option}
-                  selected={filters.subject === option}
-                  onClick={() => handleFilterSelect('subject', option)}
-                />
-              ))}
+            <div className="p-2 lg:p-5">
+              <p className="text-label-small lg:text-body-small text-on-surface-variant mb-2 lg:mb-3 px-1">
+                Results match exact subjects offered by centres.
+              </p>
+              <div className="flex flex-wrap gap-1.5 lg:gap-2">
+                {filterOptions.subject.map((option) => (
+                  <M3Chip
+                    key={option}
+                    label={option}
+                    selected={filters.subject === option}
+                    onClick={() => handleFilterSelect('subject', option)}
+                  />
+                ))}
+              </div>
             </div>
           </FilterStep>
         </div>
       </div>
 
       {/* M3 Filled Button - Fixed at bottom on mobile with pulsate when enabled */}
-      <div className="flex-shrink-0 slide-in-bottom" style={{ animationDelay: '0.8s' }}>
+      <div className="flex-shrink-0 space-y-2 slide-in-bottom" style={{ animationDelay: '0.8s' }}>
+        {/* Clear filters button - only show if any filter is selected */}
+        {hasAnyFilter && (
+          <button
+            onClick={handleClearFilters}
+            className="w-full py-2 rounded-full text-label-medium font-medium text-on-surface-variant hover:bg-surface-container-high transition-all duration-200 ease-standard"
+          >
+            Clear filters
+          </button>
+        )}
+        
         <button
           onClick={handleApply}
           disabled={!canApply}
