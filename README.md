@@ -360,14 +360,41 @@ This project uses property-based testing to verify correctness properties. Each 
 
 ### Vercel (Recommended)
 
-1. Push your code to GitHub
-2. Import project in Vercel
-3. Add environment variables in Vercel dashboard
-4. Deploy
+#### PostgreSQL Migration Required
+
+⚠️ **Important**: Vercel doesn't support SQLite. You must migrate to PostgreSQL before deploying.
+
+**Quick Migration (5 minutes):**
+
+```bash
+# 1. Create Vercel Postgres database (via dashboard)
+# 2. Pull environment variables
+vercel env pull .env.local
+
+# 3. Run automated migration
+npm run migrate:postgres
+
+# 4. Test locally
+npm run dev
+
+# 5. Deploy
+git push
+```
+
+📚 **Full Documentation**: See `START_HERE.md` for complete migration guide.
+
+#### Deployment Steps
+
+1. Migrate to PostgreSQL (see above)
+2. Push your code to GitHub
+3. Import project in Vercel
+4. Vercel automatically creates environment variables when you add Postgres storage
+5. Deploy
 
 Vercel will automatically:
 - Install dependencies
 - Run Prisma generate
+- Run migrations
 - Build the Next.js application
 
 ### Manual Deployment

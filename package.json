@@ -13,7 +13,11 @@
     "seed": "npx prisma db seed",
     "db:migrate": "npx prisma migrate dev",
     "db:reset": "npx prisma migrate reset",
-    "db:studio": "npx prisma studio"
+    "db:studio": "npx prisma studio",
+    "db:export": "node scripts/export-sqlite-data.js",
+    "db:import": "node scripts/import-to-postgres.js",
+    "migrate:postgres": "./scripts/migrate-to-postgres.sh",
+    "verify:migration": "node scripts/verify-postgres-migration.js"
   },
   "prisma": {
     "seed": "node prisma/seed.js"

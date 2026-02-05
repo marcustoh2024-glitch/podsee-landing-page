@@ -26,6 +26,9 @@ yarn-error.log*
 .env
 .env*.local
 
+# database exports
+data-export.json
+
 # vercel
 .vercel
 
