@@ -8,10 +8,14 @@
 
 # next.js
 /.next/
-/out/
 
 # production
 /build
+
+# deployment artifacts (exclude from git)
+deployment-packages/**/*.tar.gz
+deployment-packages/**/.next/
+out 2/
 
 # misc
 .DS_Store
@@ -37,9 +41,3 @@ data-export.json
 next-env.d.ts
 
 /src/generated/prisma
-
-# deployment packages
-/deployment-packages/
-*.tar.gz
-*.zip
-/out 2/
