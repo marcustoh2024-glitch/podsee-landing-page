@@ -1,7 +1,8 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
+import centresData from '@/data/centres.json'
 
 const filterConfig = [
   {
@@ -36,34 +37,20 @@ export default function FilterWizardMinimal() {
   })
   const [activeFilter, setActiveFilter] = useState(null)
   
-  // Dynamic filter options from API
-  const [filterOptions, setFilterOptions] = useState({
-    level: [],
-    subject: []
-  })
-  const [isLoadingOptions, setIsLoadingOptions] = useState(true)
-  
-  // Fetch filter options on mount
-  useEffect(() => {
-    const fetchFilterOptions = async () => {
-      try {
-        const response = await fetch('/api/filter-options')
-        const data = await response.json()
-        
-        if (data.enabled) {
-          setFilterOptions({
-            level: (data.levels || []).filter(l => l !== 'UNKNOWN'),
-            subject: data.subjects || []
-          })
-        }
-      } catch (error) {
-        console.error('Failed to fetch filter options:', error)
-      } finally {
-        setIsLoadingOptions(false)
-      }
-    }
+  // Extract unique levels and subjects from centres data
+  const filterOptions = useMemo(() => {
+    const levels = new Set()
+    const subjects = new Set()
     
-    fetchFilterOptions()
+    centresData.forEach(centre => {
+      centre.levels?.forEach(level => levels.add(level))
+      centre.subjects?.forEach(subject => subjects.add(subject))
+    })
+    
+    return {
+      level: Array.from(levels).sort(),
+      subject: Array.from(subjects).sort()
+    }
   }, [])
 
   const handleFilterClick = (filterId) => {
@@ -75,29 +62,17 @@ export default function FilterWizardMinimal() {
     setActiveFilter(null)
   }
 
-  const handleApply = () => {
-    if (filters.level && filters.subject) {
-      const params = new URLSearchParams({
-        levels: filters.level,    // ✅ PLURAL
-        subjects: filters.subject // ✅ PLURAL
-      })
-      router.push(`/results?${params.toString()}`)
-    }
-  }
-
-  const canApply = filters.level && filters.subject
-
-  const canSearch = filters.level && filters.subject
-
   const handleSearch = () => {
     if (canSearch) {
       const params = new URLSearchParams({
-        levels: filters.level,    // ✅ PLURAL
-        subjects: filters.subject // ✅ PLURAL
+        levels: filters.level,
+        subjects: filters.subject
       })
       router.push(`/results?${params.toString()}`)
     }
   }
+
+  const canSearch = filters.level && filters.subject
 
   return (
     <div className="w-full flex flex-col space-y-2">

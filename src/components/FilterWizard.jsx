@@ -1,68 +1,54 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
+import centresData from '@/data/centres.json'
 
 export default function FilterWizard() {
   const router = useRouter()
   const [filters, setFilters] = useState({
-    level: '',
-    subject: ''
+    levels: [], // Changed to array for multi-select
+    subjects: [] // Changed to array for multi-select
   })
   
   const [expandedStep, setExpandedStep] = useState(1)
   
-  // Dynamic filter options from API
-  const [filterOptions, setFilterOptions] = useState({
-    level: [],
-    subject: []
-  })
-  const [filtersEnabled, setFiltersEnabled] = useState(false)
-  const [isLoadingOptions, setIsLoadingOptions] = useState(true)
-  
-  // Fetch filter options on mount
-  useEffect(() => {
-    const fetchFilterOptions = async () => {
-      try {
-        const response = await fetch('/api/filter-options')
-        const data = await response.json()
-        
-        if (data.enabled) {
-          setFilterOptions({
-            level: (data.levels || []).filter(l => l !== 'UNKNOWN'),
-            subject: data.subjects || []
-          })
-          setFiltersEnabled(true)
-        } else {
-          // Filters disabled - keep empty arrays
-          setFiltersEnabled(false)
-        }
-      } catch (error) {
-        console.error('Failed to fetch filter options:', error)
-        setFiltersEnabled(false)
-      } finally {
-        setIsLoadingOptions(false)
-      }
-    }
+  // Extract unique levels and subjects from centres data
+  const filterOptions = useMemo(() => {
+    const levels = new Set()
+    const subjects = new Set()
     
-    fetchFilterOptions()
+    centresData.forEach(centre => {
+      centre.levels?.forEach(level => levels.add(level))
+      centre.subjects?.forEach(subject => subjects.add(subject))
+    })
+    
+    return {
+      level: Array.from(levels).sort(),
+      subject: Array.from(subjects).sort()
+    }
   }, [])
 
   const handleFilterSelect = (category, value) => {
-    setFilters({ ...filters, [category]: value })
+    const currentValues = filters[category]
+    const newValues = currentValues.includes(value)
+      ? currentValues.filter(v => v !== value) // Remove if already selected
+      : [...currentValues, value] // Add if not selected
     
-    // Auto-expand next step
-    if (category === 'level' && value) {
+    setFilters({ ...filters, [category]: newValues })
+    
+    // Auto-expand next step if first selection
+    if (category === 'levels' && newValues.length === 1 && currentValues.length === 0) {
       setExpandedStep(2)
     }
   }
 
   const handleApply = () => {
-    if (filters.level && filters.subject) {
-      // Navigate to results page with filters as query params (standardized: levels/subjects PLURAL)
+    if (filters.levels.length > 0 && filters.subjects.length > 0) {
+      // Navigate to results page with filters as query params
       const params = new URLSearchParams({
-        levels: filters.level,
-        subjects: filters.subject
+        levels: filters.levels.join(','),
+        subjects: filters.subjects.join(',')
       })
       
       router.push(`/results?${params.toString()}`)
@@ -75,54 +61,12 @@ export default function FilterWizard() {
   }
   
   const handleClearFilters = () => {
-    setFilters({ level: '', subject: '' })
+    setFilters({ levels: [], subjects: [] })
     setExpandedStep(1)
   }
 
-  const canApply = filters.level && filters.subject
-  const hasAnyFilter = filters.level || filters.subject
-  
-  // Show loading state while fetching options
-  if (isLoadingOptions) {
-    return (
-      <div className="w-full h-full flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-surface-container-high animate-pulse" />
-          <p className="text-body-medium text-on-surface-variant">Loading filters...</p>
-        </div>
-      </div>
-    )
-  }
-  
-  // Show disabled state with banner if filters are not enabled
-  if (!filtersEnabled) {
-    return (
-      <div className="w-full h-full flex flex-col space-y-4">
-        {/* Info banner */}
-        <div className="bg-secondary-container rounded-xl p-4 slide-in-bottom" style={{ animationDelay: '0.4s' }}>
-          <div className="flex items-start gap-3">
-            <svg className="w-5 h-5 text-on-secondary-container mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <div>
-              <p className="text-label-large font-medium text-on-secondary-container">Filters temporarily disabled</p>
-              <p className="text-body-small text-on-secondary-container mt-1">
-                No offerings data yet, so filters are disabled. Showing all centres for now.
-              </p>
-            </div>
-          </div>
-        </div>
-        
-        {/* Browse all button */}
-        <button
-          onClick={handleBrowseAll}
-          className="w-full py-4 rounded-full bg-primary text-primary-on shadow-elevation-1 hover:shadow-elevation-2 hover:scale-[1.02] transition-all duration-200 ease-standard text-label-large font-medium"
-        >
-          Browse all centres
-        </button>
-      </div>
-    )
-  }
+  const canApply = filters.levels.length > 0 && filters.subjects.length > 0
+  const hasAnyFilter = filters.levels.length > 0 || filters.subjects.length > 0
 
   return (
     <div className="w-full h-full flex flex-col space-y-1.5 lg:space-y-3 overflow-hidden">
@@ -138,21 +82,26 @@ export default function FilterWizard() {
         <div className="slide-in-bottom" style={{ animationDelay: '0.5s' }}>
           <FilterStep
             stepNumber={1}
-            title="Level"
+            title="Levels"
             isExpanded={expandedStep === 1}
-            isCompleted={!!filters.level}
-            selectedValue={filters.level}
+            isCompleted={filters.levels.length > 0}
+            selectedValue={filters.levels.length > 0 ? `${filters.levels.length} selected` : ''}
             onToggle={() => setExpandedStep(expandedStep === 1 ? 0 : 1)}
           >
-            <div className="flex flex-wrap gap-1.5 lg:gap-2 p-2 lg:p-5">
-              {filterOptions.level.map((option) => (
-                <M3Chip
-                  key={option}
-                  label={option}
-                  selected={filters.level === option}
-                  onClick={() => handleFilterSelect('level', option)}
-                />
-              ))}
+            <div className="p-2 lg:p-5">
+              <p className="text-label-small lg:text-body-small text-on-surface-variant mb-2 lg:mb-3 px-1">
+                Select one or more levels (OR logic)
+              </p>
+              <div className="flex flex-wrap gap-1.5 lg:gap-2">
+                {filterOptions.level.map((option) => (
+                  <M3Chip
+                    key={option}
+                    label={option}
+                    selected={filters.levels.includes(option)}
+                    onClick={() => handleFilterSelect('levels', option)}
+                  />
+                ))}
+              </div>
             </div>
           </FilterStep>
         </div>
@@ -161,24 +110,24 @@ export default function FilterWizard() {
         <div className="slide-in-bottom" style={{ animationDelay: '0.6s' }}>
           <FilterStep
             stepNumber={2}
-            title="Subject"
+            title="Subjects"
             isExpanded={expandedStep === 2}
-            isCompleted={!!filters.subject}
-            selectedValue={filters.subject}
+            isCompleted={filters.subjects.length > 0}
+            selectedValue={filters.subjects.length > 0 ? `${filters.subjects.length} selected` : ''}
             onToggle={() => setExpandedStep(expandedStep === 2 ? 0 : 2)}
-            disabled={!filters.level}
+            disabled={filters.levels.length === 0}
           >
             <div className="p-2 lg:p-5">
               <p className="text-label-small lg:text-body-small text-on-surface-variant mb-2 lg:mb-3 px-1">
-                Results match exact subjects offered by centres.
+                Select one or more subjects (OR logic)
               </p>
               <div className="flex flex-wrap gap-1.5 lg:gap-2">
                 {filterOptions.subject.map((option) => (
                   <M3Chip
                     key={option}
                     label={option}
-                    selected={filters.subject === option}
-                    onClick={() => handleFilterSelect('subject', option)}
+                    selected={filters.subjects.includes(option)}
+                    onClick={() => handleFilterSelect('subjects', option)}
                   />
                 ))}
               </div>

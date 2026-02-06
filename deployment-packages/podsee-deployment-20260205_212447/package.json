@@ -1,0 +1,46 @@
+{
+  "name": "podsee-mobile",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 3001 -H 0.0.0.0",
+    "build": "prisma generate && next build",
+    "start": "next start -p 3001",
+    "vercel-build": "prisma generate && prisma migrate deploy && next build",
+    "lint": "next lint",
+    "test": "vitest --run",
+    "test:watch": "vitest",
+    "seed": "npx prisma db seed",
+    "db:migrate": "npx prisma migrate dev",
+    "db:reset": "npx prisma migrate reset",
+    "db:studio": "npx prisma studio",
+    "db:export": "node scripts/export-sqlite-data.js",
+    "db:import": "node scripts/import-to-postgres.js",
+    "migrate:postgres": "./scripts/migrate-to-postgres.sh",
+    "verify:migration": "node scripts/verify-postgres-migration.js"
+  },
+  "prisma": {
+    "seed": "node prisma/seed.js"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.19.2",
+    "bcrypt": "^6.0.0",
+    "jsonwebtoken": "^9.0.3",
+    "next": "^14.2.0",
+    "next-auth": "^4.24.13",
+    "prisma": "^6.19.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "@vitest/ui": "^4.0.18",
+    "autoprefixer": "^10.4.17",
+    "eslint": "^8.57.0",
+    "eslint-config-next": "^14.2.0",
+    "fast-check": "^4.5.3",
+    "postcss": "^8.4.35",
+    "tailwindcss": "^3.4.1",
+    "vitest": "^4.0.18"
+  }
+}

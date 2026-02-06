@@ -37,3 +37,9 @@ data-export.json
 next-env.d.ts
 
 /src/generated/prisma
+
+# deployment packages
+/deployment-packages/
+*.tar.gz
+*.zip
+/out 2/

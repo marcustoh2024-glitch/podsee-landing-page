@@ -1,0 +1,1036 @@
+[
+  {
+    "id": "0babb170-2951-45cd-a6b8-571bfd49623e",
+    "name": "AM Academy (Main)",
+    "address": "225A East Coast Road, Singapore 428922",
+    "area": "East Coast",
+    "website_url": "https://www.amacademysg.com/",
+    "whatsapp_number": "+6598752843",
+    "levels": [
+      "Primary",
+      "Secondary",
+      "JC"
+    ],
+    "subjects": [
+      "Math",
+      "English",
+      "Science"
+    ]
+  },
+  {
+    "id": "ef770422-56cb-4e74-9258-be60a7c522b5",
+    "name": "Ace Your Econs (Main)",
+    "address": "1 Marine Parade Centre, Parkway Centre, #02-04, Singapore 449408",
+    "area": "Marine Parade",
+    "website_url": "https://aceyourecons.sg/",
+    "whatsapp_number": "+6588910336",
+    "levels": [
+      "Primary",
+      "Secondary",
+      "JC"
+    ],
+    "subjects": [
+      "Economics"
+    ]
+  },
+  {
+    "id": "e0ef88c8-c58c-4e47-8a6d-2ec1c7ca525c",
+    "name": "Altitude Tuition Centre (Main)",
+    "address": "86 Marine Parade Central, #04-313, Singapore 440086",
+    "area": "Marine Parade",
+    "website_url": "https://www.altitudetuition.com/",
+    "whatsapp_number": "+6598320764",
+    "levels": [
+      "Primary",
+      "Secondary",
+      "JC"
+    ],
+    "subjects": [
+      "Math",
+      "English",
+      "Science"
+    ]
+  },
+  {
+    "id": "067e4884-e7a3-46fb-af57-3a71d941dd9f",
+    "name": "Aspen Learning Centre (Main)",
+    "address": "46 East Coast Road, #06-02, Eastgate Building, Singapore 428766",
+    "area": "East Coast",
+    "website_url": "https://aspen.com.sg/classes-and-programs/",
+    "whatsapp_number": "+6597609749",
+    "levels": [
+      "Primary",
+      "Secondary",
+      "JC"
+    ],
+    "subjects": [
+      "Math",
+      "English",
+      "Science"
+    ]
+  },
+  {
+    "id": "e10aa84b-ecef-4650-8ec4-a395aa85bf9f",
+    "name": "Aspire Hub (Main)",
+    "address": "80 Marine Parade Road, Parkway Parade #01-58 Singapore 449269",
+    "area": "Marine Parade",
+    "website_url": "https://www.aspirehub.com/branches",
+    "whatsapp_number": "+6588764337",
+    "levels": [
+      "Primary",
+      "Secondary",
+      "JC"
+    ],
+    "subjects": [
+      "Math",
+      "English",
+      "Science"
+    ]
+  },
+  {
+    "id": "f47af19f-a632-4ecb-8884-0cc8b994e829",
+    "name": "Augustine's English Classes (Main)",
+    "address": "86 Marine Parade Central, #04-302, Singapore 440086",
+    "area": "Marine Parade",
+    "website_url": "https://augustineenglishclasses.com/",
+    "whatsapp_number": "+6592294813",
+    "levels": [
+      "Primary",
+      "Secondary",
+      "JC"
+    ],
+    "subjects": [
+      "English"
+    ]
+  },
+  {
+    "id": "b41a7fb9-bcaa-4409-bbb9-e90695814874",
+    "name": "Camelot Educare (Main)",
+    "address": "221 East Coast road, Singapore 428918",
+    "area": "East Coast",
+    "website_url": "https://www.cameloteducare.com/after-school-care-tuition/",
+    "whatsapp_number": "6598118333",
+    "levels": [
+      "Primary",
+      "Secondary",
+      "JC"
+    ],
+    "subjects": [
+      "Math",
+      "English",
+      "Science"
+    ]
+  },
+  {
+    "id": "8f85215b-83ce-443b-ad82-4355c0dd14f0",
+    "name": "Chinese Wonderland Learning Centre (Main)",
+    "address": "66 E Coast Rd, #05-05 The Flow, Singapore 428778",
+    "area": "East Coast",
+    "website_url": "https://www.wonderland-edu.com/",
+    "whatsapp_number": "+6783239563",
+    "levels": [
+      "Primary",
+      "Secondary",
+      "JC"
+    ],
+    "subjects": [
+      "Chinese"
+    ]
+  },
+  {
+    "id": "2b5b6706-dc8c-4a97-8d34-14329c62e9b3",
+    "name": "Crestar Learning Centre (Main)",
+    "address": "87 Marine Parade Central, #04-302, Singapore 440087",
+    "area": "Marine Parade",
+    "website_url": "https://crestar.com.sg/chinese-language/",
+    "whatsapp_number": "+6593871960",
+    "levels": [
+      "Primary",
+      "Secondary",
+      "JC"
+    ],
+    "subjects": [
+      "Math",
+      "English",
+      "Science"
+    ]
+  },
+  {
+    "id": "51e8a9ac-a855-4cd7-8936-b3a2f99a1117",
+    "name": "Eye Level @ Katong (Main)",
+    "address": "451 Joo Chiat Road #03-06, Katong Point, Singapore 427664",
+    "area": "Katong",
+    "website_url": "https://katong.myeyelevel.net/",
+    "whatsapp_number": "+6598301796",
+    "levels": [
+      "Primary",
+      "Secondary",
+      "JC"
+    ],
+    "subjects": [
+      "Math",
+      "English",
+      "Science"
+    ]
+  },
+  {
+    "id": "2864e6c1-445a-4eab-b2e7-a46da3c65b28",
+    "name": "Fang Cao Yuan Chinese Learning (Main)",
+    "address": "112 East Coast Road, i12 Katong #03-18/19/20, Singapore 428802",
+    "area": "East Coast",
+    "website_url": "https://www.fangcao.edu.sg/",
+    "whatsapp_number": "+6580390878",
+    "levels": [
+      "Primary",
+      "Secondary",
+      "JC"
+    ],
+    "subjects": [
+      "Chinese"
+    ]
+  },
+  {
+    "id": "9e4da952-7fec-4220-be49-616a9b3df77f",
+    "name": "Fiaba Language (Main)",
+    "address": "30 East Coast Road, #03-17/18 Katong V, Singapore 428751",
+    "area": "East Coast",
+    "website_url": "https://fiabaworld.com/",
+    "whatsapp_number": "+6589458262",
+    "levels": [
+      "Primary",
+      "Secondary",
+      "JC"
+    ],
+    "subjects": [
+      "Math",
+      "English",
+      "Science"
+    ]
+  },
+  {
+    "id": "bbc29a06-1efd-482c-8488-e8bb48263e3a",
+    "name": "Focus Education Centre (Main)",
+    "address": "50 East Coast Road, #02-140, Singapore 428769",
+    "area": "East Coast",
+    "website_url": "https://www.focuseducation.com.sg/",
+    "whatsapp_number": "+6589516170",
+    "levels": [
+      "Primary",
+      "Secondary",
+      "JC"
+    ],
+    "subjects": [
+      "Math",
+      "English",
+      "Science"
+    ]
+  },
+  {
+    "id": "b388a0ea-0295-4ded-b67e-3b63b6226051",
+    "name": "HESS Education Centre (Main)",
+    "address": "140 East Coast Road, Singapore, 428830",
+    "area": "East Coast",
+    "website_url": "https://www.thehessacademy.sg/",
+    "whatsapp_number": "+6586904489",
+    "levels": [
+      "Primary",
+      "Secondary",
+      "JC"
+    ],
+    "subjects": [
+      "Math",
+      "English",
+      "Science"
+    ]
+  },
+  {
+    "id": "4470293a-823b-4260-95d9-d0d68a0ac753",
+    "name": "Ikigai Math (Main)",
+    "address": "133 Joo Chiat Rd TUAN, #02-01, Singapore 427417",
+    "area": "Joo Chiat",
+    "website_url": "https://www.ikigaimath.com/classes",
+    "whatsapp_number": "+6580288981",
+    "levels": [
+      "Primary",
+      "Secondary",
+      "JC"
+    ],
+    "subjects": [
+      "Math"
+    ]
+  },
+  {
+    "id": "d6995c19-f7e8-460d-bf64-9c3fd339873e",
+    "name": "Indigo Education Group (Main)",
+    "address": "80 Marine Parade Road, #06-03 to #06-09, Singapore 449269",
+    "area": "Marine Parade",
+    "website_url": "https://indigo.com.sg/",
+    "whatsapp_number": "+6566342208",
+    "levels": [
+      "Primary",
+      "Secondary",
+      "JC"
+    ],
+    "subjects": [
+      "Math",
+      "English",
+      "Science"
+    ]
+  },
+  {
+    "id": "1e1376cd-a101-4c8c-b98d-c01a494b5170",
+    "name": "Inspire Education Centre (Main)",
+    "address": "50 East Coast Road, #02-46, Roxy Square 1, Singapore 428769",
+    "area": "East Coast",
+    "website_url": "https://inspire-edu.sg/",
+    "whatsapp_number": "+6586995629",
+    "levels": [
+      "Primary",
+      "Secondary",
+      "JC"
+    ],
+    "subjects": [
+      "Math",
+      "English",
+      "Science"
+    ]
+  },
+  {
+    "id": "96b6008e-ecdc-4673-a631-ac0f3c451553",
+    "name": "Jolly Chinese Learning Centre (Main)",
+    "address": "1 Marine Parade Central #12-01 Parkway Centre, Singapore 449408",
+    "area": "Marine Parade",
+    "website_url": "https://www.jollychineseinfo.com/curriculum",
+    "whatsapp_number": "+6594875045",
+    "levels": [
+      "Primary",
+      "Secondary",
+      "JC"
+    ],
+    "subjects": [
+      "Chinese"
+    ]
+  },
+  {
+    "id": "17ecbe57-625a-4c51-a71e-36bc84e4f352",
+    "name": "Kumon (Main)",
+    "address": "112 East Coast Road #03-01 I12 Katong, Singapore 428802",
+    "area": "East Coast",
+    "website_url": "https://kumon.sg/",
+    "whatsapp_number": "+6586603548",
+    "levels": [
+      "Primary",
+      "Secondary",
+      "JC"
+    ],
+    "subjects": [
+      "Math",
+      "English",
+      "Science"
+    ]
+  },
+  {
+    "id": "17553890-4ac0-45e5-8657-ff79a47e8191",
+    "name": "Learning Point (Main)",
+    "address": "1 Marine Parade Central, #05-07/08/09 Parkway Centre, Singapore 449408",
+    "area": "Marine Parade",
+    "website_url": "https://www.learningpoint.com.sg/programmes",
+    "whatsapp_number": "+6580928198",
+    "levels": [
+      "Primary",
+      "Secondary",
+      "JC"
+    ],
+    "subjects": [
+      "Math",
+      "English",
+      "Science"
+    ]
+  },
+  {
+    "id": "252042dd-fdc3-4ad9-9062-cfb798737c49",
+    "name": "Lil But Mighty English (Main)",
+    "address": "1 Marine Parade, #04-05 Parkway Centre, Singapore 449408",
+    "area": "Marine Parade",
+    "website_url": "https://lilbutmightyenglish.com/",
+    "whatsapp_number": "+6596460930",
+    "levels": [
+      "Primary",
+      "Secondary",
+      "JC"
+    ],
+    "subjects": [
+      "English"
+    ]
+  },
+  {
+    "id": "31a0a881-1d97-406f-96a6-717e265d865f",
+    "name": "Math Mavens (Main)",
+    "address": "Parkway Centre, 1 Marine Parade Central, #08-02, Singapore 449408",
+    "area": "Marine Parade",
+    "website_url": "https://mathmavens.com/our-programme/",
+    "whatsapp_number": "+6588799328",
+    "levels": [
+      "Primary",
+      "Secondary",
+      "JC"
+    ],
+    "subjects": [
+      "Math"
+    ]
+  },
+  {
+    "id": "1f9a0a01-ba27-4985-92c2-3230f6c8987f",
+    "name": "MathNous (Main)",
+    "address": "451 Joo Chiat Rd, #02-04/05 Katong Point, Singapore 427664",
+    "area": "Katong",
+    "website_url": "https://mathnous.com/",
+    "whatsapp_number": "+6587675771",
+    "levels": [
+      "Primary",
+      "Secondary",
+      "JC"
+    ],
+    "subjects": [
+      "Math"
+    ]
+  },
+  {
+    "id": "39c00520-53b9-4f5d-bcd3-e4dc2db20737",
+    "name": "Mathathon (Main)",
+    "address": "66 E Coast Rd, B1-04 The Flow Mall, Singapore 428778",
+    "area": "East Coast",
+    "website_url": "https://www.mathathonsg.com/",
+    "whatsapp_number": "+6584886161",
+    "levels": [
+      "Primary",
+      "Secondary",
+      "JC"
+    ],
+    "subjects": [
+      "Math"
+    ]
+  },
+  {
+    "id": "12cf3df9-4b4e-4d9b-8aec-957e3faca5b2",
+    "name": "Mathematical Sciences Learning Centre (Main)",
+    "address": "No. 46 East Coast Road, Eastgate #10-02, Singapore 428766",
+    "area": "East Coast",
+    "website_url": "https://www.mathscience.com.sg/our-programs/academic-program",
+    "whatsapp_number": "+6598785857",
+    "levels": [
+      "Primary",
+      "Secondary",
+      "JC"
+    ],
+    "subjects": [
+      "Math",
+      "Science"
+    ]
+  },
+  {
+    "id": "58509940-91e8-4d85-a49f-3b92bccc65fb",
+    "name": "Mathnasium (Main)",
+    "address": "04-12, i12 Katong, 112 East Coast Road, Singapore 428802",
+    "area": "East Coast",
+    "website_url": "https://www.mathnasium.com/sg/primary-school",
+    "whatsapp_number": "+6591148757",
+    "levels": [
+      "Primary",
+      "Secondary",
+      "JC"
+    ],
+    "subjects": [
+      "Math"
+    ]
+  },
+  {
+    "id": "693655e3-3bf8-4ec8-a2c7-fe52081fff4f",
+    "name": "Matrix Math (Main)",
+    "address": "1 Marine Parade Central, Parkway Centre, #11-04/08, Singapore 449408",
+    "area": "Marine Parade",
+    "website_url": "https://matrixmath.sg/",
+    "whatsapp_number": "+6597227759",
+    "levels": [
+      "Primary",
+      "Secondary",
+      "JC"
+    ],
+    "subjects": [
+      "Math"
+    ]
+  },
+  {
+    "id": "c0908e76-9158-4fba-bbae-acf129552533",
+    "name": "Mind Stretcher (Main)",
+    "address": "Parkway Centre, 1 Marine Parade Central #12-08 Singapore 449408",
+    "area": "Marine Parade",
+    "website_url": "https://www.tutorly.sg/app/blog/Mind-Stretcher-Punggol-2025",
+    "whatsapp_number": "+6588838004",
+    "levels": [
+      "Primary",
+      "Secondary",
+      "JC"
+    ],
+    "subjects": [
+      "Math",
+      "English",
+      "Science"
+    ]
+  },
+  {
+    "id": "c8a34b40-4cbb-4a18-a377-ae12251dfcd6",
+    "name": "MindSpace @ The Flow (Main)",
+    "address": "66 East Coast Road #B1-03 The Flow Singapore 428778",
+    "area": "East Coast",
+    "website_url": "https://mindspace.mindchamps.org/mindspace-the-flow-east-coast/",
+    "whatsapp_number": "+6587333360",
+    "levels": [
+      "Primary",
+      "Secondary",
+      "JC"
+    ],
+    "subjects": [
+      "Math",
+      "English",
+      "Science"
+    ]
+  },
+  {
+    "id": "296ebba2-d8cd-41cf-800b-5ffd45382994",
+    "name": "Molin Chinese Tutorial Centre (Main)",
+    "address": "87 Marine Parade Central #04-303 Singapore 440087",
+    "area": "Marine Parade",
+    "website_url": "https://chinesebridge.com.sg/primary-chinese/",
+    "whatsapp_number": "+6563444588",
+    "levels": [
+      "Primary",
+      "Secondary",
+      "JC"
+    ],
+    "subjects": [
+      "Chinese"
+    ]
+  },
+  {
+    "id": "91b50ffb-96ae-415f-a0bc-a42c670678f3",
+    "name": "Moyuan Culture Education Centre (Main)",
+    "address": "66 East Coast Road, #05-02, Singapore 428778",
+    "area": "East Coast",
+    "website_url": "https://moyuanculture.com/chinese-enrichment",
+    "whatsapp_number": "+6587833117",
+    "levels": [
+      "Primary",
+      "Secondary",
+      "JC"
+    ],
+    "subjects": [
+      "Math",
+      "English",
+      "Science"
+    ]
+  },
+  {
+    "id": "fa5b73bc-0f01-4882-96aa-d515d7084e8a",
+    "name": "My Chinese Steps Learning Centre (Main)",
+    "address": "66 East Coast Road, #03-08 Katong, Singapore 428778",
+    "area": "East Coast",
+    "website_url": "https://mychinesesteps.com/",
+    "whatsapp_number": "+6588914460",
+    "levels": [
+      "Primary",
+      "Secondary",
+      "JC"
+    ],
+    "subjects": [
+      "Chinese"
+    ]
+  },
+  {
+    "id": "5f0fe8cd-c359-4f63-ba59-c9394b049e30",
+    "name": "New Cambridge Education Centre (Main)",
+    "address": "46 East Coast Road, #10-06, Eastgate, Singapore 428766",
+    "area": "East Coast",
+    "website_url": "https://newcambridge.com.sg/page/english-courses",
+    "whatsapp_number": "+6590678840",
+    "levels": [
+      "Primary",
+      "Secondary",
+      "JC"
+    ],
+    "subjects": [
+      "Math",
+      "English",
+      "Science"
+    ]
+  },
+  {
+    "id": "93db635b-4f08-4fe3-ba4b-7f4080c1b1d3",
+    "name": "Novel Learning Centre (Main)",
+    "address": "50 East Coast Rd, #02-34/02-34A, 01-138/139, Roxy Square, Singapore 428769",
+    "area": "East Coast",
+    "website_url": "https://beamstart.com/@novel-learning-centre-16565664483900",
+    "whatsapp_number": "+6563455334",
+    "levels": [
+      "Primary",
+      "Secondary",
+      "JC"
+    ],
+    "subjects": [
+      "Math",
+      "English",
+      "Science"
+    ]
+  },
+  {
+    "id": "2614e5bb-a30b-4e83-b21f-dff069675090",
+    "name": "Oasis Learning Centre (Main)",
+    "address": "50 East Coast Road #02-36, Roxy Square Shopping Centre, Singapore 428769",
+    "area": "East Coast",
+    "website_url": "https://oasislearning.sg/",
+    "whatsapp_number": "+6596663835",
+    "levels": [
+      "Primary",
+      "Secondary",
+      "JC"
+    ],
+    "subjects": [
+      "Math",
+      "English",
+      "Science"
+    ]
+  },
+  {
+    "id": "65bbad81-948c-4baa-85f5-9c726a8e4d28",
+    "name": "Overmugged (Main)",
+    "address": "1 Marine Parade Central, Parkway Center, #09-05, Singapore 449408",
+    "area": "Marine Parade",
+    "website_url": "https://www.overmugged.com/primary-school-tuition",
+    "whatsapp_number": "+6587702540",
+    "levels": [
+      "Primary",
+      "Secondary",
+      "JC"
+    ],
+    "subjects": [
+      "Math",
+      "English",
+      "Science"
+    ]
+  },
+  {
+    "id": "5f9821a5-c8cb-488c-a2be-531bee3b1155",
+    "name": "Phi Learning Chinese (Main)",
+    "address": "80 Marine Parade Road, #08-09 Parkway Parade, Singapore 449269",
+    "area": "Marine Parade",
+    "website_url": "https://philearningchinese.sg/primary-1-4-chinese-enrichment-class/",
+    "whatsapp_number": "+6588785558",
+    "levels": [
+      "Primary",
+      "Secondary",
+      "JC"
+    ],
+    "subjects": [
+      "Chinese"
+    ]
+  },
+  {
+    "id": "d9eb0d04-5406-48ff-9cd6-b7248c1a9470",
+    "name": "Raymond's Math Science Studio (Main)",
+    "address": "82 Marine Parade Central, #01-600/602, Singapore 440082",
+    "area": "Marine Parade",
+    "website_url": "https://www.rmss.com.sg/web/#classes",
+    "whatsapp_number": null,
+    "levels": [
+      "Primary",
+      "Secondary",
+      "JC"
+    ],
+    "subjects": [
+      "Math",
+      "Science"
+    ]
+  },
+  {
+    "id": "cb19eb07-341f-4d0f-9929-9efb7690be28",
+    "name": "S.A.M (Seriously Addictive Maths) (Main)",
+    "address": "The Flow #03-18, 66 East Coast Road, Singapore 428778",
+    "area": "East Coast",
+    "website_url": "https://seriouslyaddictivemaths.com.sg/math-enrichment/",
+    "whatsapp_number": "+6596509651",
+    "levels": [
+      "Primary",
+      "Secondary",
+      "JC"
+    ],
+    "subjects": [
+      "Math"
+    ]
+  },
+  {
+    "id": "2fae54bb-f381-496a-b04b-b9380581706d",
+    "name": "Science Masterclass (Main)",
+    "address": "Parkway Centre, 1 Marine Parade Central #12-02, Singapore 449408",
+    "area": "Marine Parade",
+    "website_url": "https://www.sciencemasterclass.com.sg/",
+    "whatsapp_number": "+6590175449",
+    "levels": [
+      "Primary",
+      "Secondary",
+      "JC"
+    ],
+    "subjects": [
+      "Science"
+    ]
+  },
+  {
+    "id": "346f2d56-3973-4687-bf44-692449c5e1fe",
+    "name": "Science Solutions (Main)",
+    "address": "50 EAST COAST ROAD, The ROXY SQUARE, #02-77 Singapore 428769",
+    "area": "East Coast",
+    "website_url": "https://sciencesolutions.com.sg/",
+    "whatsapp_number": "+6598234634",
+    "levels": [
+      "Primary",
+      "Secondary",
+      "JC"
+    ],
+    "subjects": [
+      "Science"
+    ]
+  },
+  {
+    "id": "88dda3b6-0c06-4d59-ac39-a006ad799b9d",
+    "name": "Science Studios Learning Centre (Main)",
+    "address": "46 East Coast Road, #05-04, Singapore 428766",
+    "area": "East Coast",
+    "website_url": "https://www.sciencestudios.com.sg/science-tuition-schedule",
+    "whatsapp_number": "+6580488264",
+    "levels": [
+      "Primary",
+      "Secondary",
+      "JC"
+    ],
+    "subjects": [
+      "Science"
+    ]
+  },
+  {
+    "id": "fcc8d60d-8240-44c1-a766-ad251038d02e",
+    "name": "Simply English (Main)",
+    "address": "1 Marine Parade Central, #02-04 Parkway Centre, Singapore 449408",
+    "area": "Marine Parade",
+    "website_url": "https://www.simplyenglishsg.com/programmes/",
+    "whatsapp_number": "+6592257755",
+    "levels": [
+      "Primary",
+      "Secondary",
+      "JC"
+    ],
+    "subjects": [
+      "English"
+    ]
+  },
+  {
+    "id": "0aeee89d-d150-4674-8a73-4db5557fc0d3",
+    "name": "SmartLab (Main)",
+    "address": "1 Marine Parade Central #13-03, Parkway Centre, Singapore 449408",
+    "area": "Marine Parade",
+    "website_url": "https://smartlab.com.sg/Tuition/",
+    "whatsapp_number": "+6580207450",
+    "levels": [
+      "Primary",
+      "Secondary",
+      "JC"
+    ],
+    "subjects": [
+      "Math",
+      "English",
+      "Science"
+    ]
+  },
+  {
+    "id": "15376b94-ced6-49f6-b3b8-71256ccbf723",
+    "name": "SuperMath (Main)",
+    "address": "80 Marine Parade Road, #10-03, Singapore 449269",
+    "area": "Marine Parade",
+    "website_url": "https://supermath.com.sg/",
+    "whatsapp_number": "+6588093591",
+    "levels": [
+      "Primary",
+      "Secondary",
+      "JC"
+    ],
+    "subjects": [
+      "Math"
+    ]
+  },
+  {
+    "id": "5756ed36-2cc9-43cf-a9aa-d7d028616cb4",
+    "name": "The Alternative Story (Main)",
+    "address": "1 Marine Parade Central, #10-09, Singapore 449408",
+    "area": "Marine Parade",
+    "website_url": "https://thealternativestory.com/programmes/",
+    "whatsapp_number": "+6597221497",
+    "levels": [
+      "Primary",
+      "Secondary",
+      "JC"
+    ],
+    "subjects": [
+      "Math",
+      "English",
+      "Science"
+    ]
+  },
+  {
+    "id": "f6988fcd-a926-4241-a07d-e7c86c0ad546",
+    "name": "The Humanities Clinic (Main)",
+    "address": "66 East Coast Road, #05-07, Singapore 428778",
+    "area": "East Coast",
+    "website_url": "https://www.thehumanitiesclinic.com/",
+    "whatsapp_number": "+6581189858",
+    "levels": [
+      "Primary",
+      "Secondary",
+      "JC"
+    ],
+    "subjects": [
+      "Humanities"
+    ]
+  },
+  {
+    "id": "84296f36-700a-4210-81d1-3790a51ad06f",
+    "name": "The Impact Academy (Main)",
+    "address": "66 East Coast Road, #05-15 (The Flow Shopping Mall), Singapore 428778",
+    "area": "East Coast",
+    "website_url": "https://www.theimpactacademysg.com/",
+    "whatsapp_number": "+6589042827",
+    "levels": [
+      "Primary",
+      "Secondary",
+      "JC"
+    ],
+    "subjects": [
+      "Math",
+      "English",
+      "Science"
+    ]
+  },
+  {
+    "id": "f688f2ca-3651-43f2-bb40-eae622f965d7",
+    "name": "The Learning Lab (Main)",
+    "address": "87 Marine Parade Central, #02-00 Singapore 440087",
+    "area": "Marine Parade",
+    "website_url": "https://www.thelearninglab.com.sg/",
+    "whatsapp_number": "+6565001199",
+    "levels": [
+      "Primary",
+      "Secondary",
+      "JC"
+    ],
+    "subjects": [
+      "Math",
+      "English",
+      "Science"
+    ]
+  },
+  {
+    "id": "b99741c3-4024-40f2-b25c-3d681ff0e752",
+    "name": "The Prime Circle Learning Academy (Main)",
+    "address": "66 East Coast Road #03-07, Singapore 428778",
+    "area": "East Coast",
+    "website_url": "https://www.theprimecircle.com.sg/programmes-rates/",
+    "whatsapp_number": "+6593490307",
+    "levels": [
+      "Primary",
+      "Secondary",
+      "JC"
+    ],
+    "subjects": [
+      "Math",
+      "English",
+      "Science"
+    ]
+  },
+  {
+    "id": "edf64c38-3774-4cd2-9b50-1b5798572366",
+    "name": "Thought & Words Learning Centre (Main)",
+    "address": "46 East Coast Road, #07-01, Eastgate, Singapore 428766",
+    "area": "East Coast",
+    "website_url": "https://www.thoughtandwords.com.sg/programmes",
+    "whatsapp_number": "+6562415531",
+    "levels": [
+      "Primary",
+      "Secondary",
+      "JC"
+    ],
+    "subjects": [
+      "Math",
+      "English",
+      "Science"
+    ]
+  },
+  {
+    "id": "aa11e827-7c6f-4487-85ce-8b8c150b9ce5",
+    "name": "Tien Hsia Language School (Main)",
+    "address": "1 Marine Parade Central, #10-04/07 Parkway Centre, Singapore 449408",
+    "area": "Marine Parade",
+    "website_url": "https://tienhsia.com/",
+    "whatsapp_number": "+6588567665",
+    "levels": [
+      "Primary",
+      "Secondary",
+      "JC"
+    ],
+    "subjects": [
+      "Math",
+      "English",
+      "Science"
+    ]
+  },
+  {
+    "id": "1e960a25-4376-4fea-af66-034abbade7f3",
+    "name": "Tutor Next Door Tuition Center (Main)",
+    "address": "66 East Coast Road, Level 5, Unit 09, The Flow Building, Singapore 428778",
+    "area": "East Coast",
+    "website_url": "https://www.tutornextdoor.sg/",
+    "whatsapp_number": "+6589096789",
+    "levels": [
+      "Primary",
+      "Secondary",
+      "JC"
+    ],
+    "subjects": [
+      "Math",
+      "English",
+      "Science"
+    ]
+  },
+  {
+    "id": "6acca46e-a61a-44e2-9a9e-7c0808ebfebc",
+    "name": "Ultimate Learning Hub (Main)",
+    "address": "46 East Coast Road, #09-01 East Gate Katong Singapore 428766",
+    "area": "East Coast",
+    "website_url": "https://www.ultimatelearninghub.com/workshops",
+    "whatsapp_number": "+6580760245",
+    "levels": [
+      "Primary",
+      "Secondary",
+      "JC"
+    ],
+    "subjects": [
+      "Math",
+      "English",
+      "Science"
+    ]
+  },
+  {
+    "id": "12cda1db-1adc-4e4d-b667-0053f92e8893",
+    "name": "VitamindzTM Education (Main)",
+    "address": "80 Marine Parade Road, #14-08, Singapore 449269",
+    "area": "Marine Parade",
+    "website_url": "https://www.vitamindzedu.com/regular-classes-2/",
+    "whatsapp_number": "+6590189398",
+    "levels": [
+      "Primary",
+      "Secondary",
+      "JC"
+    ],
+    "subjects": [
+      "Math",
+      "English",
+      "Science"
+    ]
+  },
+  {
+    "id": "c02f0d8b-c4fb-43ce-b965-6f76903f9294",
+    "name": "Wang Learning Centre (Main)",
+    "address": "46 East Coast Road, #02-01/02, #04-02/03/04/05/06, #05-01/03, EastGate, Singapore 428766",
+    "area": "East Coast",
+    "website_url": "https://www.wang.edu.sg/",
+    "whatsapp_number": "+6583387807",
+    "levels": [
+      "Primary",
+      "Secondary",
+      "JC"
+    ],
+    "subjects": [
+      "Math",
+      "English",
+      "Science"
+    ]
+  },
+  {
+    "id": "2468679a-adb4-4f8a-b5b6-ef665d03b703",
+    "name": "Wordsmiths Learning Centre (Main)",
+    "address": "1 Marine Parade Central, #03-06, Parkway Centre, Singapore 449408",
+    "area": "Marine Parade",
+    "website_url": "http://www.wordsmithlearninghub.com/",
+    "whatsapp_number": "+6598500479",
+    "levels": [
+      "Primary",
+      "Secondary",
+      "JC"
+    ],
+    "subjects": [
+      "Math",
+      "English",
+      "Science"
+    ]
+  },
+  {
+    "id": "d2802d9e-365b-40d1-8f98-df49fa537c57",
+    "name": "Xuelin Learning Hub (Main)",
+    "address": "Marine Parade Central #03-01 Parkway Centre Singapore 449408",
+    "area": "Marine Parade",
+    "website_url": "https://xuelinlearninghub.com.sg/primary-chinese-class/",
+    "whatsapp_number": "+6597507316",
+    "levels": [
+      "Primary",
+      "Secondary",
+      "JC"
+    ],
+    "subjects": [
+      "Math",
+      "English",
+      "Science"
+    ]
+  },
+  {
+    "id": "d557ca15-0a5a-4123-bc5e-72c961526b20",
+    "name": "Zenith Education Studio (Main)",
+    "address": "80 Marine Parade Rd, #07-02 Parkway Parade, Singapore 449269",
+    "area": "Marine Parade",
+    "website_url": "https://www.zenitheducationstudio.com/",
+    "whatsapp_number": "+6587687651",
+    "levels": [
+      "Primary",
+      "Secondary",
+      "JC"
+    ],
+    "subjects": [
+      "Math",
+      "English",
+      "Science"
+    ]
+  },
+  {
+    "id": "6d2ff4b3-f567-495b-a13a-5e2122033dbd",
+    "name": "in:genius Student Care (Main)",
+    "address": "80 Marine Parade Road, #07-03/04/05, Parkway Parade (Office Tower), Singapore 449269",
+    "area": "Marine Parade",
+    "website_url": "https://ingenius.nascans.com/",
+    "whatsapp_number": "+6591545129",
+    "levels": [
+      "Primary",
+      "Secondary",
+      "JC"
+    ],
+    "subjects": [
+      "Math",
+      "English",
+      "Science"
+    ]
+  }
+]
